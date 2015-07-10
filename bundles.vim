@@ -24,6 +24,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'sjl/badwolf'
 Plugin 'tpope/vim-sensible'
 Plugin 'bling/vim-airline'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'Valloric/YouCompleteMe'
 
 call vundle#end()
 

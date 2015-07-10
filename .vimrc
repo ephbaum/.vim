@@ -34,8 +34,9 @@ let mapleader=" "
 
 " Maps plugin functionality to use Leader
 nnoremap <Leader>ff :Ag 
-nnoremap <Leader>uu :GundoToggle<CR>
-nnoremap <Leader>rr :CtrlPBufTag<CR>
+nnoremap <silent><Leader>uu :GundoToggle<CR>
+nnoremap <silent><Leader>rr :CtrlPBufTag<CR>
+nnoremap <silent><Leader>tt :TagbarOpenAutoClose<CR>
 
 " Parse *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
