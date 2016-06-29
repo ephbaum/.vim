@@ -1,0 +1,948 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+<Leader>+	/Users/fskirschbaum/.vimrc	/^nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3\/2)<CR>$/;"	m	language:Vim
+<Leader>-	/Users/fskirschbaum/.vimrc	/^nnoremap <silent> <Leader>- :exe "vertical resize " . (winwidth(0) * 2\/3)<CR>$/;"	m	language:Vim
+<Leader>=	/Users/fskirschbaum/.vimrc	/^nnoremap <silent> <Leader>= :exe "vertical resize " . (winwidth(0) * 3\/2)<CR>$/;"	m	language:Vim
+<Leader>ff	/Users/fskirschbaum/.vimrc	/^nnoremap <Leader>ff :Ag$/;"	m	language:Vim
+<Leader>l	/Users/fskirschbaum/.vimrc	/^nnoremap <silent> <Leader>l d^j$/;"	m	language:Vim
+<Leader>rr	/Users/fskirschbaum/.vimrc	/^nnoremap <silent><Leader>rr :CtrlPBufTag<CR>$/;"	m	language:Vim
+<Leader>rtw	/Users/fskirschbaum/.vimrc	/^nnoremap <silent> <Leader>rtw :%s\/\\s\\+$\/\/e<CR>$/;"	m	language:Vim
+<Leader>sc	/Users/fskirschbaum/.vimrc	/^nnoremap <silent><Leader>sc :Vscratch<CR>$/;"	m	language:Vim
+<Leader>tt	/Users/fskirschbaum/.vimrc	/^nnoremap <silent><Leader>tt :TagbarOpenAutoClose<CR>$/;"	m	language:Vim
+<Leader>uu	/Users/fskirschbaum/.vimrc	/^nnoremap <silent><Leader>uu :GundoToggle<CR>$/;"	m	language:Vim
+<Leader>wr	/Users/fskirschbaum/.vimrc	/^nnoremap <silent> <Leader>wr :set invwrap<CR>$/;"	m	language:Vim
+<Leader>_	/Users/fskirschbaum/.vimrc	/^nnoremap <silent> <Leader>_ :exe "resize " . (winheight(0) * 2\/3)<CR>$/;"	m	language:Vim
+<S-CR>	/Users/fskirschbaum/.vimrc	/^cmap <S-CR> <Esc>$/;"	m	language:Vim
+<S-CR>	/Users/fskirschbaum/.vimrc	/^inoremap <S-CR> <Esc>$/;"	m	language:Vim
+<S-CR>	/Users/fskirschbaum/.vimrc	/^nnoremap <S-CR> i$/;"	m	language:Vim
+<S-CR>	/Users/fskirschbaum/.vimrc	/^vnoremap <S-CR> <Esc>$/;"	m	language:Vim
+active_station_id	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $active_station_id = 0;  \/\/ widget$/;"	v	language:PHP
+activityFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->activityFilter = new ActivityFilter($/;"	v	language:PHP
+activityFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $activityFilter;$/;"	v	language:PHP
+activityFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $activityFilters = $this->activityFilter->getFilters();$/;"	v	language:PHP
+addActivityFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function addActivityFilter($activityId)$/;"	f	language:PHP
+addAllActivityFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^     public function addAllActivityFilters()$/;"	f	language:PHP
+addAllEquipmentFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^     public function addAllEquipmentFilters($labId)$/;"	f	language:PHP
+addEquipmentFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function addEquipmentFilter($equipmentId)$/;"	f	language:PHP
+addStarredEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function addStarredEquipment($equipmentId)$/;"	f	language:PHP
+admin	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $admin = Input::get( 'admin_option' );$/;"	v	language:PHP
+AdministrationController	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^class AdministrationController extends Controller$/;"	c	language:PHP
+admins	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/profileequipmentalerts.php	/^    <? $admins = Company::getAdminsForCompany(UserPrivilege::LAB_MGT); ?>$/;"	v	language:PHP
+admins	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/profilepcalerts.php	/^    <? $admins = Company::getAdminsForCompany(UserPrivilege::LAB_MGT); ?>$/;"	v	language:PHP
+agent	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $agent = is_null($request) ? '' : $request->header('user_agent');$/;"	v	language:PHP
+agent	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $agent = is_null($request) ? '' : $request->header('user_agent');$/;"	v	language:PHP
+ajaxLogRepository	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^      $this->ajaxLogRepository = $ajaxLogRepository;$/;"	v	language:PHP
+ajaxLogRepository	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^    private $ajaxLogRepository;$/;"	v	language:PHP
+allEquipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $allEquipment = $this->equipment->getByLab($id);$/;"	v	language:PHP
+allowed	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $allowed = array(array_key_exists('SERVER_ADDR', $_SERVER) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'], "echo.localhost", "dev.mtsecho.com", "test.mtsecho.com", "alpha.mtsecho.com", "beta.mtsecho.com", "www.mtsecho.com", "mtsecho.com");$/;"	v	language:PHP
+allowed	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^    $allowed = array(array_key_exists('SERVER_ADDR', $_SERVER) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'], "echo.localhost", "dev.mtsecho.com", "test.mtsecho.com", "alpha.mtsecho.com", "beta.mtsecho.com", "www.mtsecho.com", "mtsecho.com");$/;"	v	language:PHP
+alt	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^                                    <?= HTML::image($avatar, $alt = "Avatar", $attributes = array("id" => "vignetteAvatar")); ?>$/;"	v	language:PHP
+alt	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^                                <?= HTML::image($avatar, $alt = "Avatar", $attributes = array("class" => "menu-avatar", "id" => "thumbnailAvatar")); ?>$/;"	v	language:PHP
+alt	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^                <?= HTML::image(Bust::url('\/assets\/images\/logoimg.png'), $alt = "MTS Echo", $attributes = array()); ?>$/;"	v	language:PHP
+app	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/bootstrap/app.php	/^$app = new Laravel\\Lumen\\Application($/;"	v	language:PHP
+appLogRepository	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^      $this->appLogRepository = $appLogRepository;$/;"	v	language:PHP
+appLogRepository	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^    private $appLogRepository;$/;"	v	language:PHP
+AppServiceProvider	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Providers/AppServiceProvider.php	/^class AppServiceProvider extends ServiceProvider$/;"	c	language:PHP
+as	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/config/mail.php	/^    | Laravel supports both SMTP and PHP's "mail" function as drivers for the$/;"	f	language:PHP
+AuthController	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/AuthController.php	/^class AuthController extends Controller$/;"	c	language:PHP
+AuthServiceProvider	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Providers/AuthServiceProvider.php	/^class AuthServiceProvider extends ServiceProvider$/;"	c	language:PHP
+blurb	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $this->blurb = $blurb;$/;"	v	language:PHP
+blurbHumanize	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^function blurbHumanize(blurb)$/;"	f	language:JavaScript
+blurbs	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $blurbs = $this->blurbs->getBlurbsByUser();$/;"	v	language:PHP
+blurbs	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->blurbs = new Blurb();$/;"	v	language:PHP
+blurbs	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $blurbs;$/;"	v	language:PHP
+boot	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Providers/AppServiceProvider.php	/^    public function boot()$/;"	f	language:PHP
+boot	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Providers/AuthServiceProvider.php	/^    public function boot(GateContract $gate)$/;"	f	language:PHP
+browser	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $browser = new MTSBrowser($agent);$/;"	v	language:PHP
+browser	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $browser = new Browser($agent);$/;"	v	language:PHP
+browserName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->browserName = $browser->getName();$/;"	v	language:PHP
+browserName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        if ( $this->browserName === "Internet Explorer" ) {$/;"	v	language:PHP
+browserName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        if ( $this->browserName === "Internet Explorer" ) {$/;"	v	language:PHP
+browserName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        if ( $this->browserName === "Internet Explorer" ) {$/;"	v	language:PHP
+browserVersion	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->browserVersion = $browser->getVersion();$/;"	v	language:PHP
+browser_lang	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^    $browser_lang = !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? strtok(strip_tags($_SERVER['HTTP_ACCEPT_LANGUAGE']), ',') : '';$/;"	v	language:PHP
+browser_lang	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^    $browser_lang = substr($browser_lang, 0,2);$/;"	v	language:PHP
+canDownload	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $canDownload = SoftwareManagement::getProductNamesUserCanDownload();$/;"	v	language:PHP
+canDownload	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $canDownload = SoftwareManagement::getVersionIdsUserCanDownloadByProductId();$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $card = $this->getEquipmentCard( $id );$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $card = $this->getEquipmentCard($id);$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $card = $this->getEquipmentCard($id);$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $card = $this->getLabCard( $id );$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $card = $this->getLabCard($id);$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $card = $this->getEquipmentCard( $id );$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $card = $this->getEquipmentCard( $id );$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $card = View::make('labadmin.partials.equipment')$/;"	v	language:PHP
+card	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $card = View::make('labadmin.partials.lab')$/;"	v	language:PHP
+category	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $category = Equipment::getParentCategory($id);$/;"	v	language:PHP
+channels	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                    $channels = Equipment::getProgressSignals($equipmentId, "numeric", $row->progress_signal);$/;"	v	language:PHP
+checked	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^      $checked = ($digitalAlert->enabled) ? 'checked' : '';$/;"	v	language:PHP
+checked	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^     $checked = ($thresholdAlert->enabled) ? 'checked' : '';$/;"	v	language:PHP
+checked	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^<? \/* <!-- Preconfigured alerts not ready yet <div class="col-sm-12"> <? $checked = (!empty($mtsAlerts) && $mtsAlerts[0]->enabled) ? 'checked' : ''; ?> <input type="hidden" name="mtsAlerts" value="off" \/> <input type="checkbox" name="mtsAlerts" class="icheck" id="mtsAlerts" <?=$checked?>\/> <label for="mtsAlerts">MTS Preconfigured Alerts<\/label> <\/div> --> *\/?>$/;"	v	language:PHP
+class	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $class = new $cls(); \/\/ can be used to access both static and non-static methods (but not static properties)$/;"	v	language:PHP
+cleanedData	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^       $cleanedData = array();$/;"	v	language:PHP
+client	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $client = new Client([$/;"	v	language:PHP
+cls	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $cls = Input::get('cls');$/;"	v	language:PHP
+color	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $color = "D6D3D6";$/;"	v	language:PHP
+color	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $color = $row->color;$/;"	v	language:PHP
+color	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $color = "D6D3D6";$/;"	v	language:PHP
+companiesAtWhichToBlurb	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $companiesAtWhichToBlurb = $this->contract->getCompaniesWithValidContractsByProductId($product->id);$/;"	v	language:PHP
+companiesPicturesProgress	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function companiesPicturesProgress($userId, $percent) {$/;"	f	language:PHP
+company	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $company = $company[0];$/;"	v	language:PHP
+company	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $company = $this->company->getById($equipment->company_id);$/;"	v	language:PHP
+company	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $this->company = $company;$/;"	v	language:PHP
+company	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $company;$/;"	v	language:PHP
+company	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $company = Company::getById(User::getCompanyForUser());$/;"	v	language:PHP
+company	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $company = Company::getById(User::getCompanyForUser());$/;"	v	language:PHP
+companyAPI	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $companyAPI = $this->embed->checkToken($token);$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $companyId = User::getCompanyForUser();$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $companyId = User::getCompanyForUser();$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $companyId = User::getCompanyForUser();$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $companyId = User::getCompanyForUser();$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $companyId = User::getCompanyForUser();$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $companyId = User::getCompanyForUser();$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->companyId = User::getCompanyForUser();$/;"	v	language:PHP
+companyId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $companyId;$/;"	v	language:PHP
+companyIdsToNotify	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $companyIdsToNotify = $this->contract->getCompaniesWithValidContractsByProductId($productId);$/;"	v	language:PHP
+companyRow	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $companyRow = $companyRow[0];$/;"	v	language:PHP
+companyRow	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $companyRow = Company::getById($equipmentRow->company_id);$/;"	v	language:PHP
+complete	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/hpuIndex.js	/^          complete: function() {$/;"	f	language:JavaScript
+complete	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^          complete: function() {$/;"	f	language:JavaScript
+compliance	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $this->compliance = $compliance;$/;"	v	language:PHP
+configureHealthPage	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function configureHealthPage($equipmentId, $thingId)$/;"	f	language:PHP
+content	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $content = View::make('blurbs.softwaremanagement.remove')$/;"	v	language:PHP
+content	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $content = View::make('blurbs.softwaremanagement.deploy')$/;"	v	language:PHP
+contract	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $this->contract = $contract;$/;"	v	language:PHP
+Controller	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Controller.php	/^class Controller extends BaseController$/;"	c	language:PHP
+controller	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^$controller = Route::currentRouteAction();$/;"	v	language:PHP
+controller	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^$controller = strtok($controller, '@');$/;"	v	language:PHP
+controller	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^<? if(empty($controller) || $controller == "DashboardController"): ?>$/;"	v	language:PHP
+controlsInsertString	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $controlsInsertString = '';$/;"	v	language:PHP
+count	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^<? $count = 0;$/;"	v	language:PHP
+count	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^<? $count = 0;$/;"	v	language:PHP
+coupon	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $coupon = new Coupons;$/;"	v	language:PHP
+CouponController	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/CouponController.php	/^class CouponController extends Controller$/;"	c	language:PHP
+coupons	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $coupons = Coupons::all();$/;"	v	language:PHP
+create	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/AuthController.php	/^    protected function create(array $data)$/;"	f	language:PHP
+CreateCouponsTable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155734_create_coupons_table.php	/^class CreateCouponsTable extends Migration$/;"	c	language:PHP
+createEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function createEquipment($companyId, $equipmentName, $labId, $typeId = 140)$/;"	f	language:PHP
+createHealthEquipmentRecord	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function createHealthEquipmentRecord($equipmentId, $hpuType)$/;"	f	language:PHP
+createLab	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function createLab($companyId, $labName)$/;"	f	language:PHP
+CreatePasswordResetsTable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_12_140718_create_password_resets_table.php	/^class CreatePasswordResetsTable extends Migration$/;"	c	language:PHP
+CreatePaymentsTable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155757_create_payments_table.php	/^class CreatePaymentsTable extends Migration$/;"	c	language:PHP
+createRuntimeTab	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function createRuntimeTab($hpuType, $equipmentId)$/;"	f	language:PHP
+createTabs	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function createTabs($packagesToAdd, $equipmentId)$/;"	f	language:PHP
+createTypeformSurvey	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^    private function createTypeformSurvey()$/;"	f	language:PHP
+CreateUserRolesTable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_163301_create_user_roles_table.php	/^class CreateUserRolesTable extends Migration$/;"	c	language:PHP
+CreateUsersTable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155147_create_users_table.php	/^class CreateUsersTable extends Migration$/;"	c	language:PHP
+CreateUsersTriggers	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_09_140226_create_users_triggers.php	/^class CreateUsersTriggers extends Migration$/;"	c	language:PHP
+csrfAttack	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^            $csrfAttack = false;$/;"	v	language:PHP
+csrfAttack	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^            $csrfAttack = true;$/;"	v	language:PHP
+csrfAttack	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^            $csrfAttack = true;$/;"	v	language:PHP
+csrfAttack	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $csrfAttack = true;$/;"	v	language:PHP
+csrfAttack	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^    $csrfAttack = false;$/;"	v	language:PHP
+cssToShare	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $cssToShare = array('profile\/index');$/;"	v	language:PHP
+cssToShare	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $cssToShare = array('profile\/index');$/;"	v	language:PHP
+currentCompany	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^                $currentCompany = $company->name;$/;"	v	language:PHP
+currentCompany	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^$currentCompany = 'Company';$/;"	v	language:PHP
+currentPackage	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                    $currentPackage = new stdClass();$/;"	v	language:PHP
+currentPackage	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $currentPackage = null;$/;"	v	language:PHP
+customer	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $customer = $results[1];$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $data = MetaData::get($this -> meta);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $data = Input::all();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $data = Input::all();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $data = Input::all();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $data = MetaData::get($this -> meta);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $data = MetaData::get($this -> meta);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $data = $data[0];$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $data = $data[0];$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $data = SoftwareLicense::getLicenseKeyForUserByProductAndId($product, $id);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $data = array( "count" => count(Contract::getContractUsersBySoftwareVersionId($id)));$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $data = array("count" => 0);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $data = SoftwareProduct::getVersionById($id);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $data = Input::all();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $data = Input::all();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $data = Input::all();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^        $data = DB::select($query, $params);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^       $data = static::getEquipmentTypes();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $data = array();$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $data = DB::select($query, $params);$/;"	v	language:PHP
+data	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $data = DB::select($query, $params);$/;"	v	language:PHP
+DatabaseSeeder	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/seeds/DatabaseSeeder.php	/^class DatabaseSeeder extends Seeder$/;"	c	language:PHP
+defaultJson	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $defaultJson =  $result[0]->json;$/;"	v	language:PHP
+delete	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $delete = DB::table('equipment')$/;"	v	language:PHP
+deleteEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function deleteEquipment( $id )$/;"	f	language:PHP
+deleteName	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^     $deleteName = 'thresholdDelete_' .$thresholdAlert->id;$/;"	v	language:PHP
+demographics	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^        $demographics = $user->demographics;$/;"	v	language:PHP
+demographics	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/User.php	/^    public function demographics()$/;"	f	language:PHP
+deployAction	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    private function deployAction() {$/;"	f	language:PHP
+deployed	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $deployed = SoftwareManagement::deploy($productVersionId, $name);$/;"	v	language:PHP
+detailsAction	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    private function detailsAction() {$/;"	f	language:PHP
+didDelete	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $didDelete = $this->equipment->deleteEquipment($id);$/;"	v	language:PHP
+didDelete	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $didDelete = $this->lab->deleteLab( $id );$/;"	v	language:PHP
+didInsert	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $didInsert = DB::insert($sql, array($labName));$/;"	v	language:PHP
+didMove	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $didMove = $this->equipment->updateEquipmentLab( $id, $labId );$/;"	v	language:PHP
+didUpdate	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $didUpdate = $this->equipment->updateEquipmentName( $id, $name );$/;"	v	language:PHP
+diff	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  Array.prototype.diff = function( a ) {$/;"	f	language:JavaScript
+down	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155147_create_users_table.php	/^    public function down()$/;"	f	language:PHP
+down	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155734_create_coupons_table.php	/^    public function down()$/;"	f	language:PHP
+down	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155757_create_payments_table.php	/^    public function down()$/;"	f	language:PHP
+down	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_163301_create_user_roles_table.php	/^    public function down()$/;"	f	language:PHP
+down	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_09_140226_create_users_triggers.php	/^    public function down()$/;"	f	language:PHP
+down	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_12_140718_create_password_resets_table.php	/^    public function down()$/;"	f	language:PHP
+download	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $download = $data->download;$/;"	v	language:PHP
+downloadData	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $downloadData = new stdClass();$/;"	v	language:PHP
+DummyUsersSeeder	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/seeds/DummyUsersSeeder.php	/^class DummyUsersSeeder extends Seeder$/;"	c	language:PHP
+embed	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $this->embed = $embed;$/;"	v	language:PHP
+embed	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $embed;$/;"	v	language:PHP
+Embed	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^class Embed extends BaseModel$/;"	c	language:PHP
+EmbedController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^class EmbedController extends BaseController$/;"	c	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $equipment = $this->getEquipmentDetail($id);$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $this->equipment = $equipment;$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $equipment;$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $equipment = $equipment[0];$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $equipment = Equipment::getById($equipmentId);$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->equipment = $equipment;$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $equipment = $this->equipment->getEquipmentByUrlFragment($id);$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $equipment = $this->equipment->getEquipmentByUrlFragment($id);$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->equipment = $equipment;$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $equipment;$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $equipment = $equipment[0];$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $equipment = static::getById($id);$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^      $equipment = $equipment[0];$/;"	v	language:PHP
+equipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^      $equipment = Equipment::getById($id);$/;"	v	language:PHP
+Equipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^class Equipment extends BaseModel$/;"	c	language:PHP
+equipmentFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->equipmentFilter = new EquipmentFilter($/;"	v	language:PHP
+equipmentFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $equipmentFilter;$/;"	v	language:PHP
+equipmentFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $equipmentFilters = $this->equipmentFilter->getFilters();$/;"	v	language:PHP
+equipmentId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $equipmentId = ($equipmentId) ? $equipmentId : Input::get('id');$/;"	v	language:PHP
+equipmentId	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^    public function getEquipmentData($companyId, $equipmentId = null)$/;"	v	language:PHP
+equipmentId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function getByLabById($labId = -1, $equipmentId = -1)$/;"	v	language:PHP
+equipmentId	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getFeed($companyId, $userId, $lastId, $equipmentId = null)$/;"	v	language:PHP
+equipmentId	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getLabOverview($companyId, $equipmentId = null)$/;"	v	language:PHP
+equipmentRecord	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $equipmentRecord = $this->equipment->getEquipmentByUrlFragment($urlFragment);$/;"	v	language:PHP
+equipmentRecord	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $equipmentRecord = Equipment::getEquipmentById($equipmentId);$/;"	v	language:PHP
+equipmentRow	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $equipmentRow = $this->equipment->getEquipmentById($id);$/;"	v	language:PHP
+EquipmentState	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $EquipmentState = DB::table('equipment_state_options')$/;"	v	language:PHP
+equipment_state_option_id	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $equipment_state_option_id = 0;  \/\/ numeric value of 'unknown'$/;"	v	language:PHP
+equipment_type_id	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $equipment_type_id = $typeId;$/;"	v	language:PHP
+error	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/hpuIndex.js	/^          error: function() {$/;"	f	language:JavaScript
+error	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^          error: function() {$/;"	f	language:JavaScript
+eventsWhere	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $eventsWhere = " equipment_id = ? ";$/;"	v	language:PHP
+eventsWhere	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $eventsWhere = " events.company_id = ? AND$/;"	v	language:PHP
+exists	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  $.fn.exists = function() {$/;"	f	language:JavaScript
+feed	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $feed = $this->widgetController->loadFeed(false, $equipment->id);$/;"	v	language:PHP
+feed	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $feed = $this->widgetController->loadFeed(false, $equipment->id);$/;"	v	language:PHP
+feedHumanize	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^function feedHumanize(feed)$/;"	f	language:JavaScript
+file	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $file = $files[$i];$/;"	v	language:PHP
+filePath	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $filePath = $generatedLargeImages[$i];$/;"	v	language:PHP
+filePath	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $filePath = '';$/;"	v	language:PHP
+files	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $files = Input::file('companiesPictures');$/;"	v	language:PHP
+filesize	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $filesize = $data->filesize;$/;"	v	language:PHP
+fillable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/User.php	/^    protected $fillable = [$/;"	v	language:PHP
+fillable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/User.php	/^    protected $fillable = [$/;"	v	language:PHP
+fillable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersDemographics.php	/^    protected $fillable = [$/;"	v	language:PHP
+fillable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersDemographics.php	/^    protected $fillable = [$/;"	v	language:PHP
+fillable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersRoles.php	/^    protected $fillable = [$/;"	v	language:PHP
+fillable	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersRoles.php	/^    protected $fillable = [$/;"	v	language:PHP
+firewall	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function firewall($route, $request)$/;"	f	language:PHP
+firewall	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    public function firewall( $route, $request ) {$/;"	f	language:PHP
+firewall	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function firewall($route, $request)$/;"	f	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $flipperClass = $flipperClass.' ie';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $flipperClass = $flipperClass.' ie';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $flipperClass = $flipperClass.' ie';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $flipperClass = $flipperClass.' old';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $flipperClass = $flipperClass.' old';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $flipperClass = $flipperClass.' old';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $flipperClass = 'flipper';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $flipperClass = 'flipper';$/;"	v	language:PHP
+flipperClass	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $flipperClass = 'flipper';$/;"	v	language:PHP
+fn	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $fn = Input::get('fn');$/;"	v	language:PHP
+form	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $form = json_decode($res->getBody());$/;"	v	language:PHP
+fragment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $fragment = Equipment::generateUrl( $id );$/;"	v	language:PHP
+fragment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $fragment = Lab::generateUrl( $id );$/;"	v	language:PHP
+fullScreenClassName	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^$fullScreenClassName = Input::has('fullScreen') ? 'fullscreen' : '';$/;"	v	language:PHP
+g:airline_left_alt_sep	/Users/fskirschbaum/.vimrc	/^let g:airline_left_alt_sep = ''$/;"	v	language:Vim
+g:airline_left_sep	/Users/fskirschbaum/.vimrc	/^let g:airline_left_sep = ''$/;"	v	language:Vim
+g:airline_right_alt_sep	/Users/fskirschbaum/.vimrc	/^let g:airline_right_alt_sep = ''$/;"	v	language:Vim
+g:airline_right_sep	/Users/fskirschbaum/.vimrc	/^let g:airline_right_sep = ''$/;"	v	language:Vim
+g:airline_symbols	/Users/fskirschbaum/.vimrc	/^  let g:airline_symbols = {}$/;"	v	language:Vim
+g:airline_symbols	/Users/fskirschbaum/.vimrc	/^let g:airline_symbols.branch = ''$/;"	v	language:Vim
+g:airline_symbols	/Users/fskirschbaum/.vimrc	/^let g:airline_symbols.linenr = ''$/;"	v	language:Vim
+g:airline_symbols	/Users/fskirschbaum/.vimrc	/^let g:airline_symbols.readonly = ''$/;"	v	language:Vim
+g:easytags_async	/Users/fskirschbaum/.vimrc	/^let g:easytags_async = 1$/;"	v	language:Vim
+g:easytags_file	/Users/fskirschbaum/.vimrc	/^let g:easytags_file = '~\/.vim\/.vimtags'$/;"	v	language:Vim
+g:multi_cursor_next_key	/Users/fskirschbaum/.vimrc	/^let g:multi_cursor_next_key='<C-n>'$/;"	v	language:Vim
+g:multi_cursor_prev_key	/Users/fskirschbaum/.vimrc	/^let g:multi_cursor_prev_key='<C-p>'$/;"	v	language:Vim
+g:multi_cursor_quit_key	/Users/fskirschbaum/.vimrc	/^let g:multi_cursor_quit_key='<Esc>'$/;"	v	language:Vim
+g:multi_cursor_skip_key	/Users/fskirschbaum/.vimrc	/^let g:multi_cursor_skip_key='<C-x>'$/;"	v	language:Vim
+g:multi_cursor_start_key	/Users/fskirschbaum/.vimrc	/^let g:multi_cursor_start_key='<F12>'$/;"	v	language:Vim
+g:multi_cursor_use_default_mapping	/Users/fskirschbaum/.vimrc	/^let g:multi_cursor_use_default_mapping=0$/;"	v	language:Vim
+g:syntastic_always_populate_loc_list	/Users/fskirschbaum/.vimrc	/^let g:syntastic_always_populate_loc_list = 1$/;"	v	language:Vim
+g:syntastic_auto_loc_list	/Users/fskirschbaum/.vimrc	/^let g:syntastic_auto_loc_list = 0$/;"	v	language:Vim
+g:syntastic_check_on_open	/Users/fskirschbaum/.vimrc	/^let g:syntastic_check_on_open = 1$/;"	v	language:Vim
+g:syntastic_check_on_wq	/Users/fskirschbaum/.vimrc	/^let g:syntastic_check_on_wq = 0$/;"	v	language:Vim
+g:syntastic_html_tidy_exec	/Users/fskirschbaum/.vimrc	/^let g:syntastic_html_tidy_exec = 'tidy5'$/;"	v	language:Vim
+generateCoupon	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^    public function generateCoupon()$/;"	f	language:PHP
+generateCoupons	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^    public function generateCoupons() \/\/ @TODO This is stubbed once clarified. Should be limited to a role? Batch creation?$/;"	f	language:PHP
+generatedLargeImages	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $generatedLargeImages = array();$/;"	v	language:PHP
+generateUrl	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function generateUrl($id)$/;"	f	language:PHP
+getActivityFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getActivityFilters()$/;"	f	language:PHP
+getAll	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getAll()$/;"	f	language:PHP
+getBlurbs	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getBlurbs() {$/;"	f	language:PHP
+getButtons	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getButtons()$/;"	f	language:PHP
+getById	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getById($equipmentId)$/;"	f	language:PHP
+getByLab	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getByLab($labId)$/;"	f	language:PHP
+getByLabById	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function getByLabById($labId = -1, $equipmentId = -1)$/;"	f	language:PHP
+getCompaniesPictures	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function getCompaniesPictures() {$/;"	f	language:PHP
+getContent	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    public function getContent($id)$/;"	f	language:PHP
+getCrpcLicense	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function getCrpcLicense()$/;"	f	language:PHP
+getDemoData	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getDemoData()$/;"	f	language:PHP
+getDownload	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public static function getDownload($id) {$/;"	f	language:PHP
+getEngineers	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function getEngineers() {$/;"	f	language:PHP
+getEquipmentById	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getEquipmentById($equipmentId)$/;"	f	language:PHP
+getEquipmentByUrlFragment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getEquipmentByUrlFragment($urlFragment)$/;"	f	language:PHP
+getEquipmentCard	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function getEquipmentCard($equipmentId='')$/;"	f	language:PHP
+getEquipmentData	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^    public function getEquipmentData($companyId, $equipmentId = null)$/;"	f	language:PHP
+getEquipmentDetail	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    private function getEquipmentDetail($urlFragment)$/;"	f	language:PHP
+getEquipmentFeed	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^        $getEquipmentFeed = (empty($equipmentId)) ? '' : " equipment.id = ? AND ";$/;"	v	language:PHP
+getEquipmentFeed	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $getEquipmentFeed = (empty($equipmentId)) ? '' : " equipment.id = ? AND ";$/;"	v	language:PHP
+getEquipmentFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getEquipmentFilters()$/;"	f	language:PHP
+getEquipmentOptions	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getEquipmentOptions()$/;"	f	language:PHP
+getEquipmentParentCategory	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    private function getEquipmentParentCategory($id)$/;"	f	language:PHP
+getEquipmentPictures	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function getEquipmentPictures($id) {$/;"	f	language:PHP
+getEquipmentProfile	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function getEquipmentProfile($id) {$/;"	f	language:PHP
+getEquipmentTypes	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getEquipmentTypes() {$/;"	f	language:PHP
+getFeed	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getFeed($companyId, $userId, $lastId, $equipmentId = null)$/;"	f	language:PHP
+getFrame	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    public function getFrame($id)$/;"	f	language:PHP
+getHealthEquipmentRecord	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function getHealthEquipmentRecord($equipmentId)$/;"	f	language:PHP
+getHealthOverview	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getHealthOverview($equipmentId = null)$/;"	f	language:PHP
+getHpuByEquipmentId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getHpuByEquipmentId($equipmentId)$/;"	f	language:PHP
+getHpuConnectedStatus	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getHpuConnectedStatus($equipmentId)$/;"	f	language:PHP
+getHpuEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getHpuEquipment()$/;"	f	language:PHP
+getHpuPressure	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getHpuPressure($equipmentId)$/;"	f	language:PHP
+getHpuProfile	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function getHpuProfile($id)$/;"	f	language:PHP
+getHpuRunState	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getHpuRunState($equipmentId)$/;"	f	language:PHP
+getHPUsByUser	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getHPUsByUser()$/;"	f	language:PHP
+getIndex	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function getIndex()$/;"	f	language:PHP
+getLabCard	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function getLabCard($labId='')$/;"	f	language:PHP
+getLabId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getLabId($companyId, $labName = '')$/;"	f	language:PHP
+getLabOverview	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getLabOverview($companyId, $equipmentId = null)$/;"	f	language:PHP
+getLicense	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    protected function getLicense($productName) {$/;"	f	language:PHP
+getLicenseDownload	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public static function getLicenseDownload($productId, $id) {$/;"	f	language:PHP
+getNonHpuEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getNonHpuEquipment()$/;"	f	language:PHP
+getNumberOfContractUsersToBeEmailed	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function getNumberOfContractUsersToBeEmailed($id) { \/\/ This is for deployment modal$/;"	f	language:PHP
+getOperators	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function getOperators() {$/;"	f	language:PHP
+getParentCategory	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getParentCategory($id) {$/;"	f	language:PHP
+getProductModel	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getProductModel($id, $merge = TRUE) {$/;"	f	language:PHP
+getProgressSignals	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function getProgressSignals($id, $typeToShow, $signal) {$/;"	f	language:PHP
+getRpcLicense	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function getRpcLicense()$/;"	f	language:PHP
+getSevenZeroNineLicense	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function getSevenZeroNineLicense()$/;"	f	language:PHP
+getStarredEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getStarredEquipment()$/;"	f	language:PHP
+getStexLicense	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function getStexLicense()$/;"	f	language:PHP
+getTestsInProgress	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function getTestsInProgress($equipmentId = null)$/;"	f	language:PHP
+getUnits	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function getUnits($id, $signal) {$/;"	f	language:PHP
+getURL	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getURL($id)$/;"	f	language:PHP
+getUsers	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected function getUsers($title) {$/;"	f	language:PHP
+groups	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $groups = array();$/;"	v	language:PHP
+hasHealthMonitoring	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $hasHealthMonitoring = false;$/;"	v	language:PHP
+hasHealthMonitoring	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function hasHealthMonitoring($id)$/;"	f	language:PHP
+hasOptedOut	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                        $hasOptedOut = Optout::hasOptoutForSubTypeByEmail(Optout::VERSIONREMOVED, $user->email);$/;"	v	language:PHP
+hasOptedOut	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $hasOptedOut = Optout::hasOptoutForSubTypeByEmail(Optout::NEWVERSION, $user->email);$/;"	v	language:PHP
+hasRedeemedCoupon	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/CouponController.php	/^      $hasRedeemedCoupon = Coupons::where('redeemed_to_user_id', $user->id)->first();$/;"	v	language:PHP
+hasRedeemedCoupon	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $hasRedeemedCoupon = Coupons::where('redeemed_to_user_id', $user->id)->first();$/;"	v	language:PHP
+hasRedeemedCoupon	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $hasRedeemedCoupon = Coupons::where('redeemed_to_user_id', $user->id)->first();$/;"	v	language:PHP
+hc	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^                $hc = new HomeController();$/;"	v	language:PHP
+health	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $health = new stdClass();$/;"	v	language:PHP
+healthData	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->healthData = new Health();$/;"	v	language:PHP
+healthData	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $healthData;$/;"	v	language:PHP
+healthEquipmentId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $healthEquipmentId = $record->id;$/;"	v	language:PHP
+healthEquipmentId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $healthEquipmentId = self::createHealthEquipmentRecord($equipmentId, $hpuType);$/;"	v	language:PHP
+healthOverview	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $healthOverview = $this->widgetController->loadHealthOverview($equipment->id);$/;"	v	language:PHP
+healthOverview	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $healthOverview = $this->healthData->getHealthDetail($equipmentId);$/;"	v	language:PHP
+healthOverview	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $healthOverview = $this->healthData->getMonitoredEquipment($this->session['company_id']);$/;"	v	language:PHP
+healthPackageId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $healthPackageId = $row->health_package_id;$/;"	v	language:PHP
+hidden	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/User.php	/^    protected $hidden = [$/;"	v	language:PHP
+hidden	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/User.php	/^    protected $hidden = [$/;"	v	language:PHP
+HomeController	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/HomeController.php	/^class HomeController extends Controller$/;"	c	language:PHP
+hpuConnected	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $hpuConnected = $this->widgetController->getHpuConnectedStatus($equipment->id);$/;"	v	language:PHP
+hpuOn	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $hpuOn = $this->widgetController->getHpuRunState($equipment->id);$/;"	v	language:PHP
+hpuRow	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $hpuRow = $query->get();$/;"	v	language:PHP
+hpuType	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $hpuType = $info->hpuType;$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $id = Equipment::createEquipment($companyId, $name, $labId, 161);$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $id = Equipment::createLab($companyId, $name);$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = -1;$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = -1;$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get( 'id' );$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get( 'id' );$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get( 'id' );$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get( 'id' );$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get('echo_id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get('id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get('id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get('id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get('id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get('id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $id = Input::get('id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $id = Input::get('id');$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^      $id = 'digitalAlert_' .$count;$/;"	v	language:PHP
+id	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^     $id = 'thresholdAlert_' .$count;$/;"	v	language:PHP
+img	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $img = $img->resize(null, 300, function ($constraint) {$/;"	v	language:PHP
+img	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $img = Image::make($file);$/;"	v	language:PHP
+index	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/HomeController.php	/^    public function index()$/;"	f	language:PHP
+index	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function index()$/;"	f	language:PHP
+info	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $info = json_decode($packagesInfo);$/;"	v	language:PHP
+init	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function init($route, $request) {$/;"	f	language:PHP
+input	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/CouponController.php	/^      $input = $request->all();$/;"	v	language:PHP
+input	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^        $input = $request->all();$/;"	v	language:PHP
+input	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $input = $request->all();$/;"	v	language:PHP
+insertPackagesString	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $insertPackagesString = '';$/;"	v	language:PHP
+instance	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $instance = $this;$/;"	v	language:PHP
+internalUpdate	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateProductModel($id, $data, $internalUpdate = FALSE) {$/;"	v	language:PHP
+ip_address	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $ip_address = '';$/;"	v	language:PHP
+isCompliant	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $isCompliant = $this->compliance->getByCompanyId($companyId);$/;"	v	language:PHP
+isDesktop	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->isDesktop = !($this->mobileDetect->isMobile() || $this->mobileDetect->isTablet());$/;"	v	language:PHP
+isDesktop	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $isDesktop = true;$/;"	v	language:PHP
+isDesktop	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $isDesktop = true;$/;"	v	language:PHP
+isDeveloper	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->isDeveloper = $this->session['userRow']['is_developer'];$/;"	v	language:PHP
+isDeveloper	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $isDeveloper;$/;"	v	language:PHP
+isHPU	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $isHPU = true;$/;"	v	language:PHP
+isHPU	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $isHPU = true;$/;"	v	language:PHP
+isHpu	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $isHpu = Equipment::isHPU($id);$/;"	v	language:PHP
+isHPU	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $isHPU = false;$/;"	v	language:PHP
+isHPU	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function isHPU($id)$/;"	f	language:PHP
+isIE	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->isIE = strpos($browser->getBrowser(), 'Internet Explorer') !== false;$/;"	v	language:PHP
+isIE	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $isIE = false;$/;"	v	language:PHP
+isIE	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $isIE = false;$/;"	v	language:PHP
+isInsight	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $isInsight = true;$/;"	v	language:PHP
+isInsight	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $isInsight = false;$/;"	v	language:PHP
+isLabAdmin	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $isLabAdmin = $this->userPrivilege->hasLabManagement();$/;"	v	language:PHP
+isLabAdmin	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $isLabAdmin = $this->userPrivilege->hasLabManagement();$/;"	v	language:PHP
+isMetric	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $isMetric = $equipmentRecord->is_metric;$/;"	v	language:PHP
+isPrivileged	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $isPrivileged = UserPrivilege::hasUserPrivilegesSoftwareDownload($user->id, $companyId, $canDownload = FALSE);$/;"	v	language:PHP
+is_real_hardware	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $is_real_hardware = 0;  \/\/ widget$/;"	v	language:PHP
+json	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $json = $jsonStrings[$j]['json'];$/;"	v	language:PHP
+json	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $json = $row->json;$/;"	v	language:PHP
+jsonStrings	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $jsonStrings = array();$/;"	v	language:PHP
+jsToShare	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $jsToShare = array( 'vendor\/handlebars\/handlebars.runtime.min',$/;"	v	language:PHP
+jsToShare	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $jsToShare = array( 'vendor\/handlebars\/handlebars.runtime.min',$/;"	v	language:PHP
+key	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        foreach($labs as $key => &$lab) {$/;"	v	language:PHP
+key	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        foreach($usersInCompany as $key => $value) {$/;"	v	language:PHP
+key	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    foreach ($usersInCompany as $key => $user) {$/;"	v	language:PHP
+key	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^       foreach($data as $key => $value) {$/;"	v	language:PHP
+lab	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $lab = $this->lab->getById($labId);$/;"	v	language:PHP
+lab	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->lab = $lab;$/;"	v	language:PHP
+lab	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $lab = Lab::getById($equipment->lab_id);$/;"	v	language:PHP
+lab	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $lab = Lab::getById($equipment->lab_id);$/;"	v	language:PHP
+LabAdminController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^class LabAdminController extends BaseController$/;"	c	language:PHP
+labAdminController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->labAdminController = $labAdminController;$/;"	v	language:PHP
+labAdminController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $labAdminController;$/;"	v	language:PHP
+labId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $labId = ($labId) ? $labId : Input::get('id');$/;"	v	language:PHP
+labId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $labId = Input::get("labId");$/;"	v	language:PHP
+labId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $labId = Input::get('labId');$/;"	v	language:PHP
+labList	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $labList = $this->lab->getListByCompany($this->user->getCompanyForUser());$/;"	v	language:PHP
+labList	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $labList = $this->lab->getListByCompany($this->user->getCompanyForUser());$/;"	v	language:PHP
+labName	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getLabId($companyId, $labName = '')$/;"	v	language:PHP
+labOverview	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $labOverview = $this->widgetController->loadLabOverview($equipment->id);$/;"	v	language:PHP
+labOverview	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $labOverview = new stdClass();$/;"	v	language:PHP
+labRow	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $labRow = Lab::getById($equipmentRow->lab_id);$/;"	v	language:PHP
+labs	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $labs = $this->lab->getByCompany($this->user->getCompanyForUser());$/;"	v	language:PHP
+labs	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $labs = $this->lab->getListByCompany($this->user->getCompanyForUser());$/;"	v	language:PHP
+latestCompleted	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $latestCompleted = SoftwareManagement::getLatestSoftwareDownloadComplete($id);$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $layout = 'layouts.no_layout';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $layout = 'layouts.no_layout';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->layout = 'layouts.no_layout';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    protected $layout = 'layouts.dashboard';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    protected $layout = 'layouts.dashboard';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    protected $layout = 'layouts.no_layout';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    protected $layout = 'layouts.no_layout';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $layout = 'layouts.dashboard';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $layout = 'layouts.dashboard';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    protected $layout = 'layouts.dashboard';$/;"	v	language:PHP
+layout	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    protected $layout = 'layouts.dashboard';$/;"	v	language:PHP
+LicenseFirewall	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function LicenseFirewall($route, $request)$/;"	f	language:PHP
+limit_edit_to_accounts	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $limit_edit_to_accounts = 1;$/;"	v	language:PHP
+limit_view_to_accounts	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $limit_view_to_accounts = 1;$/;"	v	language:PHP
+log	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $log = array();$/;"	v	language:PHP
+logController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $logController;$/;"	v	language:PHP
+LogController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^class LogController extends BaseController$/;"	c	language:PHP
+login	/Users/fskirschbaum/Sites/echo/fsejitkb/www/app/controllers/login.js	/^  $scope.login = function ( user ) {$/;"	f	language:JavaScript
+logRepo	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $logRepo = new LogRepository();$/;"	v	language:PHP
+mapleader	/Users/fskirschbaum/.vimrc	/^let mapleader=" "$/;"	v	language:Vim
+master	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $master = $results[0];$/;"	v	language:PHP
+matches	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/CouponController.php	/^      $matches = Coupons::where('code', $input['coupon-code'])->first();$/;"	v	language:PHP
+md5Check	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $md5Check = md5($mobileHeader.$mobileKey);$/;"	v	language:PHP
+merge	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function getProductModel($id, $merge = TRUE) {$/;"	v	language:PHP
+message	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^        $message = Input::get('message');$/;"	v	language:PHP
+message	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^        $message = Input::get('message');$/;"	v	language:PHP
+message	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $message = $user['name'] . ' (' . $user['email'] . ') from ' . $company[0]->name . ' has downloaded ' . $productName . ' ' . $versionName . '.';$/;"	v	language:PHP
+messages	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $messages = new MessageBag;$/;"	v	language:PHP
+messages	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $messages = new MessageBag;$/;"	v	language:PHP
+messages	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $messages = new MessageBag;$/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $meta = array($/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    protected $meta = array($/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    protected $meta = array($/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    protected $meta = array($/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    protected $meta = array();$/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    protected $meta = array();$/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $meta = array($/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $meta = array($/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    protected $meta = array($/;"	v	language:PHP
+meta	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    protected $meta = array($/;"	v	language:PHP
+metabuttons	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $metabuttons = new stdClass();$/;"	v	language:PHP
+metabuttons	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $metabuttons = new stdClass();$/;"	v	language:PHP
+mobileDetect	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->mobileDetect = $mobileDetect;$/;"	v	language:PHP
+mobileDetect	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $mobileDetect = null;$/;"	v	language:PHP
+mobileDetect	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $mobileDetect = null;$/;"	v	language:PHP
+mobileHeader	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $mobileHeader = $_SERVER['HTTP_X_ECHO_MOBILE_TOKEN'];$/;"	v	language:PHP
+mobileKey	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $mobileKey = Config::get('app.mobile_app_key');$/;"	v	language:PHP
+modal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $modal = $this->renderDynamicModal($ns, $var, $cls, $fn);$/;"	v	language:PHP
+modal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $modal = $this->renderStaticModal($ns);$/;"	v	language:PHP
+modal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $modal = View::make( $ns )->render();$/;"	v	language:PHP
+ModalController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^class ModalController extends BaseController$/;"	c	language:PHP
+modals	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $modals = array();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $msg = "Cannot delete lab. It contains equipment.";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^              $msg = "There was an error while deleting lab.";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = "Deleted";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = "Success";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator -> messages() -> first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator->messages()->first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = $validator->messages()->first();$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $msg = 'Created';$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "Associated";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "Created";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "Saved";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "Saved";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "Saved";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = "Saved";$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = 'Saved';$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = 'Saved';$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = 'Updated';$/;"	v	language:PHP
+msg	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $msg = 'Updated';$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $name = Input::get("name");$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $name = Input::get('name');$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $name = Input::get('name');$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $name = Input::get('name');$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^     * @param  string $cls class name from which to get data ( ex. Equipment )$/;"	c	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^     * @param  string $fn  function name, within class, to call for data ( ex. getEquipmentOptions )$/;"	f	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $name = $data->name;$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $name = Input::get('name');$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^      $name = 'digitalAlert_' .$count .'_' .$digitalAlert->id;$/;"	v	language:PHP
+name	/Users/fskirschbaum/Sites/echo/dev/app/views/global/modals/healthalerts.php	/^     $name = 'thresholdAlert_' .$thresholdAlert->id;$/;"	v	language:PHP
+newFeedsAnimation	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  window.newFeedsAnimation = function(oldFeedIds, feedIds) {$/;"	f	language:JavaScript
+newMetaData	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $newMetaData = array($/;"	v	language:PHP
+newMetaData	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $newMetaData = array($/;"	v	language:PHP
+newUrl	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $newUrl =  Lab::getURL($id);$/;"	v	language:PHP
+newUrl	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $newUrl = Equipment::getURL($id, TRUE);$/;"	v	language:PHP
+newUrl	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $newUrl = Util::generateRandomAlphaNum(50);$/;"	v	language:PHP
+newValidate	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $newValidate = static::$validate['equipment']['name'];$/;"	v	language:PHP
+newValidate	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $newValidate = static::$validate['equipment']['new'];$/;"	v	language:PHP
+newValidate	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $newValidate = static::$validate['lab']['name'];$/;"	v	language:PHP
+noLayoutFirewall	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function noLayoutFirewall($route, $request)$/;"	f	language:PHP
+normalDownload	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $normalDownload = !empty($canDownload[$id]);$/;"	v	language:PHP
+note	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $note = Input::get('note');$/;"	v	language:PHP
+ns	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $ns = Input::get('ns');$/;"	v	language:PHP
+ns	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $ns = Input::get('ns');$/;"	v	language:PHP
+oldServerHttpReferer	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $oldServerHttpReferer = $_SERVER['HTTP_REFERER'];$/;"	v	language:PHP
+onbeforeunload	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  window.onbeforeunload = function(e) {$/;"	f	language:JavaScript
+option	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $option = Input::get( 'share_option' );$/;"	v	language:PHP
+option	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $option = Input::get( 'share_option' );$/;"	v	language:PHP
+overview	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $overview = $this->embed->getEquipmentData($equipmentRecord->company_id, $equipmentRecord->id);$/;"	v	language:PHP
+packages	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $packages = $info->packages;$/;"	v	language:PHP
+packagesInfo	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $packagesInfo = MTSMemcache::getInstance()->getValue(MTSMemcache::HEALTH_PACKAGES, $thingId);$/;"	v	language:PHP
+packageStatus	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                    $packageStatus = $sensor->health_status_value;$/;"	v	language:PHP
+packageStatus	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                    $packageStatus = -1;$/;"	v	language:PHP
+packageStatus	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $packageStatus = -1;$/;"	v	language:PHP
+params	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^            $params = array($companyId);$/;"	v	language:PHP
+params	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^            $params = array($equipmentId, $companyId);$/;"	v	language:PHP
+params	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $params = array($companyId);$/;"	v	language:PHP
+params	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $params = array($companyId, $userId, $userId);$/;"	v	language:PHP
+params	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $params = array($equipmentId);$/;"	v	language:PHP
+params	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $params = array($equipmentId, $companyId);$/;"	v	language:PHP
+parentCategory	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $parentCategory = Equipment::getParentCategory($id);$/;"	v	language:PHP
+PasswordController	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/PasswordController.php	/^class PasswordController extends Controller$/;"	c	language:PHP
+payload	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $payload = [$/;"	v	language:PHP
+pc	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $pc = new PC();$/;"	v	language:PHP
+pcRow	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $pcRow = $query->get();$/;"	v	language:PHP
+pcUrl	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $pcUrl = '';$/;"	v	language:PHP
+pics	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $pics = Company::getPictures(User::getCompanyForUser());$/;"	v	language:PHP
+pics	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $pics = Equipment::getAllPictures($id, User::getCompanyForUser());$/;"	v	language:PHP
+policies	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Providers/AuthServiceProvider.php	/^    protected $policies = [$/;"	v	language:PHP
+policies	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Providers/AuthServiceProvider.php	/^    protected $policies = [$/;"	v	language:PHP
+postAppMessage	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^    public function postAppMessage() $/;"	f	language:PHP
+postAssociate	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postAssociate()$/;"	f	language:PHP
+postAssociateEquipmentPicture	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postAssociateEquipmentPicture($companyPictureId, $equipmentId) {$/;"	f	language:PHP
+postCompaniesPictures	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postCompaniesPictures() {$/;"	f	language:PHP
+postDeleteCompaniesPicture	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postDeleteCompaniesPicture($companyPictureId) {$/;"	f	language:PHP
+postDynamicModal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    public function postDynamicModal()$/;"	f	language:PHP
+postEngineer	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postEngineer($id) {$/;"	f	language:PHP
+postEquipmentDelete	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postEquipmentDelete()$/;"	f	language:PHP
+postEquipmentMoveLab	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postEquipmentMoveLab()$/;"	f	language:PHP
+postEquipmentName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postEquipmentName()$/;"	f	language:PHP
+postEquipmentShare	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postEquipmentShare()$/;"	f	language:PHP
+postEquipmentType	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postEquipmentType()$/;"	f	language:PHP
+postEquipmentUrl	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postEquipmentUrl()$/;"	f	language:PHP
+postIndex	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function postIndex()$/;"	f	language:PHP
+postLabDelete	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postLabDelete()$/;"	f	language:PHP
+postLabName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postLabName()$/;"	f	language:PHP
+postLabShare	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postLabShare()$/;"	f	language:PHP
+postLabUrl	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postLabUrl()$/;"	f	language:PHP
+postLicense	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function postLicense()$/;"	f	language:PHP
+postMessage	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^    public function postMessage() $/;"	f	language:PHP
+postNewEquipment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postNewEquipment()$/;"	f	language:PHP
+postNewLab	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postNewLab()$/;"	f	language:PHP
+postOperator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postOperator($id) {$/;"	f	language:PHP
+postProgressSignals	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postProgressSignals($id) {$/;"	f	language:PHP
+postStaticModal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    public function postStaticModal()$/;"	f	language:PHP
+postUnassociateEquipmentPicture	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function postUnassociateEquipmentPicture($companyPictureId, $equipmentId) {$/;"	f	language:PHP
+postUnits	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postUnits($id) {$/;"	f	language:PHP
+postUpdateProductModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postUpdateProductModel($id) {$/;"	f	language:PHP
+postUpdateSuperState	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postUpdateSuperState($id, $state) {$/;"	f	language:PHP
+postUpdateTestEndValue	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postUpdateTestEndValue($id) {$/;"	f	language:PHP
+postUpdateTestName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function postUpdateTestName($id) {$/;"	f	language:PHP
+pressure	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $pressure = $this->widgetController->getHpuPressure($equipment->id);$/;"	v	language:PHP
+prevPackage	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                    $prevPackage = $currentPackage->name = $sensor->package_name;$/;"	v	language:PHP
+prevPackage	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $prevPackage = '';$/;"	v	language:PHP
+primaryKey	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersDemographics.php	/^    public $primaryKey = 'user_id';$/;"	v	language:PHP
+primaryKey	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersDemographics.php	/^    public $primaryKey = 'user_id';$/;"	v	language:PHP
+primaryKey	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersRoles.php	/^    public $primaryKey = 'user_id';$/;"	v	language:PHP
+primaryKey	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersRoles.php	/^    public $primaryKey = 'user_id';$/;"	v	language:PHP
+privilegedUsers	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $privilegedUsers = array();$/;"	v	language:PHP
+privileges	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $privileges = array(UserPrivilege::ORDER_ENTRY);$/;"	v	language:PHP
+processedFeeds	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $processedFeeds = $this->processFeed->buildFeed($data,$equipmentId);$/;"	v	language:PHP
+processFeed	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->processFeed = new ProcessFeed();$/;"	v	language:PHP
+processFeed	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $processFeed;$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $product = $product[0];$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $product = SoftwareProduct::getById($productId);$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $product = $product[0];$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $product = SoftwareProduct::getById($version->software_product_id);$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $product = $product->name;$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $product = $product[0];$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $product = $product[0];$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $product = SoftwareProduct::getById($productId);$/;"	v	language:PHP
+product	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $product = SoftwareProduct::getById($productId);$/;"	v	language:PHP
+productId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $productId = $data->software_product_id;$/;"	v	language:PHP
+productId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $productId = Input::get('software_product_id');$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^                    $productModel = $productModel[0];$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^                    $productModel = false;$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^                $productModel = $this->equipment->getProductModel($id);$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $productModel = $productModel[0];$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $productModel = $productModel[0];$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $productModel = null;$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $productModel = null;$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $productModel = $this->equipment->getProductModel($equipment->id);$/;"	v	language:PHP
+productModel	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $productModel = $this->equipment->getProductModel($equipment->id);$/;"	v	language:PHP
+productNames	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $productNames = SoftwareManagement::getProductNamesUserCanDownload();$/;"	v	language:PHP
+products	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $products = $productsInfo['products'];$/;"	v	language:PHP
+products	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $products = array();$/;"	v	language:PHP
+products	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $products = SoftwareManagement::getAll();$/;"	v	language:PHP
+productsInfo	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $productsInfo = SoftwareProduct::getProductsByControllingApp($labOverview->controlling_app, $labOverview->version);$/;"	v	language:PHP
+productVersionId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $productVersionId = Input::get('id');$/;"	v	language:PHP
+ProfileController	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^class ProfileController extends Controller$/;"	c	language:PHP
+ProfileController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^class ProfileController extends BaseController$/;"	c	language:PHP
+progress	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $progress = Util::uploadFileToS3($/;"	v	language:PHP
+progress	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $progress = 10;$/;"	v	language:PHP
+progress	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^                    $progress = json_decode($progress);$/;"	v	language:PHP
+progress	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^            $progress = MTSMemcache::getInstance()->getValue(MTSMemcache::PROGRESS_DATA, $row->equipmentId);$/;"	v	language:PHP
+progress	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                        $progress = json_decode($progress);$/;"	v	language:PHP
+progress	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                $progress = MTSMemcache::getInstance()->getValue(MTSMemcache::PROGRESS_DATA, $row->equipmentId);$/;"	v	language:PHP
+pubService	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->pubService = new PubSubService(App::environment());$/;"	v	language:PHP
+pubService	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    protected $pubService;$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^        $query = "SELECT equipment.*, stations.*, pcs.*,$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $query = DB::table( 'hpus' )$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $query = DB::table( 'hpus' )$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $query = "SELECT * FROM equipment WHERE company_id = ? AND deleted = 0 AND active_station_id <> 0";$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $query = DB::table( 'equipment' )$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $query = DB::table('equipment')$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $query = DB::table('equipment')$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $query = DB::table('equipment')$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $query = DB::table('equipment')$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $query = DB::table('labs')$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $query = "SELECT equipment.*, stations.*, pcs.*,$/;"	v	language:PHP
+query	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $query = "SELECT$/;"	v	language:PHP
+record	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $record = self::getHealthEquipmentRecord($equipmentId);$/;"	v	language:PHP
+redeemCoupon	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/CouponController.php	/^    public function redeemCoupon(Request $request)$/;"	f	language:PHP
+redirect	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $redirect = $request->fullUrl();$/;"	v	language:PHP
+redirect	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $redirect = str_replace($remove, '', $redirect);$/;"	v	language:PHP
+redirectTo	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/AuthController.php	/^    protected $redirectTo = '\/home';$/;"	v	language:PHP
+redirectTo	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/AuthController.php	/^    protected $redirectTo = '\/home';$/;"	v	language:PHP
+referer	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $referer = $_SERVER['HTTP_REFERER'];$/;"	v	language:PHP
+referer	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $referer = $_SERVER['HTTP_REFERER'];$/;"	v	language:PHP
+referer	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $referer = parse_url($referer);$/;"	v	language:PHP
+referer	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $referer = parse_url($referer);$/;"	v	language:PHP
+referer	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^        $referer = $_SERVER['HTTP_REFERER'];$/;"	v	language:PHP
+referrer	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $referrer = $logRepo->getLatestSoftwareDownloadStart($user['id'], $id);$/;"	v	language:PHP
+referrer	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $referrer = $referrer[0];$/;"	v	language:PHP
+register	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Providers/AppServiceProvider.php	/^    public function register()$/;"	f	language:PHP
+releaseAction	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    private function releaseAction() {$/;"	f	language:PHP
+remove	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^        $remove = array(':8050', 'http:\/\/');$/;"	v	language:PHP
+removeAction	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    private function removeAction() {$/;"	f	language:PHP
+removeActivityFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function removeActivityFilter($activityId)$/;"	f	language:PHP
+removeAllActivityFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function removeAllActivityFilters()$/;"	f	language:PHP
+removeAllEquipmentFilters	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function removeAllEquipmentFilters($labId = null)$/;"	f	language:PHP
+removed	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $removed = SoftwareManagement::remove($id, $softwareProductName);$/;"	v	language:PHP
+removeEquipmentFilter	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function removeEquipmentFilter($equipmentId)$/;"	f	language:PHP
+removeStarredEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function removeStarredEquipment($equipmentId)$/;"	f	language:PHP
+renderDynamicModal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    private function renderDynamicModal($ns, $var, $cls, $fn)$/;"	f	language:PHP
+renderStaticModal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    private function renderStaticModal($ns)$/;"	f	language:PHP
+request	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $request = Request::createFromGlobals();$/;"	v	language:PHP
+res	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $res = $client->request('POST', '\/latest\/forms', ['json' => $payload]);$/;"	v	language:PHP
+response	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $response = Equipment::associatePicture(User::getCompanyForUser(), $companyPictureId, $equipmentId) ? true : false;$/;"	v	language:PHP
+response	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $response = Equipment::unassociatePicture(User::getCompanyForUser(), $companyPictureId, $equipmentId) ? true : false;$/;"	v	language:PHP
+response	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $response = false;$/;"	v	language:PHP
+response	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $response = false;$/;"	v	language:PHP
+response	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $response = new Illuminate\\Http\\Response();$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $result = DB::select($sql, array($state));$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = $query -> get();$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = $query->get();$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = $query->get();$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = DB::select($sql);$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = DB::select($sql);$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = DB::select($sql, array($equipmentId));$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = DB::select($sql, array($hpuType));$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = DB::select($sql, array($id));$/;"	v	language:PHP
+result	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $result = DB::table('hpus')$/;"	v	language:PHP
+results	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $results = array($customer);$/;"	v	language:PHP
+results	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $results = $query->get();$/;"	v	language:PHP
+results	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $results = DB::insert($sql, $values);$/;"	v	language:PHP
+results	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $results = DB::select($query, array($_SESSION['company_id']));$/;"	v	language:PHP
+results	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $results = DB::select($sql, array($id));$/;"	v	language:PHP
+results	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $results = DB::select($sql, array($_SESSION['userRow']['id']));$/;"	v	language:PHP
+returnData	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^                $returnData = $row;$/;"	v	language:PHP
+returnData	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^        $returnData = array();$/;"	v	language:PHP
+returnData	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                $returnData = $row;$/;"	v	language:PHP
+returnData	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $returnData = array();$/;"	v	language:PHP
+role	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $role = $user->role;$/;"	v	language:PHP
+role	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $role = $user->role;$/;"	v	language:PHP
+role	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/User.php	/^    public function role()$/;"	f	language:PHP
+roles	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $roles = UserRoles::all();$/;"	v	language:PHP
+row	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $row = $result[0];$/;"	v	language:PHP
+rules	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    protected static $rules = array($/;"	v	language:PHP
+rules	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    protected static $rules = array($/;"	v	language:PHP
+run	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/seeds/DatabaseSeeder.php	/^    public function run()$/;"	f	language:PHP
+run	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/seeds/DummyUsersSeeder.php	/^    public function run()$/;"	f	language:PHP
+run	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/seeds/UserRolesSeeder.php	/^    public function run()$/;"	f	language:PHP
+s3Files	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $s3Files = array();$/;"	v	language:PHP
+s3name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $s3name = $companyId.'.'.$userId.'.'.Util::generateRandomAlphaNum(15);$/;"	v	language:PHP
+s3name	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        if( $s3name = Company::deletePicture(User::getCompanyForUser(), $companyPictureId) ) {$/;"	v	language:PHP
+scrollTo	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  $.fn.scrollTo = function( target, options, callback ) {$/;"	f	language:JavaScript
+selected	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $selected = Input::get('selected');$/;"	v	language:PHP
+sensor	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                    $sensor = self::toMetric($sensor);$/;"	v	language:PHP
+sensors	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^            $sensors = $healthOverview["sensors"];$/;"	v	language:PHP
+sensorStatus	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                $sensorStatus = new stdClass();$/;"	v	language:PHP
+session	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->session = $_SESSION;$/;"	v	language:PHP
+session	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $session;$/;"	v	language:PHP
+should	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^     * in memcached if no equipment has been associated with it. This function should be called after the association$/;"	f	language:PHP
+shouldReloadRuntimeDisplay	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function updateAssociatedPcAndHpu( $equipmentId, $shouldReloadRuntimeDisplay = true, $shouldUpdateLab = false )$/;"	v	language:PHP
+show	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^    $show = $_GET['show'];$/;"	v	language:PHP
+showAdministration	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^    public function showAdministration()$/;"	f	language:PHP
+showErrorAlert	/Users/fskirschbaum/Sites/echo/fsejitkb/www/app/controllers/login.js	/^  $scope.showErrorAlert = function ( title, template ) {$/;"	f	language:JavaScript
+showErrorToast	/Users/fskirschbaum/Sites/echo/fsejitkb/www/app/controllers/login.js	/^  $scope.showErrorToast = function( message ) {$/;"	f	language:JavaScript
+showProfile	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^    public function showProfile()$/;"	f	language:PHP
+showSuccessToast	/Users/fskirschbaum/Sites/echo/fsejitkb/www/app/controllers/login.js	/^  $scope.showSuccessToast = function( message, successCallback, errorCallback ) {$/;"	f	language:JavaScript
+showTIPSSurvey	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^    public function showTIPSSurvey()$/;"	f	language:PHP
+signal	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $signal = Input::get('signal');$/;"	v	language:PHP
+signals	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                        $signals = $channel['signals'];$/;"	v	language:PHP
+SoftwareManagementController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^class SoftwareManagementController extends BaseController$/;"	c	language:PHP
+softwareName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $softwareName = $data['name'];$/;"	v	language:PHP
+softwareName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $softwareName = '';$/;"	v	language:PHP
+softwareProductId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $softwareProductId = Input::get('software-product-id'); \/\/ We need two ids for this 'magic' to work...$/;"	v	language:PHP
+softwareProductName	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $softwareProductName = Input::get('name');$/;"	v	language:PHP
+Spinner	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  echo.Spinner = function() {$/;"	f	language:JavaScript
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $sql = "INSERT INTO controls_equipment (equipment_id, user_id, name, json, part, num_parts) VALUES (?, 0, 'Runtime Display', ?, 1, 1)";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $sql = "SELECT * FROM equipment_state_options WHERE name = ?";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $sql = "UPDATE pcs SET dirty_bit_status = dirty_bit_status + 1, dirty_bit_station_status = dirty_bit_station_status + 1 WHERE pcs.id = ?";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $sql = "UPDATE stations SET dirty_bit = dirty_bit + 1 WHERE id IN (SELECT active_station_id FROM equipment WHERE equipment.id = ? AND equipment.`deleted`=0) AND pc_id = ?";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "DELETE FROM health_equipment__packages WHERE health_monitored_equipment_id = ?";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "INSERT INTO controls_equipment (equipment_id, user_id, name, json, part, num_parts) VALUES $controlsInsertString";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "INSERT INTO equipment (name, company_id, is_real_hardware, unique_id_serial, unique_id_names, unique_id_version, unique_id_box, lab_id, active_station_id, equipment_type_id, url_fragment, equipment_state_option_id, ip_address) ";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "INSERT INTO equipment_profile (equipment_id, is_master, serial_number, part_number, model_name, model_number, date_manufacture) VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "INSERT INTO health_equipment__packages (health_monitored_equipment_id, health_package_id) VALUES $insertPackagesString";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "INSERT INTO health_monitored_equipment (equipment_id, hpu_type) VALUES (?,(SELECT id FROM hpu_types WHERE name = ?)) ";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "INSERT INTO labs (company_id, name, url_fragment, limit_view_to_accounts, limit_edit_to_accounts) VALUES ($companyId, ?, '$url_fragment', $limit_view_to_accounts, $limit_edit_to_accounts)";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT * FROM controls_equipment WHERE equipment_id = ? AND name = 'Runtime Display'";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT * FROM equipment_profile WHERE equipment_id = ? ORDER BY is_master DESC";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT * FROM health_default_tabs WHERE id = (SELECT default_runtime_display_id FROM hpu_types WHERE name = ?)";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT * FROM health_default_tabs WHERE tab_name <> 'Runtime Display'";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT * FROM health_monitored_equipment WHERE equipment_id = $equipmentId";$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT equipment.id as equipment_id, equipment.name as equipment_name, equipment.url_fragment AS equipment_url_fragment,$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT `equipment_type_category`.`parent_id`$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "SELECT$/;"	v	language:PHP
+sql	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $sql = "UPDATE equipment SET equipment_type_id = (SELECT equipment_type_id FROM hpu_types WHERE name = ?) WHERE id = ?";$/;"	v	language:PHP
+starredEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->starredEquipment = new StarredEquipment($/;"	v	language:PHP
+starredEquipment	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $starredEquipment;$/;"	v	language:PHP
+start	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  echo.Spinner.prototype.start = function() {$/;"	f	language:JavaScript
+stateId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $stateId = $row->id;$/;"	v	language:PHP
+stateId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^                $stateId = 0;$/;"	v	language:PHP
+stationRow	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^            $stationRow = $this->equipment->getStationById($equipmentRow->active_station_id);$/;"	v	language:PHP
+stop	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^  echo.Spinner.prototype.stop = function() {$/;"	f	language:JavaScript
+submitTIPSSurvey	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^    public function submitTIPSSurvey(Request $request)$/;"	f	language:PHP
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^        success:   function( response, status, jqXHR ) {$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/hpuIndex.js	/^          success: function ( data, status, request )$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/hpuIndex.js	/^        success: function ( data, status, request )$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^          success: function ( data, status, request )$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^          success: function ( data, status, request )$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^          success: function ( data, status, request )$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^          success: function ( data, status, request )$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^          success: function ( data, status, request )$/;"	f	language:JavaScript
+success	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/profile/index.js	/^        success: function ( data, status, request )$/;"	f	language:JavaScript
+tabName	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $tabName = $jsonStrings[$j]['tabName'];$/;"	v	language:PHP
+tabName	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^            $tabName = $row->tab_name;$/;"	v	language:PHP
+tempfname	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^                $tempfname = storage_path().DIRECTORY_SEPARATOR.uniqid('', TRUE).'.'.$file->getClientOriginalExtension();$/;"	v	language:PHP
+testTrackingController	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $this->testTrackingController = new TestTrackingController();$/;"	v	language:PHP
+testTrackingController	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private $testTrackingController;$/;"	v	language:PHP
+thing	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $thing = $thingdom->getThing('ME&S Downloads', 'download');$/;"	v	language:PHP
+thingdom	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $thingdom = new ThingdomAPI();$/;"	v	language:PHP
+thingdomID	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $thingdomID = Equipment::getEquipmentById($id)->thingdom_id;$/;"	v	language:PHP
+thingId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $thingId = Input::get('thing_id');$/;"	v	language:PHP
+timestamps	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersDemographics.php	/^    public $timestamps = false;$/;"	v	language:PHP
+timestamps	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersDemographics.php	/^    public $timestamps = false;$/;"	v	language:PHP
+timestamps	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersRoles.php	/^    public $timestamps = false;$/;"	v	language:PHP
+timestamps	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersRoles.php	/^    public $timestamps = false;$/;"	v	language:PHP
+TIPSProfileController	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^class TIPSProfileController extends Controller$/;"	c	language:PHP
+title	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $title = "Engineer";$/;"	v	language:PHP
+title	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $title = "Operator";$/;"	v	language:PHP
+token	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $token = Input::get('hashToken');$/;"	v	language:PHP
+toMetric	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    private function toMetric($sensor)$/;"	f	language:PHP
+tooltip	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^            $tooltip = '';$/;"	v	language:PHP
+tooltip	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                    $tooltip = 'No interlock set.';$/;"	v	language:PHP
+tooltip	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^                $tooltip = '';$/;"	v	language:PHP
+toRelative	/Users/fskirschbaum/Sites/echo/dev/public/assets/js/global/global.js	/^function toRelative( timestamp )$/;"	f	language:JavaScript
+toSave	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $toSave = array();$/;"	v	language:PHP
+totalSize	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $totalSize = 0;$/;"	v	language:PHP
+triggerThingdomNotification	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    private static function triggerThingdomNotification($productName, $versionName) {$/;"	f	language:PHP
+typeformUrl	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $typeformUrl = $this->createTypeformSurvey();$/;"	v	language:PHP
+typeId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $typeId = Input::get('typeId');$/;"	v	language:PHP
+typeId	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function createEquipment($companyId, $equipmentName, $labId, $typeId = 140)$/;"	v	language:PHP
+tzs	/Users/fskirschbaum/Sites/echo/dev/app/views/layouts/dashboard.php	/^<? \/* get timezone data *\/ $tzs = Timezone::getTimezones(); ?>$/;"	v	language:PHP
+unique_id_box	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $unique_id_box = '';  \/\/ widget$/;"	v	language:PHP
+unique_id_names	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $unique_id_names = ''; \/\/ widget$/;"	v	language:PHP
+unique_id_serial	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $unique_id_serial = '';  \/\/ widget$/;"	v	language:PHP
+unique_id_version	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $unique_id_version = 1;  \/\/ investigate$/;"	v	language:PHP
+unit	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $unit = Input::get('unit');$/;"	v	language:PHP
+units	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $units = View::make('profile.partials.units')$/;"	v	language:PHP
+up	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155147_create_users_table.php	/^    public function up()$/;"	f	language:PHP
+up	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155734_create_coupons_table.php	/^    public function up()$/;"	f	language:PHP
+up	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_155757_create_payments_table.php	/^    public function up()$/;"	f	language:PHP
+up	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_08_163301_create_user_roles_table.php	/^    public function up()$/;"	f	language:PHP
+up	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_09_140226_create_users_triggers.php	/^    public function up()$/;"	f	language:PHP
+up	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/migrations/2016_06_12_140718_create_password_resets_table.php	/^    public function up()$/;"	f	language:PHP
+upateUserRole	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^    public function upateUserRole() \/\/ @TODO Stubbed out$/;"	f	language:PHP
+update	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $update = DB::table('stations')$/;"	v	language:PHP
+update	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^      $update = DB::table('equipment')$/;"	v	language:PHP
+update	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^      $update = DB::table('equipment')$/;"	v	language:PHP
+update	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^      $update = DB::table('equipment')$/;"	v	language:PHP
+updateAssociatedPcAndHpu	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function updateAssociatedPcAndHpu( $equipmentId, $shouldReloadRuntimeDisplay = true, $shouldUpdateLab = false )$/;"	f	language:PHP
+updateEquipmentLab	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateEquipmentLab( $id, $labId )$/;"	f	language:PHP
+updateEquipmentName	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateEquipmentName( $id, $name )$/;"	f	language:PHP
+updateEquipmentType	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateEquipmentType( $id,$typeId )$/;"	f	language:PHP
+updatePackages	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    private static function updatePackages($enabledPackages, $healthEquipmentId)$/;"	f	language:PHP
+updateProductModel	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateProductModel($id, $data, $internalUpdate = FALSE) {$/;"	f	language:PHP
+updateProfile	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^    public function updateProfile(Request $request)$/;"	f	language:PHP
+updateShareOption	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateShareOption( $id, $option )$/;"	f	language:PHP
+updateSuperState	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateSuperState($id, $state) {$/;"	f	language:PHP
+updateThingdomAssociation	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function updateThingdomAssociation( $id, $thingId )$/;"	f	language:PHP
+updateType	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^          $updateType = $this->equipment->updateEquipmentType( $id, $typeId );$/;"	v	language:PHP
+url	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^            $url = $l->href;$/;"	v	language:PHP
+url	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $url = '';$/;"	v	language:PHP
+url	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^        $url = Input::get('url');$/;"	v	language:PHP
+url	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^        $url = Input::get('url');$/;"	v	language:PHP
+url	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $url = '\/software-management';$/;"	v	language:PHP
+URL	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^          $URL = URL::to('\/') .  "\/hpu\/" . $equipment->url_fragment;$/;"	v	language:PHP
+URL	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^          $URL = URL::to('\/') . "\/equipment\/" . $equipment->url_fragment;$/;"	v	language:PHP
+URL	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^      $URL = '';$/;"	v	language:PHP
+url_fragment	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $url_fragment = '';$/;"	v	language:PHP
+url_fragment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $url_fragment = Util::generateRandomAlphaNum(50);$/;"	v	language:PHP
+url_fragment	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $url_fragment = Util::generateRandomAlphaNum(50);$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $user = Auth::user();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $user = Auth::user();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/CouponController.php	/^      $user = Auth::user();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^        $user = Auth::user();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^        $user = Auth::user();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $user = Auth::user();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^        $user = Auth::user();$/;"	v	language:PHP
+User	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/User.php	/^class User extends Authenticatable$/;"	c	language:PHP
+user	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->user = $user;$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $user = User::getLoggedInUser();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $user = User::getLoggedInUser();$/;"	v	language:PHP
+user	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $user = User::getLoggedInUser();$/;"	v	language:PHP
+userId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $userId = User::getUserId();$/;"	v	language:PHP
+userId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $userId = Input::get('userId');$/;"	v	language:PHP
+userId	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $userId = Input::get('userId');$/;"	v	language:PHP
+userLang	/Users/fskirschbaum/Sites/echo/dev/app/filters.php	/^    $userLang = (in_array($browser_lang, Config::get('app.supported_locales'))) ? $browser_lang : Config::get('app.fallback_locale');$/;"	v	language:PHP
+userPriv	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $this->userPriv = $userPriv;$/;"	v	language:PHP
+userPriv	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^	    $userPriv = new UserPrivilege();$/;"	v	language:PHP
+userPrivilege	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->userPrivilege = $userPrivilege;$/;"	v	language:PHP
+userPrivilege	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $userPrivilege;$/;"	v	language:PHP
+userPrivInternal	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $userPrivInternal = new UserPrivilegeInternal();$/;"	v	language:PHP
+UserRolesSeeder	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/database/seeds/UserRolesSeeder.php	/^class UserRolesSeeder extends Seeder$/;"	c	language:PHP
+userRow	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^                $userRow = self::userToName($row->engineer);$/;"	v	language:PHP
+userRow	/Users/fskirschbaum/Sites/echo/dev/app/models/Embed.php	/^                $userRow = self::userToName($row->operator);$/;"	v	language:PHP
+users	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^        $users = User::all();$/;"	v	language:PHP
+users	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $users = array( array("id"=>"N\/A", "name"=>"(Select an {$title})") );$/;"	v	language:PHP
+users	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $users = array();$/;"	v	language:PHP
+users	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $users = User::getUsersById($users);$/;"	v	language:PHP
+UsersDemographics	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersDemographics.php	/^class UsersDemographics extends Model$/;"	c	language:PHP
+usersInCompany	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $usersInCompany = User::getUsersForAdminPage($this->companyId);$/;"	v	language:PHP
+usersInCompany	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $usersInCompany = User::getByCompany($companyId);$/;"	v	language:PHP
+UsersRoles	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/UsersRoles.php	/^class UsersRoles extends Model$/;"	c	language:PHP
+validate	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    static $validate = array($/;"	v	language:PHP
+validate	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    static $validate = array($/;"	v	language:PHP
+validate	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^    public static function validate($data)$/;"	f	language:PHP
+validator	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/AuthController.php	/^    protected function validator(array $data)$/;"	f	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make( array('id' => $id), static::$validate['equipment']['delete'] );$/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make( array('id' => $id), static::$validate['lab']['delete'] );$/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^        $validator = Validator::make(array($/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $validator = Equipment::validate($data);$/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^            $validator = Equipment::validate($data);$/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $validator = SoftwareLicense::validate($data);$/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $validator = SoftwareManagement::validate($data);$/;"	v	language:PHP
+validator	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $validator = SoftwareManagement::validate($data);$/;"	v	language:PHP
+values	/Users/fskirschbaum/Sites/echo/dev/app/models/Equipment.php	/^        $values = array($id, $internalUpdate ? 1 : 0);$/;"	v	language:PHP
+var	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^      $var = Input::get('var');$/;"	v	language:PHP
+version	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $version = $productsInfo['version'];$/;"	v	language:PHP
+version	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $version = $version[0];$/;"	v	language:PHP
+version	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                $version = SoftwareProduct::getVersionById($id);$/;"	v	language:PHP
+version	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $version = $version['versions'][0];$/;"	v	language:PHP
+version	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^            $version = SoftwareProduct::getVersionsByProductId($productId);$/;"	v	language:PHP
+versions	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $versions = SoftwareProduct::getVersionsByProductId($softwareProductId); \/\/ Since this is not yet published, we have to find the latest PUBLISHED version and compare these two ids. (NOT DATES... YET.)$/;"	v	language:PHP
+view	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^        $view = View::make('embed.partials.content')->with('equipment', $equipment)->render();$/;"	v	language:PHP
+view	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $view = View::make('profile.hpuIndex')$/;"	v	language:PHP
+view	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $view = View::make('profile.index')$/;"	v	language:PHP
+view	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                            $view = View::make('emails.softwaremanagement.version_removal_notification')$/;"	v	language:PHP
+view	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^                    $view = View::make('emails.softwaremanagement.new_version_deployed_notification')$/;"	v	language:PHP
+view	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $view = View::make('softwaremanagement.index')->with('products', $products);$/;"	v	language:PHP
+view	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^        $view = View::make('softwaremanagement.license')$/;"	v	language:PHP
+where	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^        $where = !empty($lastId) ? " WHERE E.id < $lastId" : null;$/;"	v	language:PHP
+widgetController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^        $this->widgetController = $widgetController;$/;"	v	language:PHP
+widgetController	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    protected $widgetController;$/;"	v	language:PHP
+WidgetData	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^class WidgetData extends BaseModel$/;"	c	language:PHP
+__construct	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/AdministrationController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/AuthController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/Auth/PasswordController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/CouponController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/HomeController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/ProfileController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/doginflight/projects/tipsproject/app/Http/Controllers/TIPSProfileController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/echo/dev/app/controllers/EmbedController.php	/^    public function __construct(Company $company, Equipment $equipment, Embed $embed, LogController $logController)$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LabAdminController.php	/^    public function __construct(User $user, Lab $lab, Equipment $equipment, UserPrivilege $userPriv)$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/echo/dev/app/controllers/LogController.php	/^    public function __construct(AjaxLogRepository $ajaxLogRepository, LogRepository $appLogRepository)$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ModalController.php	/^    public function __construct()$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/echo/dev/app/controllers/ProfileController.php	/^    public function __construct( Equipment $equipment, WidgetController $widgetController, LabAdminController $labAdminController, MobileDetect $mobileDetect, UserPrivilege $userPrivilege ) {$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/echo/dev/app/controllers/SoftwareManagementController.php	/^    public function __construct(Contract $contract, Blurb $blurb, Compliance $compliance )$/;"	f	language:PHP
+__construct	/Users/fskirschbaum/Sites/echo/dev/app/models/WidgetData.php	/^    public function __construct()$/;"	f	language:PHP
