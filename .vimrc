@@ -66,7 +66,7 @@ nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>_ :exe "resize " . (winheight(0) * 2/3)<CR>
 
 " Maps plugin functionality to use Leader
-nnoremap <Leader>ff :Ag
+nnoremap <Leader>ff :Ag 
 nnoremap <silent><Leader>uu :GundoToggle<CR>
 nnoremap <silent><Leader>rr :CtrlPBufTag<CR>
 nnoremap <silent><Leader>tt :TagbarOpenAutoClose<CR>
