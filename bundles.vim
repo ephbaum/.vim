@@ -17,11 +17,11 @@ Plugin 'majutsushi/tagbar'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'morhetz/gruvbox'
-Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
+Plugin 'sheerun/vim-polyglot'
 Plugin 'sjl/badwolf'
 Plugin 'sjl/gundo.vim'
 Plugin 'StanAngeloff/php.vim'
@@ -34,6 +34,7 @@ Plugin 'walm/jshint.vim'
 Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
+
 
 call vundle#end()
 
