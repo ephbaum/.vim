@@ -44,4 +44,4 @@ let g:netrw_browse_split = 4
 
 
 
-nnoremap <silent><Leader>xx :Lexplore<CR> 
+nnoremap <silent><Leader>lex :Lexplore<CR> 
