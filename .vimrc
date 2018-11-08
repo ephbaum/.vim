@@ -7,7 +7,7 @@ source ~/.vim/netrw-tree.vim
 
 syntax on
 
-set tabstop=2 shiftwidth=2 expandtab autoindent smartindent
+set tabstop=4 shiftwidth=4 expandtab autoindent smartindent
 set ruler number wrap
 set ignorecase
 set clipboard=unnamed
@@ -65,12 +65,21 @@ nnoremap <silent> <Leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>_ :exe "resize " . (winheight(0) * 2/3)<CR>
 
+" Insert Date/Time
+nmap <silent><Leader>dt i<C-R>=strftime("%F %T")<CR><Esc>
+
+" Activate Spell Check for Buffer
+nnoremap <silent> <Leader>sp :setlocal spell spelllang=en_us<CR>
+" Shut off Spell Check
+nnoremap <silent> <Leader>nsp :set nospell<CR>
+
 " Maps plugin functionality to use Leader
-nnoremap <Leader>ff :Ag 
+nnoremap <Leader>ff :Ag
 nnoremap <silent><Leader>uu :GundoToggle<CR>
 nnoremap <silent><Leader>rr :CtrlPBufTag<CR>
 nnoremap <silent><Leader>tt :TagbarOpenAutoClose<CR>
 nnoremap <silent><Leader>sc :Vscratch<CR>
+nnoremap <silent><Leader>nt :NERDTreeToggle<CR>
 
 " Show trailing whitepace and spaces before a tab:
 autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/ containedin=ALL
@@ -82,9 +91,10 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_html_tidy_exec = 'tidy5'
+let g:syntastic_php_phpcs_args = "--standard=psr2"
 
 let g:easytags_async = 1
 let g:easytags_file = '~/.vim/.vimtags'
@@ -110,8 +120,8 @@ let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 
 "let g:session_directory = $VIM.'\_vimfiles\sessions'
-"let g:session_autoload = 'no'
-"let g:session_autosave = 'yes'
+let g:session_autoload = 'no'
+let g:session_autosave = 'no'
 "let g:session_persist_colors = 0
 "let g:session_command_aliases = 1
 "let g:session_autosave_periodic = 1
@@ -123,3 +133,10 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.ejs set filetype=html
 
 autocmd BufNewFile,BufRead *.styl set filetype=sass
+
+" Because nvim needs special
+set mouse=a
+
+" Here's Python
+let g:python_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
