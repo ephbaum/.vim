@@ -22,11 +22,11 @@ set directory=$HOME/.vim/swapfiles//
 set backupdir=$HOME/.vim/backupfiles//
 
 " Automatically show row and column higlighting
-au WinLeave * set nocursorline nocursorcolumn
-au InsertEnter * set nocursorline nocursorcolumn
-au WinEnter * set cursorline cursorcolumn
-au InsertLeave * set cursorline cursorcolumn
-set cursorline cursorcolumn
+"au WinLeave * set nocursorline nocursorcolumn
+"au InsertEnter * set nocursorline nocursorcolumn
+"au WinEnter * set cursorline cursorcolumn
+"au InsertLeave * set cursorline cursorcolumn
+"set cursorline cursorcolumn
 
 " Sets color for row / column highlighting
 " hi CursorLine ctermbg=053 guibg=#5f005f " Good for Molokai
