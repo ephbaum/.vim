@@ -7935,3 +7935,4 @@ __invoke	/Users/freemankirschbaum/code/dealerinspire/payments-core-api/module/Le
 __invoke	/Users/freemankirschbaum/code/dealerinspire/payments-core-api/module/LeaseOfferDomain/src/LeaseOfferDomain/Service/ImportManufacturerProgramServiceFactory.php	/^    public function __invoke(ServiceLocatorInterface $serviceLocator)$/;"	f	language:PHP
 __invoke	/Users/freemankirschbaum/code/dealerinspire/payments-core-api/module/LeaseOfferDomain/src/LeaseOfferDomain/Service/RebateServiceFactory.php	/^    public function __invoke(ServiceLocatorInterface $serviceLocator)$/;"	f	language:PHP
 __invoke	/Users/freemankirschbaum/code/dealerinspire/payments-core-api/module/LeaseOfferDomain/src/LeaseOfferDomain/Slack/SlackSlash.php	/^    public function __invoke()$/;"	f	language:PHP
+
