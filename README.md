@@ -26,7 +26,7 @@ First, you'll need to make the folders for swap and backup.
 mkdir swapfiles
 mkdir backfiles
 ```
-
+~~
 Then you'll need to re-install Vundle so get it from GitHub.
 
 ```
@@ -34,6 +34,9 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
 After which you can launch `nvim` and use `:VundleInstall` to get _most_ of the stuff that you need installed, then tweak as needed.
+~~
+
+Then follow the Neovim instructions to use [Vim Plug](https://github.com/junegunn/vim-plug) which actually works much better than VundleVim did...
 
 Remember that there's going to be some major issues with fonts on a new set-up, such as Airline not having all the cute pictographs it should until you fix that.
 
