@@ -39,6 +39,18 @@ After launching `nvim`:
 
 `:PlugInstall:`
 
+### After Care?
+
+You'll want to install [Exuberant CTags](http://ctags.sourceforge.net/)
+
+Under Ubuntu that's easy enough:
+
+```
+sudo apt install exuberant-ctags
+```
+
+Other platforms: YMMV
+
 ### Now What?
 
 You've reached the end of this little guide. You'll probably need to battle to determine a way to get Powerline Fonts working... I have no idea how to do this uner WSL?
