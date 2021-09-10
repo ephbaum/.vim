@@ -2,42 +2,45 @@
 
 I'm tired of trying to remember how to do this.
 
-Also, I have changed files on my MacBooks and my configurations are now way out of whack. I mean, totally, but that's a commit for later.
+#### Updated 9 Sept 2021
 
-So, you've been using NeoVim, so instead of the normal vim symlink:
+Now just rolling forward, check history for old setups
+
+This install is happening on Ubuntu 20.04 WSL -- man would I love Arch under Windows :fingers-crossed: 
+
+This go around I'm moving everything to live the `.config` folder as it's been long enough that I've been putting that work off. (I expect a relative file path update will accompany with README.md update)
+
+Next I'll possibly get around to automating this. :rolling-eyes: 
+
+### Initial Commands
+
+- Create nvim config folder
+    - `mkdir ~/.config/nvim`
+- Navigate to nvim config folder
+    - `cd ~/.config/nvim/`
+- Clone Repo
+    - `git clone git@github.com:fskirschbaum/.vim.git gitnvim`
+- Symlink your `.vimrc` file you've so lovingly lavaflowed together over the years
+    - `ln -s ~/.config/nvim/gitnvim/.vimrc ~/.config/nvim/init.vim`
+- Create necessary folders
+    - `mkdir swapfiles`
+    - `mkdir backfiles`
+
+### How Plugins?`
+
+Then follow the Neovim instructions to use [Vim Plug](https://github.com/junegunn/vim-plug)
 
 ```
-ln -s ~/.vim/.vimrc ~/.vimrc
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 ```
 
-so instead you will want to use:
+After launching `nvim`:
 
+`:PlugInstall:`
 
-```
-mkdir ~/.config/nvim
-ln -s ~/.vim/.vimrc ~/.config/nvim/init.vim
-```
+### Now What?
 
-This is good because we really need to switch to the `.config` structure anyway.
+You've reached the end of this little guide. You'll probably need to battle to determine a way to get Powerline Fonts working... I have no idea how to do this uner WSL?
 
-First, you'll need to make the folders for swap and backup.
-
-```
-mkdir swapfiles
-mkdir backfiles
-```
-~~
-Then you'll need to re-install Vundle so get it from GitHub.
-
-```
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-```
-
-After which you can launch `nvim` and use `:VundleInstall` to get _most_ of the stuff that you need installed, then tweak as needed.
-~~
-
-Then follow the Neovim instructions to use [Vim Plug](https://github.com/junegunn/vim-plug) which actually works much better than VundleVim did...
-
-Remember that there's going to be some major issues with fonts on a new set-up, such as Airline not having all the cute pictographs it should until you fix that.
-
-But here's a start.
+@TODO - Document Font Process When I Get Around To It
