@@ -1,10 +1,10 @@
 " @SEE https://github.com/junegunn/vim-plug "
 
 " [Vim-Plug Bundles] "
-source ~/.vim/bundles.vim
+source ./bundles.vim
 
 " [netrw-tree] "
-source ~/.vim/netrw-tree.vim
+source ./netrw-tree.vim
 
 syntax on
 
