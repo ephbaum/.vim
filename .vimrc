@@ -11,7 +11,7 @@ syntax on
 set tabstop=4 shiftwidth=4 expandtab autoindent smartindent
 set ruler number wrap
 set ignorecase
-set clipboard=unnamed
+set clipboard=unnamedplus
 set selection=inclusive
 set encoding=utf-8
 
