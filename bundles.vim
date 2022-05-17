@@ -30,7 +30,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vividchalk'
 Plug 'vsushkov/vim-phpcs'
 Plug 'walm/jshint.vim'
-Plug 'xolox/vim-easytags'
+" Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 
