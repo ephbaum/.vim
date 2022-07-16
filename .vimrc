@@ -1,10 +1,10 @@
 " @SEE https://github.com/junegunn/vim-plug "
 
 " [Vim-Plug Bundles] "
-source ~/.vim/bundles.vim
+source ~/.config/nvim/gitnvim/bundles.vim
 
 " [netrw-tree] "
-source ~/.vim/netrw-tree.vim
+source ~/.config/nvim/gitnvim/netrw-tree.vim
 
 syntax on
 
@@ -17,7 +17,7 @@ set encoding=utf-8
 
 colorscheme gruvbox " molokai
 set background=dark
-set guifont=Source\ Code\ Pro:h13
+set guifont=Fira\ Code\ Pro:h13
 
 set directory=$HOME/.vim/swapfiles//
 set backupdir=$HOME/.vim/backupfiles//
