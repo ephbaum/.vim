@@ -2,7 +2,7 @@
 
 I'm tired of trying to remember how to do this.
 
-#### Updated 9 Sept 2021
+#### Updated 22 June 2023
 
 Now just rolling forward, check history for old setups
 
@@ -48,10 +48,14 @@ Under Ubuntu that's easy enough:
 sudo apt install exuberant-ctags
 ```
 
+Also, maybe install some node?
+
 Other platforms: YMMV
 
-### Now What?
+### Add a Powerline Font 
 
-You've reached the end of this little guide. You'll probably need to battle to determine a way to get Powerline Fonts working... I have no idea how to do this uner WSL?
+Right now I'm fond of [FiraCode](https://github.com/tonsky/FiraCode), perhaps you'll be back on some other tip later
 
-@TODO - Document Font Process When I Get Around To It
+Under WSL2, adding this is now trivial through the Microsoft Terminal, and looks rather dope (especially with trransparency and scanlines and such :sweat_smile:):
+
+![Screenshot of Microsoft Terminal window displaying NVIM running with FiraCode and Scanlines](images/nvim_fira_code_windows_terminal_gruvbox.png)
