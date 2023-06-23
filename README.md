@@ -15,7 +15,7 @@ Next I'll possibly get around to automating this. :rolling-eyes:
 ### Initial Commands
 
 - Create nvim config folder
-    - `mkdir ~/.config/nvim`
+    - `mkdir -p ~/.config/nvim`
 - Navigate to nvim config folder
     - `cd ~/.config/nvim/`
 - Clone Repo
@@ -23,8 +23,7 @@ Next I'll possibly get around to automating this. :rolling-eyes:
 - Symlink your `.vimrc` file you've so lovingly lavaflowed together over the years
     - `ln -s ~/.config/nvim/gitnvim/.vimrc ~/.config/nvim/init.vim`
 - Create necessary folders
-    - `mkdir swapfiles`
-    - `mkdir backfiles`
+    - `mkdir swapfiles backfiles`
 
 ### How Plugins?`
 
