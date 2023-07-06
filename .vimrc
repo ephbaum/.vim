@@ -19,8 +19,8 @@ colorscheme gruvbox " molokai
 set background=dark
 set guifont=Fira\ Code\ Pro:h13
 
-set directory=$HOME/.vim/swapfiles//
-set backupdir=$HOME/.vim/backupfiles//
+set directory=$HOME/.config/nvim/gitnvim/swapfiles//
+set backupdir=$HOME/.config/nvim/gitnvim/backupfiles//
 
 " Automatically show row and column higlighting
 "au WinLeave * set nocursorline nocursorcolumn
