@@ -29,7 +29,7 @@ Plug 'tomasr/molokai'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vividchalk'
-Plug 'tribela/vim-transparent'
+Plug 'tribela/vim-transparent' " https://github.com/tribela/vim-transparent
 Plug 'vsushkov/vim-phpcs'
 Plug 'walm/jshint.vim'
 Plug 'xolox/vim-misc'
