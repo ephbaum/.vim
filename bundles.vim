@@ -34,5 +34,6 @@ Plug 'vsushkov/vim-phpcs'
 Plug 'walm/jshint.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
+Plug 'wuelnerdotexe/vim-astro'
 
 call plug#end()
