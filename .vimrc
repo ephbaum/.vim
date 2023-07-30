@@ -54,7 +54,7 @@ cmap <S-CR> <Esc>
 nnoremap <silent> <Leader>wr :set invwrap<CR>
 
 " Burn trailing whitespaces with fire
-nnoremap <silent> <Leader>rtw :%s/\s\+$//e<CR>
+nnoremap <silent> <Leader>rtw :%s/\s\+$//e<CR>:noh<CR>
 
 " Kill whitespace to cursor position and then drop a line - REFACTOR FTW!
 nnoremap <silent> <Leader>l d^j
