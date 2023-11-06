@@ -130,6 +130,45 @@ let g:session_autosave = 'no'
 " Parse *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
+" Markdown Tab and Shift-Tab for lists
+au FileType markdown nnoremap <Tab> >>_
+au FileType markdown nnoremap <S-Tab> <<_
+
+" Enable filetype detection
+" filetype plugin indent on
+
+" Define mappings for adjusting list indentation
+" autocmd FileType markdown nnoremap <Tab> :call ListIndentForward()<CR>
+" autocmd FileType markdown nnoremap <S-Tab> :call ListIndentBackward()<CR>
+
+" Function to increase list indentation
+" function! ListIndentForward()
+"    let line = getline('.')
+"    if line =~ '^\s*[-*+]'
+"        let indent = indent('.')
+"        let new_indent = indent + &shiftwidth
+"        let line = substitute(line, '^\s*[-*+]', repeat(' ', new_indent) . '&', '')
+"        call setline('.', line)
+"    else
+"        normal! >>
+"    endif
+"endfunction
+
+" Function to decrease list indentation
+"function! ListIndentBackward()
+"    let line = getline('.')
+"    if line =~ '^\s*[-*+]'
+"        let indent = indent('.')
+"        let new_indent = indent - &shiftwidth
+"        if new_indent >= 0
+"            let line = substitute(line, '^\s*[-*+]', repeat(' ', new_indent) . '&', '')
+"            call setline('.', line)
+"        endif
+"    else
+"        normal! <<
+"    endif
+"endfunction
+
 " Parse *.ejs as html, it's just easier
 autocmd BufNewFile,BufRead *.ejs set filetype=html
 
