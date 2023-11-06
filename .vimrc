@@ -82,6 +82,9 @@ nnoremap <silent><Leader>tt :TagbarOpenAutoClose<CR>
 nnoremap <silent><Leader>sc :Vscratch<CR>
 nnoremap <silent><Leader>nt :NERDTreeToggle<CR>
 
+" Lets CtrlP find everything (dangerous af)
+let g:ctrlp_max_files=0
+
 " Show trailing whitepace and spaces before a tab:
 autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/ containedin=ALL
 
