@@ -1,39 +1,7 @@
 call plug#begin()
 
-" Plug 'vim-vdebug/vdebug'
-" Plug 'xolox/vim-easytags'
-Plug 'StanAngeloff/php.vim'
-Plug 'bling/vim-airline'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'dahu/LearnVim'
-Plug 'easymotion/vim-easymotion'
-Plug 'ethanmuller/scratch.vim'
-Plug 'johngrib/vim-game-snake'
-Plug 'jonathanfilip/vim-lucius'
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'majutsushi/tagbar'
-Plug 'marijnh/tern_for_vim'
-Plug 'mattn/emmet-vim'
-Plug 'morhetz/gruvbox'
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " https://github.com/neoclide/coc.nvim
-Plug 'pangloss/vim-javascript'
-Plug 'rking/ag.vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
-Plug 'sheerun/vim-polyglot'
-Plug 'sjl/badwolf'
-Plug 'sjl/gundo.vim'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tomasr/molokai'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-vividchalk'
-Plug 'tribela/vim-transparent' " https://github.com/tribela/vim-transparent
-Plug 'vsushkov/vim-phpcs'
-Plug 'walm/jshint.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
-Plug 'wuelnerdotexe/vim-astro'
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " https://github.com/neoclide/coc.nvim
 
 call plug#end()

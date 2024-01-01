@@ -181,9 +181,8 @@ autocmd BufNewFile,BufRead *.styl set filetype=sass
 set mouse=a
 
 " Here's Python
-let g:python_host_prog = '/usr/local/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
-
+let g:python_host_prog = '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'
 
 " TextEdit might fail if hidden is not set.
 set hidden
