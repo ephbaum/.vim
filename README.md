@@ -30,6 +30,10 @@ Next, I may attempt to automate this process. :rolling-eyes:
    ```bash
    ln -s ~/.config/nvim/gitnvim/.vimrc ~/.config/nvim/legacy.vim
    ```
+5. Symlink your `init.lua` file:
+    ```bash
+    ln -s ~/.config/nvim/gitnvim/lua/init.lua ~/.config/nvim/init.lua
+    ```
 
 ## Plugins
 
@@ -58,7 +62,7 @@ Additionally, consider installing Node.js if needed. Other platforms may vary.
 
 ## Powerline Font
 
-Currently, I prefer [FiraCode](https://github.com/tonsky/FiraCode). However, your preference might change later.
+Currently, I prefer [FiraCode](https://github.com/tonsky/FiraCode). However, that preference might change later.
 
 Under WSL2, adding this font is now simple using the Microsoft Terminal. It looks particularly impressive with transparency and scanlines enabled:
 
