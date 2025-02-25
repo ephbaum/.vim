@@ -20,7 +20,7 @@ Next, I may attempt to automate this process. :rolling-eyes:
    ```
 2. Clone the repository:
    ```bash
-   git clone git@github.com:fskirschbaum/.vim.git gitnvim
+   git clone git@github.com:ephbaum/.vim.git gitnvim
    ```
 3. Create necessary directories:
    ```bash
