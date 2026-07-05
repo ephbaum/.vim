@@ -75,33 +75,14 @@ nnoremap <silent> <Leader>sp :setlocal spell spelllang=en_us<CR>
 nnoremap <silent> <Leader>nsp :set nospell<CR>
 
 " Maps plugin functionality to use Leader
-nnoremap <Leader>ff :Ag
+" <Leader>ff, <Leader>fg, <Leader>rr are set in lua/init.lua (telescope.nvim)
 nnoremap <silent><Leader>uu :GundoToggle<CR>
-nnoremap <silent><Leader>rr :CtrlPBufTag<CR>
 nnoremap <silent><Leader>tt :TagbarOpenAutoClose<CR>
 nnoremap <silent><Leader>sc :Vscratch<CR>
-nnoremap <silent><Leader>nt :NERDTreeToggle<CR>
-
-" Lets CtrlP find everything (dangerous af)
-let g:ctrlp_max_files=0
+nnoremap <silent><Leader>nt :NvimTreeToggle<CR>
 
 " Show trailing whitepace and spaces before a tab:
 autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/ containedin=ALL
-
-" Adjust some plugin settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_html_tidy_exec = 'tidy5'
-let g:syntastic_php_phpcs_args = "--standard=psr2"
-
-let g:easytags_async = 1
-let g:easytags_file = '~/.vim/.vimtags'
 
 let g:multi_cursor_use_default_mapping=0
 let g:multi_cursor_start_key='<F12>'
@@ -109,19 +90,6 @@ let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
 
 "let g:session_directory = $VIM.'\_vimfiles\sessions'
 let g:session_autoload = 'no'
@@ -318,10 +286,8 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" coc status is surfaced via lualine (see lua/init.lua) instead of a manual
+" statusline string; lualine owns &statusline/&laststatus now.
 
 " Mappings using CoCList:
 " Show all diagnostics.
