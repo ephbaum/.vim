@@ -103,9 +103,11 @@ Leader is <kbd>Space</kbd>.
 | `<leader>f` | format selection |
 | `<leader>ac` / `<leader>qf` | code action on buffer / quickfix current line |
 | `if` `af` `ic` `ac` | function / class text objects |
+| `<leader>a` | code action on motion or selection (e.g. `<leader>aap`) |
 | `<C-s>` | expand selection range |
 | `<Tab>` / `<S-Tab>` | next / previous completion item |
-| `<space>` + `a e c o s j k p` | CocList: diagnostics, extensions, commands, outline, symbols, next, prev, resume |
+| `<CR>` | confirm completion |
+| `<leader>c` + `a e c o s j k p` | CocList: diagnostics, extensions, commands, outline, symbols, next, prev, resume |
 
 ### AI (gen.nvim → local ollama)
 
@@ -114,21 +116,19 @@ Leader is <kbd>Space</kbd>.
 | `<leader>]` | prompt Gen |
 | `<leader><leader>ss` | fix grammar/spelling in selection |
 
-### Known keymap collisions
+### Two mappings that changed in 2026-08
 
-Leader *is* `<space>`, so the `<space>x` CocList mappings share a namespace
-with the `<leader>x` ones. Two actual conflicts:
+Both were stale copy-paste from successive versions of coc's example config,
+and both were silently broken. Fixed, but they're the kind of thing muscle
+memory notices:
 
-- **`<leader>a` is dead in normal mode.** `.vimrc` binds it to
-  `<Plug>(coc-codeaction-selected)`, then later binds `<space>a` to
-  `:CocList diagnostics`. Same keys — the later one wins. Visual-mode
-  `<leader>a` still does the code action.
-- **`<CR>` is mapped twice.** The modern `coc#pum#confirm()` mapping is
-  overridden further down by an older `complete_info()` fallback copied from
-  a previous version of coc's README, so `coc#on_enter()` never fires.
-
-Both are stale copy-paste from coc's docs rather than deliberate choices.
-Left as-is for now; fixing either is a real behavior change.
+- **CocList moved from `<space>x` to `<leader>cx`.** Since leader *is* space,
+  those were `<leader>` mappings wearing a disguise: `<space>a` shadowed
+  `<leader>a` (code action) completely, and `<space>s` made `<leader>sp` and
+  `<leader>sc` wait on timeout. The group now has a prefix of its own.
+- **`<CR>` was mapped twice.** An older `complete_info()` recipe sat below the
+  modern `coc#pum#confirm()` one and overrode it, so `coc#on_enter()` never
+  fired — no format or snippet expansion on confirm. The old block is gone.
 
 ## Layout
 

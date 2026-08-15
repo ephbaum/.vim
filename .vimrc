@@ -211,17 +211,12 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" SNAG: this re-maps <cr>, overriding the coc#pum#confirm() mapping above --
-" same key, later definition wins, so coc#on_enter() never fires. It's the
-" older complete_info() recipe from a previous version of coc's README that
-" was never removed when the newer one was pasted in. Deleting this block is
-" probably correct but it is a real behavior change, so it stands for now.
-" `:verbose imap <CR>` will confirm which mapping is live.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+" A second <cr> mapping used to live here -- the older complete_info()/
+" pumvisible() recipe from an earlier version of coc's example config. It was
+" defined after the coc#pum#confirm() mapping above and silently overrode it,
+" so coc#on_enter() never fired and confirm-time formatting and snippet
+" expansion were both dead. Removed; the mapping above is now the only one.
+" `:verbose imap <CR>` to confirm.
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -263,10 +258,9 @@ augroup mygroup
 augroup end
 
 " Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-" SNAG: leader IS <space>, so the normal-mode binding here collides with
-" `<space>a` (CocList diagnostics) further down, which is defined later and
-" therefore wins. Visual-mode <leader>a still works.
+" Example: `<leader>aap` for current paragraph.
+" This takes a motion, so it needs <leader>a to itself -- the CocList group
+" below was moved off <space>a to stop shadowing it.
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
@@ -303,22 +297,26 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " coc status is surfaced via lualine (see lua/init.lua) instead of a manual
 " statusline string; lualine owns &statusline/&laststatus now.
 
-" Mappings using CoCList.
-" These are all <space>-prefixed, which is the same thing as <leader>-prefixed
-" here. Anything below shadows an identical <leader> mapping defined earlier.
+" Mappings using CocList, under a <leader>c prefix.
+"
+" These came from coc's example config as <space>a, <space>e, <space>c and so
+" on. Because mapleader is <space>, every one of them was really a <leader>
+" mapping in disguise: <space>a shadowed <leader>a (code action) outright, and
+" <space>s made <leader>sp and <leader>sc wait on timeout. Moving the whole
+" group under <leader>c gives it a namespace of its own -- c for CocList.
 " Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>ca  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>ce  :<C-u>CocList extensions<cr>
 " Show commands.
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
 " Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <leader>cj  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <leader>ck  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent> <leader>cp  :<C-u>CocListResume<CR>
