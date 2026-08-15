@@ -11,9 +11,21 @@ syntax on
 set tabstop=4 shiftwidth=4 expandtab autoindent smartindent
 set ruler number wrap
 set ignorecase
-set clipboard=unnamedplus
 set selection=inclusive
 set encoding=utf-8
+set clipboard+=unnamedplus
+let g:clipboard = {
+          \   'name': 'win32yank-wsl',
+          \   'copy': {
+          \      '+': 'win32yank.exe -i --crlf',
+          \      '*': 'win32yank.exe -i --crlf',
+          \    },
+          \   'paste': {
+          \      '+': 'win32yank.exe -o --lf',
+          \      '*': 'win32yank.exe -o --lf',
+          \   },
+          \   'cache_enabled': 0,
+          \ }
 
 colorscheme gruvbox " molokai
 set background=dark
