@@ -159,8 +159,11 @@ want() {
 
 need nvim "the editor"                        neovim
 need git  "lazy.nvim clones plugins over git" git
-need node "coc.nvim runs on it"               node
 want rg   "telescope live_grep (<leader>fg)"  ripgrep
+# node was a `need` until 2026-08, purely because coc.nvim ran on it. Neovim's
+# own LSP client replaced coc; node is now only needed for the language
+# servers that happen to be npm packages, and those are optional too.
+want node "most language servers install over npm"  node
 
 # Tagbar and telescope's buffer-tags picker both shell out to ctags. Universal
 # Ctags, not Exuberant, which has been unmaintained since 2009 -- and not the
@@ -174,6 +177,26 @@ if command -v ctags >/dev/null 2>&1; then
 else
   warn "ctags missing -- <leader>tt and <leader>rr will not work; $(pkg_hint universal-ctags)"
 fi
+
+# --- language servers -----------------------------------------------------
+# All optional. lua/init.lua enables only the servers whose binary is present,
+# so a machine with none of them gets a quiet editor rather than errors -- this
+# just reports which you have here. Summarised on two lines instead of one
+# warning each, because a fresh box legitimately has none.
+head_ "Language servers"
+have=""
+miss=""
+for bin in typescript-language-server vscode-eslint-language-server \
+           vscode-json-language-server vscode-html-language-server \
+           vscode-css-language-server intelephense lua-language-server; do
+  if command -v "$bin" >/dev/null 2>&1; then
+    have="$have $bin"
+  else
+    miss="$miss $bin"
+  fi
+done
+if [ -n "$have" ]; then ok "present:$have"; fi
+if [ -n "$miss" ]; then info "absent (optional):$miss"; fi
 
 # --- clipboard ------------------------------------------------------------
 # .vimrc sets clipboard+=unnamedplus and deliberately declares no g:clipboard,

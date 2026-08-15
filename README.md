@@ -27,9 +27,9 @@ cd gitnvim && ./setup.sh
 HTTPS first on purpose — on a machine you just got to, SSH keys are often the
 thing you haven't done yet.
 
-Then launch `nvim` and wait. lazy.nvim bootstraps itself and installs
-everything on first start, and coc installs its extensions from
-`vim.g.coc_global_extensions`.
+Then launch `nvim` and wait — lazy.nvim bootstraps itself and installs
+everything on first start. Nothing else is fetched: language servers are
+optional and installed per machine, if at all.
 
 The clone has to be named `gitnvim` and sit inside your neovim config
 directory — `$XDG_CONFIG_HOME/nvim`, or `~/.config/nvim` if that variable is
@@ -39,8 +39,9 @@ it. The directory *name* is still fixed, and `setup.sh` refuses to run from
 anywhere else rather than half-working.
 
 `setup.sh` creates `swapfiles/`, symlinks `init.lua` and `legacy.vim`, and
-checks for `nvim`, `node`, `git`, `ctags`, `ripgrep` and a working clipboard
-provider. It installs no plugin manager — lazy.nvim bootstraps itself. It's
+checks for `nvim` and `git`, then reports on the optional pieces — `node`,
+`ctags`, `ripgrep`, a working clipboard provider, and which language servers
+are on this machine. It installs no plugin manager — lazy.nvim bootstraps itself. It's
 idempotent — anything it would overwrite is moved aside with a timestamp
 instead.
 
@@ -116,22 +117,28 @@ Leader is <kbd>Space</kbd>.
 | `<leader>fg` | live grep (ripgrep) |
 | `<leader>rr` | tags in current buffer |
 
-### LSP / coc
+### LSP
+
+Neovim's own client. These are **its** defaults, not mappings from this config
+— they appear whenever a language server attaches and vanish quietly when none
+is running. `:h lsp-defaults`.
 
 | Key | Does |
 |---|---|
-| `gd` `gy` `gi` `gr` | definition / type / implementation / references |
 | `K` | hover docs |
-| `[g` `]g` | previous / next diagnostic |
-| `<leader>rn` | rename symbol |
-| `<leader>fm` | format selection |
-| `<leader>ac` / `<leader>qf` | code action on buffer / quickfix current line |
-| `if` `af` `ic` `ac` | function / class text objects |
-| `<leader>a` | code action on motion or selection (e.g. `<leader>aap`) |
-| `<C-s>` | expand selection range |
-| `<Tab>` / `<S-Tab>` | next / previous completion item |
-| `<CR>` | confirm completion |
-| `<leader>c` + `a e c o s j k p` | CocList: diagnostics, extensions, commands, outline, symbols, next, prev, resume |
+| `C-]` | go to definition (via `tagfunc`, so it falls back to ctags with no server) |
+| `grr` `gri` `grt` | references / implementation / type definition |
+| `grn` / `gra` | rename / code action |
+| `gO` | document symbols |
+| `C-x C-o` | completion (`omnifunc`); `C-n` for plain buffer words |
+| `[d` `]d` | previous / next diagnostic |
+
+Servers are third-party binaries and neovim ships none. `lua/init.lua` enables
+only the ones whose executable is present, so a machine with none installed
+gets a quiet editor rather than an error on every buffer — and `./setup.sh
+--check` lists which you have. That is the trade against coc.nvim, which
+auto-installed six of them over npm on first launch but made `node` mandatory
+everywhere.
 
 ### AI (gen.nvim → local ollama)
 
@@ -140,42 +147,37 @@ Leader is <kbd>Space</kbd>.
 | `<leader>]` | prompt Gen |
 | `<leader><leader>ss` | fix grammar/spelling in selection |
 
-### Mappings that changed in 2026-08
+### What muscle memory will miss
 
-All three came from coc's example config and were quietly broken or in the
-way. Fixed, but they're the kind of thing muscle memory notices:
+coc.nvim went in 2026-08 and took its whole keymap surface with it. If your
+fingers reach for one of these, this is where it went:
 
-- **CocList moved from `<space>x` to `<leader>cx`.** Since leader *is* space,
-  those were `<leader>` mappings wearing a disguise: `<space>a` shadowed
-  `<leader>a` (code action) completely, and `<space>s` made `<leader>sp` and
-  `<leader>sc` wait on timeout. The group now has a prefix of its own.
-- **`<CR>` was mapped twice.** An older `complete_info()` recipe sat below the
-  modern `coc#pum#confirm()` one and overrode it, so `coc#on_enter()` never
-  fired — no format or snippet expansion on confirm. The old block is gone.
-- **Format-selected moved from `<leader>f` to `<leader>fm`.** Leader-f is
-  telescope's prefix here, so a complete mapping on `<leader>f` alone made
-  `<leader>ff` and `<leader>fg` both wait out `timeoutlen` on every press.
+| Was | Now |
+|---|---|
+| `<Tab>` / `<CR>` in insert | plain Tab and Enter. Completion is `C-x C-o`, or `C-n` for buffer words |
+| `gd` `gy` `gi` `gr` | `C-]`, `grt`, `gri`, `grr` — neovim's defaults |
+| `<leader>rn` / `<leader>fm` | `grn` / `gra` (code action includes formatting) |
+| `<leader>a` `<leader>ac` `<leader>qf` | `gra` |
+| `<leader>c` + `a e c o s j k p` (CocList) | `gO` for symbols; `:lua vim.diagnostic.setqflist()` for the rest |
+| `<leader>uu` (Gundo) | gone — it needed Python 2, which neovim removed |
 
 ## Layout
 
 | File | What it is |
 |---|---|
-| `lua/init.lua` | entry point — lazy.nvim, plugin list, coc extensions, then sources `.vimrc` |
-| `.vimrc` | the original vimscript config, symlinked as `legacy.vim`. Options, keymaps, and all the coc boilerplate |
+| `lua/init.lua` | entry point — lazy.nvim, plugin list, LSP servers, then sources `.vimrc` |
+| `.vimrc` | the original vimscript config, symlinked as `legacy.vim`. Options and keymaps |
 | `setup.sh` | install or verify this config on a machine |
 | `scripts/` | the checks — `check-keymaps.py` runs in CI, `check-load-order.vim` by hand |
 
 ### One plugin manager
 
-lazy.nvim manages everything, coc.nvim included. Two files load, in this
-order: `lua/init.lua`, which sources `.vimrc` (as `legacy.vim`) near its end.
+lazy.nvim manages everything. Two files load, in this order: `lua/init.lua`,
+which sources `.vimrc` (as `legacy.vim`) near its end.
 
-The order is load-bearing in two places. `mapleader` and
-`coc_global_extensions` are both set *before* `lazy.setup()` — the first so
-plugin `config()` functions bind to <kbd>Space</kbd> and not `\`, the second
-because that's when coc's plugin file loads and reads it. And `.vimrc` is
-sourced *after* `lazy.setup()`, because its coc mappings reference
-`<Plug>(coc-*)`, which doesn't exist until coc has loaded.
+One bit of order is load-bearing: `mapleader` is set *before* `lazy.setup()`,
+so plugin `config()` functions bind to <kbd>Space</kbd> and not `\`. Getting
+that wrong produces no error, just keymaps on the wrong key.
 
 ### Checks
 
@@ -206,8 +208,8 @@ Because `mapleader` is <kbd>Space</kbd>, every `<space>x` mapping is a
 replaces an earlier one — the first simply stops existing. The checker reads
 `.vimrc` and `lua/init.lua` both, since a collision can span the two with
 neither file showing both sides. It reports prefix ambiguities without
-failing; the one it still flags (`<leader>a` vs `<leader>ac`) is coc's own
-design, since `<leader>a` takes a motion and has to stay a complete mapping.
+failing. It reports none at the moment — the last one belonged to coc, and
+went with it.
 
 Two more checks run **by hand**, not in CI:
 
@@ -254,7 +256,7 @@ commit messages, so the dates carry most of the story.
 | **2021–2022** | Manjaro → Ubuntu, another machine migration, several rounds of path fixing (*"Maybe this is the right path forever"*). |
 | **2023** | Everything relocates into `$HOME/.config/nvim`. coc.nvim arrives, transparency, astro. |
 | **2024** | Lua config: `init.lua` becomes the entry point, `.vimrc` demoted to `legacy.vim`, lazy.nvim and gen.nvim added. Migration deliberately partial. |
-| **2026** | Statusline crash fixed, coc actually armed, plugin set modernized. Swap files and a ctags index scrubbed from history. A win32yank clipboard provider added and removed again. netrw retired in favour of nvim-tree. |
+| **2026** | Statusline crash fixed, plugin set modernized, swap files and a ctags index scrubbed from history. Then a long cleanup: netrw, vim-plug, gundo and finally coc.nvim all retired, and the config made to actually work on macOS as well as Linux. |
 
 ### 2026-07-04 — the modernization pass
 
@@ -344,6 +346,29 @@ telescope's prefix, so a complete mapping on `<leader>f` alone made
 `init.lua` hardcoded `~/.config/nvim`, so setting it installed the config one
 place and left nvim looking in another — with `--check` reporting success
 throughout. Both go through `stdpath('config')` now.
+
+**coc.nvim retired.** It was 174 of `.vimrc`'s 320 lines — more than half the
+file, copied from coc's example config across several versions of it — and the
+only reason `node` was a hard requirement. On every new machine it fetched six
+language servers from npm before the editor was useful, which is the opposite
+of what this repo is for.
+
+Neovim's own LSP client replaced it. `nvim-lspconfig` supplies the per-server
+data; neovim wires `K`, `C-]`, `grr`/`gri`/`grn`/`gra`, `gO` and `omnifunc`
+itself when a client attaches, so there are no mappings to write. The trade is
+real and worth stating: coc auto-provisioned its servers, and built-in LSP does
+not — servers are third-party binaries installed per machine. So `init.lua`
+enables only the ones whose executable is actually present, which makes a
+machine with none of them a *quiet* machine rather than a broken one. That
+failure mode is the whole reason for the swap.
+
+`.vimrc` went 320 → 178 lines, `node` became optional, and the keymap checker
+went from 61 mappings with one ambiguity to 25 with none.
+
+Worth recording: `lualine`'s config still fed `coc#status()` into the
+statusline. Left in, that is `E117` on every redraw — the same shape as the
+2026 statusline crash that started all of this. It now shows `vim.diagnostic`
+instead.
 
 **CI right-sized, then re-aimed.** It briefly grew a smoke job that installed
 neovim, node, ctags and every plugin, on both stable and nightly, plus a step

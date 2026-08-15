@@ -4,16 +4,13 @@
 --
 -- Order matters here and has bitten before:
 --   1. bootstrap lazy.nvim
---   2. set mapleader              -- before any plugin config() runs
---   3. set coc_global_extensions  -- before coc's plugin file loads
---   4. lazy.setup()               -- plugin config() functions execute here
---   5. source legacy.vim          -- the old .vimrc, options and coc keymaps
---   6. the gen.nvim keymaps
+--   2. set mapleader     -- before any plugin config() runs
+--   3. lazy.setup()      -- plugin config() functions execute here
+--   4. source legacy.vim -- the old .vimrc: options and the remaining keymaps
+--   5. the gen.nvim keymaps
 --
--- Step 5 is late because legacy.vim is the larger, older half of the config.
--- An error raised in it aborts everything after it in this file too. It also
--- has to come after lazy.setup(), because its coc mappings reference
--- <Plug>(coc-*), which only exists once coc's plugin file has run.
+-- Step 4 is late because legacy.vim is the older half of the config, and an
+-- error raised in it aborts everything after it in this file too.
 --
 -- See README.md for keybindings.
 
@@ -52,22 +49,6 @@ vim.g.mapleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- coc installs anything missing from this list on startup, so adding a
--- language is a one-line change and never a manual :CocInstall.
--- PHP is 'coc-phpls' -- it wraps intelephense, but that isn't the package name.
---
--- Must be set before lazy.setup(), because that is where coc's plugin file now
--- loads. It sat after lazy.setup() while coc was on vim-plug and sourced by
--- hand at the end of this file.
-vim.g.coc_global_extensions = {
-  'coc-json',
-  'coc-tsserver',
-  'coc-eslint',
-  'coc-html',
-  'coc-css',
-  'coc-phpls',
-}
-
 require("lazy").setup({
   "folke/which-key.nvim",
   { "folke/neoconf.nvim", cmd = "Neoconf" },
@@ -91,7 +72,11 @@ require("lazy").setup({
       require('lualine').setup({
         options = { theme = 'gruvbox' },
         sections = {
-          lualine_c = { 'filename', function() return vim.fn['coc#status']() end },
+          -- 'diagnostics' reads vim.diagnostic, so it follows neovim's own LSP
+          -- client. This slot called coc#status() until 2026-08; leaving that
+          -- in after coc was removed would have thrown E117 on every redraw,
+          -- which is how the 2026 statusline bug started the first time.
+          lualine_c = { 'filename', 'diagnostics' },
         },
       })
     end,
@@ -115,10 +100,39 @@ require("lazy").setup({
       vim.keymap.set('n', '<leader>rr', builtin.current_buffer_tags, {})
     end,
   },
-  -- coc.nvim ships built JS on its 'release' branch; there is nothing to
-  -- compile. No lazy-loading handler on purpose -- it has to load during
-  -- lazy.setup() so <Plug>(coc-*) exists by the time legacy.vim maps to it.
-  { 'neoclide/coc.nvim', branch = 'release' },
+  -- Replaced coc.nvim in 2026-08. lspconfig supplies only the per-server
+  -- cmd/filetypes/root-marker data; neovim's own client does the rest, and
+  -- wires K, C-] (tagfunc), grr/gri/grn/gra/grt, gO and omnifunc itself when
+  -- a client attaches. See `:h lsp-defaults` -- there is nothing to map here.
+  {
+    'neovim/nvim-lspconfig',
+    config = function()
+      -- Servers are third-party binaries; neovim ships none. This config gets
+      -- carried to machines that have none of them installed, so enable only
+      -- what is actually present rather than letting nvim try to spawn a
+      -- missing command on every matching buffer. Absent server, quiet editor.
+      --
+      -- Values are the executable to look for -- also the thing to install if
+      -- you want that language working on this machine. The npm ones are
+      -- `npm i -g typescript-language-server typescript`,
+      -- `npm i -g vscode-langservers-extracted` (eslint/json/html/css) and
+      -- `npm i -g intelephense`; lua-language-server comes from brew or apt.
+      local servers = {
+        ts_ls        = 'typescript-language-server',
+        eslint       = 'vscode-eslint-language-server',
+        jsonls       = 'vscode-json-language-server',
+        html         = 'vscode-html-language-server',
+        cssls        = 'vscode-css-language-server',
+        intelephense = 'intelephense',
+        lua_ls       = 'lua-language-server',
+      }
+      for server, bin in pairs(servers) do
+        if vim.fn.executable(bin) == 1 then
+          vim.lsp.enable(server)
+        end
+      end
+    end,
+  },
   { 'David-Kunz/gen.nvim',
     opts = {
         -- model = "codellama:13b",

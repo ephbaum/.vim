@@ -9,9 +9,9 @@
 " See README.md for keybindings and the plugin-manager split.
 
 " bundles.vim used to be sourced here -- a vim-plug block holding the three
-" plugins the 2024 lua migration left behind. coc.nvim moved to lazy.nvim in
-" 2026-08 and the other two were dropped, so vim-plug is gone entirely and
-" lazy.nvim in lua/init.lua manages everything.
+" plugins the 2024 lua migration left behind. All three are gone as of 2026-08
+" (coc.nvim included), so vim-plug went with them and lazy.nvim in
+" lua/init.lua manages everything.
 
 " netrw-tree.vim used to be sourced here -- netrw dressed up as a file-tree
 " sidebar on <Leader>lex, from before nvim-tree. Removed in 2026-08: nvim-tree
@@ -46,8 +46,8 @@ set guifont=Fira\ Code\ Pro:h13
 " this path moves, .gitignore has to move with it. It didn't, once, and swap
 " files sat in this repo for seven years.
 "
-" There is no backupdir counterpart: nobackup and nowritebackup are set in the
-" coc section below, so vim never writes a backup to begin with. One used to
+" There is no backupdir counterpart: nobackup and nowritebackup are set at the
+" end of this file, so vim never writes a backup to begin with. One used to
 " be configured here anyway, along with a backupfiles/ directory that setup.sh
 " created and .gitignore guarded, for a path nothing ever wrote to.
 " stdpath('config') rather than a literal ~/.config/nvim: setup.sh has always
@@ -144,177 +144,35 @@ set mouse=a
 " their filesystems.
 
 " ---------------------------------------------------------------------------
-" coc.nvim
+" Completion and diagnostics
 "
-" Mostly verbatim from coc's own example config, accumulated across several
-" versions of it. Two known snags are flagged inline below.
+" coc.nvim lived from here to the end of this file until 2026-08 -- 174 lines,
+" more than half of it, all copied from coc's own example config across
+" several versions of it. It went because it was the only reason node was a
+" hard requirement and because it fetched six language servers from npm on
+" first launch of every new machine, which is the opposite of what this repo
+" is for.
+"
+" Neovim's own LSP client replaces it, enabled from lua/init.lua for whichever
+" servers are actually installed here. Nothing to map: neovim wires K, C-]
+" (via tagfunc), grr/gri/grn/gra/grt, gO, and omnifunc itself when a client
+" attaches. `:h lsp-defaults` lists them.
+"
+" Gone with it, if muscle memory goes looking: <Tab> and <CR> are plain <Tab>
+" and <CR> again -- completion is <C-x><C-o> (LSP) or <C-n> (buffer words) --
+" along with gd/gy/gi/gr, <leader>rn, <leader>fm, <leader>a, <leader>ac,
+" <leader>qf and the <leader>c CocList group.
 " ---------------------------------------------------------------------------
 
-" TextEdit might fail if hidden is not set.
-set hidden
-
-" Some servers have issues with backup files, see #649.
+" Kept from the coc block because they are not really about coc:
+"
+" nobackup/nowritebackup were set for language servers that choke on backup
+" files, and are also what makes the backupfiles/ entries in .gitignore moot.
 set nobackup
 set nowritebackup
 
-" `set cmdheight=2` lived here, from the era when coc needed the extra row to
-" print messages without triggering a hit-enter prompt. It doesn't any more,
-" and the row is better spent on the buffer.
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
+" Quieter ins-completion, which matters more now that completion is manual.
 set shortmess+=c
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-" Use tab for trigger completion with characters ahead and navigate
-" NOTE: There's always complete item selected by default, you may want to enable
-" no select by `"suggest.noselect": true` in your configuration file
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" A second <cr> mapping used to live here -- the older complete_info()/
-" pumvisible() recipe from an earlier version of coc's example config. It was
-" defined after the coc#pum#confirm() mapping above and silently overrode it,
-" so coc#on_enter() never fired and confirm-time formatting and snippet
-" expansion were both dead. Removed; the mapping above is now the only one.
-" `:verbose imap <CR>` to confirm.
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-"
-" <leader>fm, not the <leader>f from coc's example config. Leader-f is
-" telescope's prefix here (<leader>ff, <leader>fg in lua/init.lua), so a
-" complete mapping on <leader>f alone made both of those wait out 'timeoutlen'
-" on every press. No file contained both sides of that, which is why
-" check-keymaps.py could not see it until it learned to read the lua half.
-" Now nothing maps <leader>f by itself and the whole group is instant.
-xmap <leader>fm  <Plug>(coc-format-selected)
-nmap <leader>fm  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph.
-" This takes a motion, so it needs <leader>a to itself -- the CocList group
-" below was moved off <space>a to stop shadowing it.
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" coc status is surfaced via lualine (see lua/init.lua) instead of a manual
-" statusline string; lualine owns &statusline/&laststatus now.
-
-" Mappings using CocList, under a <leader>c prefix.
-"
-" These came from coc's example config as <space>a, <space>e, <space>c and so
-" on. Because mapleader is <space>, every one of them was really a <leader>
-" mapping in disguise: <space>a shadowed <leader>a (code action) outright, and
-" <space>s made <leader>sp and <leader>sc wait on timeout. Moving the whole
-" group under <leader>c gives it a namespace of its own -- c for CocList.
-" Show all diagnostics.
-nnoremap <silent> <leader>ca  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent> <leader>ce  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <leader>cj  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <leader>ck  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent> <leader>cp  :<C-u>CocListResume<CR>
+" Always show the signcolumn so diagnostics appearing do not shift the text.
+set signcolumn=number

@@ -61,14 +61,14 @@ call s:Assert('lazy: telescope <leader>fg', s:LeaderMapped('fg', 'n'))
 call s:Assert('legacy.vim early: <leader>wr', s:LeaderMapped('wr', 'n'))
 call s:Assert('legacy.vim early: <leader>nt', s:LeaderMapped('nt', 'n'))
 
-" 3. legacy.vim ran past the statusline region -- this is where E539 hit.
-call s:Assert('legacy.vim mid: gd (coc definition)', s:Mapped('gd', 'n'))
-call s:Assert('legacy.vim mid: K (hover)', s:Mapped('K', 'n'))
+" 3. legacy.vim ran past its middle -- roughly where E539 hit in 2026.
+call s:Assert('legacy.vim mid: <leader>tt (tagbar)', s:LeaderMapped('tt', 'n'))
+call s:Assert('legacy.vim mid: mouse=a', &mouse ==# 'a')
 
-" 4. legacy.vim reached its final lines. The CocList group is the last thing
+" 4. legacy.vim reached its final lines. signcolumn is now the last statement
 "    in the file, so this is the strongest single signal that it completed.
-call s:Assert('legacy.vim end: <leader>ca (CocList)', s:LeaderMapped('ca', 'n'))
-call s:Assert('legacy.vim end: <leader>cp (CocList)', s:LeaderMapped('cp', 'n'))
+"    It was the CocList group until coc was removed in 2026-08.
+call s:Assert('legacy.vim end: signcolumn=number', &signcolumn ==# 'number')
 
 " 5. Control returned to init.lua and it finished. These are bound after the
 "    source lines, so they only exist if legacy.vim returned cleanly.
@@ -86,20 +86,23 @@ call s:Assert('Comment.nvim (gcc)', s:Mapped('gcc', 'n'))
 call s:Assert('lualine owns the statusline', &statusline =~# 'lualine')
 call s:Assert('gen.nvim (:Gen)', exists(':Gen'))
 
-" coc.nvim moved from vim-plug to lazy.nvim in 2026-08, so this doubles as a
-" check that the move held. Note it proves coc *loaded*, not that its
-" extensions installed -- that is async and network-bound, and asserting it
-" here would trade a real signal for a flaky one.
-call s:Assert('coc.nvim (:CocList)', exists(':CocList'))
+" nvim-lspconfig replaced coc.nvim in 2026-08. This proves lazy cloned it, not
+" that any language server is installed -- servers are third-party binaries
+" and a machine with none is a supported state, not a failure.
+call s:Assert('nvim-lspconfig cloned',
+      \ isdirectory(stdpath('data') . '/lazy/nvim-lspconfig'))
 
 echo 'Configuration:'
 
 " mapleader must be set before lazy.setup(), or plugin keymaps bind to '\'.
 call s:Assert('mapleader is space', get(g:, 'mapleader', '') ==# ' ')
 
-" The <CR> collision: exactly one insert-mode mapping should survive, and it
-" should be the coc#pum#confirm() one.
-call s:Assert('<CR> maps to coc#pum#confirm', maparg('<CR>', 'i') =~# 'coc#pum#confirm')
+" <CR> in insert mode should be nothing at all. Two coc mappings fought over
+" this slot for years, the older silently overriding the newer; with coc gone
+" the correct state is unmapped, and anything here means something re-claimed
+" it. Same for <Tab>.
+call s:Assert('<CR> unmapped in insert', empty(maparg('<CR>', 'i')))
+call s:Assert('<Tab> unmapped in insert', empty(maparg('<Tab>', 'i')))
 
 " State directories exist and are writable, or vim silently drops swap files
 " into whatever directory you happened to open.
