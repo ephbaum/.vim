@@ -109,11 +109,10 @@ Leader is <kbd>Space</kbd>.
 | `<leader>]` | prompt Gen |
 | `<leader><leader>ss` | fix grammar/spelling in selection |
 
-### Two mappings that changed in 2026-08
+### Mappings that changed in 2026-08
 
-Both were stale copy-paste from successive versions of coc's example config,
-and both were silently broken. Fixed, but they're the kind of thing muscle
-memory notices:
+All three came from coc's example config and were quietly broken or in the
+way. Fixed, but they're the kind of thing muscle memory notices:
 
 - **CocList moved from `<space>x` to `<leader>cx`.** Since leader *is* space,
   those were `<leader>` mappings wearing a disguise: `<space>a` shadowed
@@ -122,6 +121,9 @@ memory notices:
 - **`<CR>` was mapped twice.** An older `complete_info()` recipe sat below the
   modern `coc#pum#confirm()` one and overrode it, so `coc#on_enter()` never
   fired — no format or snippet expansion on confirm. The old block is gone.
+- **Format-selected moved from `<leader>f` to `<leader>fm`.** Leader-f is
+  telescope's prefix here, so a complete mapping on `<leader>f` alone made
+  `<leader>ff` and `<leader>fg` both wait out `timeoutlen` on every press.
 
 ## Layout
 
@@ -130,7 +132,7 @@ memory notices:
 | `lua/init.lua` | entry point — lazy.nvim, plugin list, coc extensions, then sources `.vimrc` |
 | `.vimrc` | the original vimscript config, symlinked as `legacy.vim`. Options, keymaps, and all the coc boilerplate |
 | `setup.sh` | install or verify this config on a machine |
-| `scripts/` | the CI checks, all runnable by hand |
+| `scripts/` | the checks — `check-keymaps.py` runs in CI, `check-load-order.vim` by hand |
 
 ### One plugin manager
 
@@ -144,51 +146,46 @@ because that's when coc's plugin file loads and reads it. And `.vimrc` is
 sourced *after* `lazy.setup()`, because its coc mappings reference
 `<Plug>(coc-*)`, which doesn't exist until coc has loaded.
 
-### CI
+### Checks
 
-`.github/workflows/ci.yml` runs two jobs.
+`.github/workflows/ci.yml` runs one job, and every check in it is a regression
+test for something that actually went wrong here. That is the bar for adding
+another.
 
-**lint** — no editor needed. `shellcheck` on `setup.sh`,
-`scripts/check-keymaps.py` for mappings that override each other, and two
-guards that exist because of things this repo actually did: nothing matching
-editor state (swap files, tags indexes, netrw bookmarks) may be tracked, and
-no tracked file may contain an absolute `/home/…` or `/Users/…` path.
+| Check | Guards against |
+|---|---|
+| `shellcheck setup.sh` | `setup.sh` is real bash |
+| `scripts/check-keymaps.py` | `<space>a` silently shadowing `<leader>a`, which it did for years |
+| no editor state tracked | the swap files and `.vimtags` that got scrubbed from history |
+| no absolute `/home/…` paths | those swap files leaked `/Users/<name>/…` |
 
-**smoke** — installs neovim, node, ctags and ripgrep, runs `setup.sh` from
-the path the config expects, installs the plugins, then asserts that startup
-writes nothing to stderr and runs `scripts/ci-assert.vim`. It runs against
-both `stable` and `nightly` neovim; nightly is `continue-on-error`, so it
-warns about a coming release without failing a branch for something no commit
-here caused.
+Because `mapleader` is <kbd>Space</kbd>, every `<space>x` mapping is a
+`<leader>x` mapping in disguise, and vim reports nothing when a later mapping
+replaces an earlier one — the first simply stops existing. The checker reads
+`.vimrc` and `lua/init.lua` both, since a collision can span the two with
+neither file showing both sides. It reports prefix ambiguities without
+failing; the one it still flags (`<leader>a` vs `<leader>ac`) is coc's own
+design, since `<leader>a` takes a motion and has to stay a complete mapping.
 
-`ci-assert.vim` is the point of the whole thing. The 2026 statusline bug made
-nvim exit 0 while half the config silently never ran, so exit codes prove
-nothing here. It places tripwires at increasing depths of the load order —
-lazy's plugin `config()` functions, early `legacy.vim`, past the statusline
-region, the last lines of `legacy.vim`, then back in `init.lua` after the
-`source`. When one fails, the last one that passed is where loading gave up.
+Two more checks run **by hand**, not in CI:
 
-Those tripwires prove which *files* ran, not that any plugin installed —
-`<leader>nt` is mapped in `legacy.vim` whether or not nvim-tree exists. So a
-second group checks for things only the plugin itself provides
-(`:NvimTreeToggle`, `gcc`, lualine's `&statusline`, `:Gen`, `:CocList`). It
-checks that coc *loaded*, not that its extensions installed — that's async and
-network-bound, and asserting it would trade a real signal for a flaky one.
+```bash
+./setup.sh --check                                  # verify an install
+nvim --headless -S scripts/check-load-order.vim +qa # verify startup
+```
 
-And because an assertion harness that has never failed isn't yet known to
-work, a final step runs `ci-assert.vim` against a deliberately broken config
-(one mapping unmapped) and fails if it *passes*.
+`check-load-order.vim` is the one worth knowing about. The 2026 statusline bug
+made nvim exit 0 while half the config silently never ran, so exit codes prove
+nothing. It sets tripwires at increasing depths of the load order — lazy's
+plugin `config()` functions, early `legacy.vim`, past the statusline region,
+the last lines of `legacy.vim`, then back in `init.lua` after the `source` —
+plus a group checking that plugins really loaded. When one fails, the last one
+that passed is where loading gave up. Run it after changing the config, or on
+a new machine.
 
-`scripts/check-keymaps.py` and `./setup.sh --check` are both worth running
-locally; neither needs anything installed. The keymap checker reads
-`lua/init.lua` as well as `.vimrc` — the one ambiguity it found across that
-boundary (`<leader>f` vs telescope's `<leader>ff`) is fixed, and the one it
-still reports (`<leader>a` vs `<leader>ac`) is coc's own design: `<leader>a`
-takes a motion, so it has to be a complete mapping.
-
-`shellcheck` is worth having too — it's what the lint job runs on `setup.sh`,
-and it is the only check here you can't reproduce with what the config already
-needs.
+It ran in CI for about a day. Doing that meant installing neovim, node, ctags
+and every plugin on every push, which came to more CI than there is config —
+so it went back to being a thing you run when nvim starts but feels wrong.
 
 ### WSL clipboard
 
@@ -264,95 +261,54 @@ superseded by coc), the unused colorschemes (`badwolf`, `molokai`,
 keymaps bind to the wrong key with no error. `.vimrc` still sets it too, which
 is now a harmless no-op.
 
-### 2026-08-15 — CI hardening
+### 2026-08-15 — the cleanup pass
 
-The CI added a few days earlier had holes, found by reading it rather than by
-it failing:
+Picked up the thread from July: keep what earns its keep, delete the rest.
 
-- **Plugin installs were masked.** All three install commands ended in
-  `|| true`, and of the lazy plugins only telescope binds keys inside
-  `config()` — so it was the only one the assertions could see. nvim-tree,
-  lualine and Comment.nvim could all have failed to install with CI still
-  green. The sync no longer swallows failures, and there are now assertions
-  for things only the plugins themselves provide.
-- **The keymap checker couldn't see `lua/init.lua`.** It found the
-  `<leader>f` / `<leader>ff` ambiguity immediately once it could. Coc's
-  format-selected moved to **`<leader>fm`** as a result, so nothing maps
-  `<leader>f` on its own and telescope's prefix is instant again.
-- **`setup.sh` honoured `XDG_CONFIG_HOME` and the config didn't.** Setting it
-  installed the config to one place and left nvim looking in another, with
-  `./setup.sh --check` reporting success the whole time. Both sides go through
-  the same resolution now, and CI installs a second copy under a non-default
-  `XDG_CONFIG_HOME` to prove it.
-- **Every PR branch ran CI twice**, from `push` and `pull_request` both. Only
-  `push` remains — it already covers every branch in this repo, and
-  `pull_request` earns its keep only for fork PRs, which don't happen here.
-  A `concurrency` group now cancels superseded runs too.
-- **It also missed mappings defined inside an `:autocmd`.** The regex anchored
-  on the first word of the line, read `au`, and moved on — so the markdown
-  `<Tab>` and `<S-Tab>` mappings were invisible.
-- **`version: stable` floated.** A neovim release could turn the branch red
-  with no commit here. Now a `stable` + `nightly` matrix, nightly advisory.
-- **The tripwires had never been seen to fire.** There's a step for that now.
-- **`vim.loop` is deprecated** in favour of `vim.uv`. Since CI fails on
-  anything written to stderr during startup, and deprecation warnings go to
-  stderr, that was a build break waiting for a release.
+**netrw retired.** `netrw-tree.vim` dressed netrw up as a file-tree sidebar on
+`<leader>lex`, and had been redundant since nvim-tree arrived in 2024. Gone,
+and netrw is disabled outright in `lua/init.lua` (`g:loaded_netrw`), which is
+what nvim-tree's docs ask for — with both live, a directory-open goes to
+whichever hooked `BufEnter` first. Costs `:Explore` and `nvim scp://…`; `gx`
+is unaffected since neovim stopped routing it through netrw in 0.10. It also
+made `<leader>l` faster, which had been a prefix of `<leader>lex` and so sat
+out `timeoutlen` on every press.
 
-### 2026-08-15 — vim-plug retired
+**vim-plug retired.** The 2024 lua migration left `vim-misc`, `vim-session`
+and `coc.nvim` behind in `bundles.vim` and never followed up. coc moved to
+lazy.nvim as `{ 'neoclide/coc.nvim', branch = 'release' }` — no lazy-loading
+handler on purpose, since it must load during `lazy.setup()` for
+`<Plug>(coc-*)` to exist by the time `legacy.vim` maps to it — and
+`coc_global_extensions` moved above `lazy.setup()` for the same reason. The
+other two were dropped rather than migrated: autoload and autosave were both
+`'no'`, so it was two plugins in service of a manual `:SaveSession`, and
+`:mksession` covers that. Kills the second plugin manager, the `:checkhealth`
+warning about "paths on the rtp from another plugin manager", and a
+hand-written `source …/coc.nvim/plugin/coc.vim`.
 
-The 2024 lua migration was deliberately partial: `vim-misc`, `vim-session` and
-`coc.nvim` stayed on vim-plug in `bundles.vim` and never followed. That cost a
-second plugin manager, the `:checkhealth` warning about "paths on the rtp from
-another plugin manager", and a hand-written
-`source ~/.local/share/nvim/plugged/coc.nvim/plugin/coc.vim` at the end of
-`init.lua` — because coc's plugin file wasn't on lazy's runtimepath.
+**Inert config pruned.** `vim-multiple-cursors` (deprecated by its author),
+`rainbow_parentheses` (unmaintained a decade, four autocmds per startup),
+`g:python_host_prog` (neovim removed the py2 provider), `set cmdheight=2` (coc
+stopped needing it), the commented-out cursorline block, and `backupdir` +
+`backupfiles/` — that last one the strangest, since `nobackup` and
+`nowritebackup` meant nothing was ever written there, yet `setup.sh` created
+the directory and `.gitignore` guarded it.
 
-- **coc.nvim** moved to lazy.nvim as `{ 'neoclide/coc.nvim', branch = 'release' }`.
-  Its `release` branch ships built JS, so there's nothing to compile, and it
-  carries no lazy-loading handler on purpose — it must load during
-  `lazy.setup()` so `<Plug>(coc-*)` exists by the time `legacy.vim` maps to it.
-  `vim.g.coc_global_extensions` moved *above* `lazy.setup()` for the same
-  reason.
-- **vim-session and vim-misc** dropped. Autoload and autosave were both `'no'`,
-  so it was two plugins providing a manual `:SaveSession`. `:mksession` and
-  `nvim -S Session.vim` cover it; `Session.vim` stays gitignored.
+**`<leader>f` → `<leader>fm`** for coc's format-selected. Leader-f is
+telescope's prefix, so a complete mapping on `<leader>f` alone made
+`<leader>ff` and `<leader>fg` both wait out `timeoutlen`.
 
-`bundles.vim` is gone, `setup.sh` no longer downloads anything (so `curl` is
-off the dependency list), and the CI smoke job dropped its `+PlugInstall` step.
+**XDG paths.** `setup.sh` honoured `XDG_CONFIG_HOME` while `.vimrc` and
+`init.lua` hardcoded `~/.config/nvim`, so setting it installed the config one
+place and left nvim looking in another — with `--check` reporting success
+throughout. Both go through `stdpath('config')` now.
 
-### 2026-08-15 — pruning inert config
-
-Same spirit as the netrw removal: things that were still being loaded, or
-still being maintained in `.gitignore` and `setup.sh`, without doing anything.
-
-| Gone | Why |
-|---|---|
-| `terryma/vim-multiple-cursors` | deprecated by its own author, who points at `mg979/vim-visual-multi`. Nothing replaced it, so `<C-n>` / `<C-p>` are free. |
-| `kien/rainbow_parentheses.vim` | unmaintained for about a decade, and it ran four autocmds on every startup. |
-| `g:python_host_prog` | pointed at python2. Neovim removed that provider entirely — it existed to give `:checkhealth` something to complain about. |
-| `set cmdheight=2` | coc needed the extra row once. It doesn't now, and the row is better spent on the buffer. |
-| the commented-out cursorline block | colors picked for molokai, disabled for years. |
-| `backupdir` + `backupfiles/` | `.vimrc` sets `nobackup` and `nowritebackup`, so nothing was ever written there — but `setup.sh` created the directory, `.gitignore` guarded it, and CI checked it wasn't tracked. |
-
-### 2026-08-15 — netrw removed
-
-`netrw-tree.vim` configured netrw as a file-tree sidebar on `<leader>lex`. It
-predated nvim-tree and had been redundant since nvim-tree arrived in 2024;
-two file trees on two keys is one file tree and a distraction. Gone, and netrw
-itself is now disabled in `lua/init.lua` (`g:loaded_netrw`,
-`g:loaded_netrwPlugin`) — which is what nvim-tree's own docs ask for, since
-with both live the winner of a directory-open race is whichever hooked
-`BufEnter` first.
-
-Two side effects worth knowing:
-
-- `<leader>l` (delete to start of line, then join down) is **faster now**. It
-  was a prefix of `<leader>lex`, so every press sat out `timeoutlen` first.
-- `:Explore` and netrw's remote-file editing (`nvim scp://host/path`) are gone
-  with it. `gx` is fine — neovim stopped routing that through netrw in 0.10.
-
-The file also carried a vendored copy of an old `netrw#Lexplore()` that
-nothing had called in years. It went with it.
+**CI right-sized.** It briefly grew a smoke job that installed neovim, node,
+ctags and every plugin, on both stable and nightly, plus a step that tested
+the test harness — roughly more CI than there is config. Cut back to one lint
+job where every check is a regression test for something that actually broke
+here. `ci-assert.vim` became `scripts/check-load-order.vim` and is run by hand
+now; it's still the thing to reach for when nvim starts but feels wrong.
 
 ### 2026-08-15 — history scrub
 

@@ -1,11 +1,17 @@
-" Startup assertions. Run after config has loaded:
+" Startup assertions. Run by hand, from the repo, after changing the config or
+" setting it up somewhere new:
 "
-"   nvim --headless -S scripts/ci-assert.vim +qa
+"   nvim --headless -S scripts/check-load-order.vim +qa
 "
-" This exists because of the 2026 statusline bug. An E539 raised partway
-" through legacy.vim aborted the rest of that file *and* the rest of
-" init.lua, so roughly half the keymaps silently ceased to exist. nvim
-" started fine and exited 0. Nothing looked wrong.
+" Exits non-zero and names what failed. CI does not run this -- it needs a
+" full neovim install with every plugin present, which is most of what a CI
+" job would be, and this repo decided that job was not worth its weight. Run
+" it yourself when nvim starts but feels wrong.
+"
+" It exists because of the 2026 statusline bug. An E539 raised partway through
+" legacy.vim aborted the rest of that file *and* the rest of init.lua, so
+" roughly half the keymaps silently ceased to exist. nvim started fine and
+" exited 0. Nothing looked wrong.
 "
 " So rather than checking that startup "worked", each assertion below is a
 " tripwire at a different depth of the load order. If one fails, the point at
