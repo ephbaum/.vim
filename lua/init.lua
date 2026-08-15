@@ -16,8 +16,12 @@
 -- See README.md for keybindings.
 
 -- lazy.nvim bootstraps itself on first launch; nothing to install by hand.
+-- vim.uv is the current name; vim.loop is the deprecated alias kept for older
+-- versions. Worth caring about because CI fails the build on anything written
+-- to stderr during startup, and deprecation warnings go to stderr.
+local uv = vim.uv or vim.loop
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",

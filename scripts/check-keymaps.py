@@ -18,8 +18,13 @@ Reports two things:
              own suggested mappings do this deliberately.
 
 Static analysis: it reads the files rather than asking a running vim, so it
-sees mappings from plugins as :map would. Good enough to catch the class of
-bug above without needing nvim and every plugin installed.
+does not see mappings from plugins the way :map would. Good enough to catch
+the class of bug above without needing nvim and every plugin installed.
+
+Reads both halves of the config. It covered only the vimscript files until
+2026-08, which left a real ambiguity invisible: <leader>f (coc
+format-selected, .vimrc) is a prefix of <leader>ff and <leader>fg (telescope,
+lua/init.lua), and no single file contains both sides of that.
 """
 
 import re
@@ -43,7 +48,26 @@ MODES = {
 MAP_ARGS = r"(?:<(?:silent|expr|buffer|unique|nowait|script)>\s*)*"
 MAPPING = re.compile(r"(\w+)\s+" + MAP_ARGS + r"(\S+)")
 
-FILES = [".vimrc"]
+# An :autocmd's own arguments sit in front of the mapping it defines, e.g.
+#   au FileType markdown nnoremap <Tab> >>_
+# MAPPING anchors on the first word, so it used to read `au` here, find it
+# absent from MODES, and skip the line -- the markdown <Tab> mappings were
+# invisible until 2026-08. Strip the event and pattern first.
+AUTOCMD = re.compile(r"^au(?:t|to|toc|tocm|tocmd)?!?\s+")
+
+# vim.keymap.set('n', '<leader>ff', ...) / vim.keymap.set({'n','v'}, '<leader>]', ...)
+LUA_KEYMAP = re.compile(
+    r"""vim\.keymap\.set\(\s*
+        (\{[^}]*\}|'[^']*'|"[^"]*")   # mode, or a table of modes
+        \s*,\s*
+        ('[^']*'|"[^"]*")             # lhs
+    """,
+    re.VERBOSE,
+)
+
+VIM_FILES = [".vimrc"]
+LUA_FILES = ["lua/init.lua"]
+FILES = VIM_FILES + LUA_FILES
 
 
 def normalise(lhs: str) -> str:
@@ -59,21 +83,59 @@ def normalise(lhs: str) -> str:
     return lhs
 
 
+def strip_autocmd(line: str) -> str:
+    """`au FileType markdown nnoremap <Tab> >>_` -> `nnoremap <Tab> >>_`.
+
+    Drops the :autocmd keyword, its event list and its file pattern, leaving
+    whatever command follows. Lines whose command is not a mapping (`set`,
+    `call`, `syn match`) survive this and get filtered out by MODES as usual.
+    """
+    m = AUTOCMD.match(line)
+    if not m:
+        return line
+    parts = line[m.end():].split(None, 2)
+    return parts[2] if len(parts) == 3 else line
+
+
+def parse_vim(name: str, text: str, found):
+    for lineno, raw in enumerate(text.splitlines(), 1):
+        line = raw.strip()
+        if not line or line.startswith('"'):
+            continue
+        m = MAPPING.match(strip_autocmd(line))
+        if not m or m.group(1) not in MODES:
+            continue
+        for mode in MODES[m.group(1)]:
+            found[(mode, normalise(m.group(2)))].append((name, lineno, line))
+
+
+def parse_lua(name: str, text: str, found):
+    for lineno, raw in enumerate(text.splitlines(), 1):
+        line = raw.strip()
+        if line.startswith("--"):
+            continue
+        m = LUA_KEYMAP.search(line)
+        if not m:
+            continue
+        # Modes are already concrete here, unlike the :map variants. '' is
+        # vim.keymap.set's shorthand for the same nvo that :map means.
+        modes = "".join(re.findall(r"['\"]([^'\"]*)['\"]", m.group(1))) or "nvo"
+        lhs = m.group(2)[1:-1]
+        for mode in modes:
+            found[(mode, normalise(lhs))].append((name, lineno, line))
+
+
 def parse(root: Path):
     found = defaultdict(list)
     for name in FILES:
         path = root / name
         if not path.exists():
             continue
-        for lineno, raw in enumerate(path.read_text().splitlines(), 1):
-            line = raw.strip()
-            if not line or line.startswith('"'):
-                continue
-            m = MAPPING.match(line)
-            if not m or m.group(1) not in MODES:
-                continue
-            for mode in MODES[m.group(1)]:
-                found[(mode, normalise(m.group(2)))].append((name, lineno, line))
+        text = path.read_text()
+        if name in LUA_FILES:
+            parse_lua(name, text, found)
+        else:
+            parse_vim(name, text, found)
     return found
 
 

@@ -68,6 +68,24 @@ call s:Assert('legacy.vim end: <leader>cp (CocList)', s:LeaderMapped('cp', 'n'))
 "    source lines, so they only exist if legacy.vim returned cleanly.
 call s:Assert('init.lua after source: <leader>]', s:LeaderMapped(']', 'n'))
 
+echo 'Plugins actually loaded:'
+
+" The tripwires above prove which *files* ran. They say nothing about whether
+" lazy.nvim's clones succeeded, because every mapping they check is defined by
+" this config rather than by a plugin -- <leader>nt is mapped in legacy.vim
+" whether or not nvim-tree exists. These check for something only the plugin
+" itself can provide.
+call s:Assert('nvim-tree (:NvimTreeToggle)', exists(':NvimTreeToggle'))
+call s:Assert('Comment.nvim (gcc)', s:Mapped('gcc', 'n'))
+call s:Assert('lualine owns the statusline', &statusline =~# 'lualine')
+call s:Assert('gen.nvim (:Gen)', exists(':Gen'))
+
+" coc.nvim moved from vim-plug to lazy.nvim in 2026-08, so this doubles as a
+" check that the move held. Note it proves coc *loaded*, not that its
+" extensions installed -- that is async and network-bound, and asserting it
+" here would trade a real signal for a flaky one.
+call s:Assert('coc.nvim (:CocList)', exists(':CocList'))
+
 echo 'Configuration:'
 
 " mapleader must be set before lazy.setup(), or plugin keymaps bind to '\'.

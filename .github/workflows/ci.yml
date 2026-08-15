@@ -48,13 +48,21 @@ jobs:
   # The one that matters. Installs everything and boots nvim for real.
   smoke:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # stable gates the build. nightly is an early-warning lane: it tells
+        # us a coming neovim release breaks this config without turning the
+        # branch red for something no commit here caused.
+        neovim: [stable, nightly]
+    continue-on-error: ${{ matrix.neovim == 'nightly' }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
-          version: stable
+          version: ${{ matrix.neovim }}
 
       - uses: actions/setup-node@v4
         with:
@@ -78,11 +86,18 @@ jobs:
           ./setup.sh --check
 
       - name: install plugins
-        # One manager now. coc pulls its extensions from
-        # vim.g.coc_global_extensions on first start, which needs node.
-        run: |
-          nvim --headless "+Lazy! sync" +qa || true
-          nvim --headless "+CocInstall -sync coc-json coc-tsserver" +qa || true
+        # No `|| true` on the sync: these are git clones, and a failure here
+        # used to be swallowed, leaving the assertions below to fail with a
+        # much less obvious message.
+        run: nvim --headless "+Lazy! sync" +qa
+
+      - name: install coc extensions
+        # This one stays tolerant on purpose -- it reaches npm, and a registry
+        # hiccup is not a config regression. What it does not get to do is
+        # hide a missing coc: ci-assert.vim checks for :CocList separately.
+        # coc also pulls this list itself from vim.g.coc_global_extensions on
+        # first start; this just front-loads it.
+        run: nvim --headless "+CocInstall -sync coc-json coc-tsserver" +qa || true
 
       - name: startup produces no errors
         # An error during startup is the failure mode this repo has hit: nvim
@@ -98,3 +113,17 @@ jobs:
         run: |
           cd ~/.config/nvim/gitnvim
           nvim --headless -S scripts/ci-assert.vim +qa
+
+      - name: the assertions actually fail when the config breaks
+        # An assertion harness that has never been observed to fail is not yet
+        # known to work, and this one has been green since the day it landed.
+        # Break one thing it checks -- the last mapping in legacy.vim -- and
+        # require it to notice. `-S` is just `-c source`, so both run after
+        # init.lua has finished.
+        run: |
+          cd ~/.config/nvim/gitnvim
+          if nvim --headless -c 'nunmap <leader>ca' -S scripts/ci-assert.vim +qa 2>/dev/null; then
+            echo "ci-assert.vim passed with <leader>ca unmapped -- the tripwires are not wired up"
+            exit 1
+          fi
+          echo "tripwire fires as expected"

@@ -152,19 +152,35 @@ editor state (swap files, tags indexes, netrw bookmarks) may be tracked, and
 no tracked file may contain an absolute `/home/…` or `/Users/…` path.
 
 **smoke** — installs neovim, node, ctags and ripgrep, runs `setup.sh` from
-the path the config expects, installs both plugin managers' plugins, then
-asserts that startup writes nothing to stderr and runs
-`scripts/ci-assert.vim`.
+the path the config expects, installs the plugins, then asserts that startup
+writes nothing to stderr and runs `scripts/ci-assert.vim`. It runs against
+both `stable` and `nightly` neovim; nightly is `continue-on-error`, so it
+warns about a coming release without failing a branch for something no commit
+here caused.
 
-That last one is the point of the whole thing. The 2026 statusline bug made
+`ci-assert.vim` is the point of the whole thing. The 2026 statusline bug made
 nvim exit 0 while half the config silently never ran, so exit codes prove
-nothing here. `ci-assert.vim` places tripwires at increasing depths of the
-load order — lazy's plugin configs, early `legacy.vim`, past the statusline
+nothing here. It places tripwires at increasing depths of the load order —
+lazy's plugin `config()` functions, early `legacy.vim`, past the statusline
 region, the last lines of `legacy.vim`, then back in `init.lua` after the
 `source`. When one fails, the last one that passed is where loading gave up.
 
+Those tripwires prove which *files* ran, not that any plugin installed —
+`<leader>nt` is mapped in `legacy.vim` whether or not nvim-tree exists. So a
+second group checks for things only the plugin itself provides
+(`:NvimTreeToggle`, `gcc`, lualine's `&statusline`, `:Gen`, `:CocList`). It
+checks that coc *loaded*, not that its extensions installed — that's async and
+network-bound, and asserting it would trade a real signal for a flaky one.
+
+And because an assertion harness that has never failed isn't yet known to
+work, a final step runs `ci-assert.vim` against a deliberately broken config
+(one mapping unmapped) and fails if it *passes*.
+
 `scripts/check-keymaps.py` and `./setup.sh --check` are both worth running
-locally; neither needs anything installed.
+locally; neither needs anything installed. The keymap checker reads
+`lua/init.lua` as well as `.vimrc`, which matters — `<leader>f` (coc
+format-selected) is a prefix of telescope's `<leader>ff` and `<leader>fg`, and
+no single file contains both sides of that.
 
 ### WSL clipboard
 
@@ -239,6 +255,29 @@ superseded by coc), the unused colorschemes (`badwolf`, `molokai`,
 `mapleader` isn't set by then, `<leader>` silently falls back to `\` and the
 keymaps bind to the wrong key with no error. `.vimrc` still sets it too, which
 is now a harmless no-op.
+
+### 2026-08-15 — CI hardening
+
+The CI added a few days earlier had holes, found by reading it rather than by
+it failing:
+
+- **Plugin installs were masked.** All three install commands ended in
+  `|| true`, and of the lazy plugins only telescope binds keys inside
+  `config()` — so it was the only one the assertions could see. nvim-tree,
+  lualine and Comment.nvim could all have failed to install with CI still
+  green. The sync no longer swallows failures, and there are now assertions
+  for things only the plugins themselves provide.
+- **The keymap checker couldn't see `lua/init.lua`.** It found the
+  `<leader>f` / `<leader>ff` ambiguity immediately once it could.
+- **It also missed mappings defined inside an `:autocmd`.** The regex anchored
+  on the first word of the line, read `au`, and moved on — so the markdown
+  `<Tab>` and `<S-Tab>` mappings were invisible.
+- **`version: stable` floated.** A neovim release could turn the branch red
+  with no commit here. Now a `stable` + `nightly` matrix, nightly advisory.
+- **The tripwires had never been seen to fire.** There's a step for that now.
+- **`vim.loop` is deprecated** in favour of `vim.uv`. Since CI fails on
+  anything written to stderr during startup, and deprecation warnings go to
+  stderr, that was a build break waiting for a release.
 
 ### 2026-08-15 — vim-plug retired
 
