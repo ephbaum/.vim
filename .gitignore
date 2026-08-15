@@ -1,11 +1,75 @@
-/doc/tags
+# This repo IS the vim config directory itself -- historically ~/.vim, now
+# cloned to ~/.config/nvim/gitnvim per the README. Either way, vim's runtime
+# state lands *inside* the working tree, so everything below is repo-relative
+# and every entry is load-bearing.
+
+# --- swap files --------------------------------------------------------
+# .vimrc sets `directory=$HOME/.config/nvim/gitnvim/swapfiles//`. The
+# trailing // makes vim mangle the full path into the filename
+# (%home%user%code%file.php.swp), which no sane glob matches -- so ignore
+# the directory itself. The two globs below only catch swap files written
+# without that redirect (bare `vim` run in here). Both are needed.
 /swapfiles
-/backfiles
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
-*.un~
-Session.vim
-.netrwhist
+
+# --- backup files ------------------------------------------------------
+# .vimrc sets `backupdir=$HOME/.config/nvim/gitnvim/backupfiles//` and the
+# README's setup step tells you to mkdir it. This entry read /backfiles
+# until 2026 -- a typo that never matched the real directory. *~ happened
+# to cover it because vim's default backupext is ~, but that is luck, not
+# design. Currently moot anyway: nobackup/nowritebackup are set below.
+/backupfiles
 *~
+
+# --- undo files --------------------------------------------------------
+# undofile is not enabled today. Placeholder so turning it on later does
+# not immediately start committing undo history.
+*.un~
+
+# --- tags / helptags ---------------------------------------------------
+# .vimtags was written by vim-easytags and committed for five years before
+# anyone noticed; it embedded absolute paths and source lines from every
+# project ever indexed. /tags is plain `ctags -R` output, which the README
+# still recommends installing ctags for.
 .vimtags
+/tags
+/doc/tags
+
+# --- sessions ----------------------------------------------------------
+# :mksession output, plus xolox/vim-session's directory (g:session_directory
+# is unset in .vimrc, so it defaults to inside this repo).
+Session.vim
+/session/
+
+# --- netrw state -------------------------------------------------------
+# Bookmarks and history, written side by side. .netrwhist was ignored in
+# 2020; .netrwbook was not, and rode along until 2026 carrying a stale
+# bookmark to a decade-old work checkout.
+.netrwhist
 .netrwbook
+
+# --- spell -------------------------------------------------------------
+# `zg` additions land here (<Leader>sp enables spellcheck). To commit a
+# curated dictionary on purpose, name it something else and negate it:
+#   !spell/dotfiles-glossary.add
+spell/*.add
+spell/*.add.spl
+
+# --- plugin manager leftovers ------------------------------------------
+# lazy.nvim keeps its install dir and lockfile outside the repo, but the
+# Vundle and vim-plug eras both wrote in here.
+/bundle/
+/autoload/plug.vim
+
+# --- coc.nvim ----------------------------------------------------------
+# coc writes project-local settings to <workspace>/.vim/coc-settings.json.
+# Editing this repo makes this repo the workspace, hence a nested .vim/.
+/.vim/
+
+# --- OS and editor artifacts -------------------------------------------
+# The :Zone.Identifier stream is stamped by Windows/WSL on downloaded
+# files; one is already tracked under images/ and had to be untracked by
+# hand, since ignoring a tracked file does nothing.
+.DS_Store
+*:Zone.Identifier
