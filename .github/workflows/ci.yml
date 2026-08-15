@@ -1,10 +1,19 @@
 name: ci
 
 on:
+  # push only. Every branch here is pushed directly to this repo, so the push
+  # event already covers any branch a PR is opened from -- `pull_request:` was
+  # alongside this until 2026-08 and did nothing but run the whole workflow a
+  # second time on those branches. It earns its place only for pull requests
+  # from forks, which do not happen on a private single-owner dotfiles repo.
   push:
     branches: ["**"]
-  pull_request:
   workflow_dispatch:
+
+# Push twice in quick succession and only the newer run matters.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # Fast, no editor required. Catches the two classes of mistake this repo has
@@ -72,8 +81,11 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y universal-ctags ripgrep
 
       - name: run setup.sh from the path the config expects
-        # .vimrc and init.lua reference ~/.config/nvim/gitnvim absolutely, so
-        # the checkout has to be moved there before any of this means anything.
+        # The config locates itself via stdpath('config') and the clone must be
+        # named gitnvim, so the checkout has to be moved into the neovim config
+        # directory before any of this means anything. XDG_CONFIG_HOME is unset
+        # here, so that is ~/.config/nvim; a later step repeats this with the
+        # variable set, to prove both resolve the same way.
         run: |
           mkdir -p ~/.config/nvim
           cp -r "$GITHUB_WORKSPACE" ~/.config/nvim/gitnvim
@@ -112,6 +124,23 @@ jobs:
       - name: load-order assertions
         run: |
           cd ~/.config/nvim/gitnvim
+          nvim --headless -S scripts/ci-assert.vim +qa
+
+      - name: config follows XDG_CONFIG_HOME
+        # setup.sh honoured XDG_CONFIG_HOME while .vimrc hardcoded
+        # ~/.config/nvim, so setting the variable installed the config to one
+        # place and made nvim look for it in another -- with `--check`
+        # reporting that everything passed. Both halves go through the same
+        # resolution now; this proves they agree. Plugins live under
+        # XDG_DATA_HOME, which is untouched, so nothing reinstalls here.
+        env:
+          XDG_CONFIG_HOME: /tmp/xdg-config
+        run: |
+          mkdir -p "$XDG_CONFIG_HOME/nvim"
+          cp -r "$GITHUB_WORKSPACE" "$XDG_CONFIG_HOME/nvim/gitnvim"
+          cd "$XDG_CONFIG_HOME/nvim/gitnvim"
+          ./setup.sh
+          ./setup.sh --check
           nvim --headless -S scripts/ci-assert.vim +qa
 
       - name: the assertions actually fail when the config breaks

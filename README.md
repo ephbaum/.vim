@@ -20,9 +20,12 @@ Then launch `nvim` and wait. lazy.nvim bootstraps itself and installs
 everything on first start, and coc installs its extensions from
 `vim.g.coc_global_extensions`.
 
-The clone has to be named `gitnvim` and live at `~/.config/nvim` — `.vimrc`
-and `lua/init.lua` reference that path absolutely. `setup.sh` refuses to run
-from anywhere else rather than half-working.
+The clone has to be named `gitnvim` and sit inside your neovim config
+directory — `$XDG_CONFIG_HOME/nvim`, or `~/.config/nvim` if that variable is
+unset. `.vimrc` and `lua/init.lua` locate themselves with `stdpath('config')`,
+which is the same thing `setup.sh` computes, so the two agree wherever you put
+it. The directory *name* is still fixed, and `setup.sh` refuses to run from
+anywhere else rather than half-working.
 
 `setup.sh` creates `swapfiles/`, symlinks `init.lua` and `legacy.vim`, and
 checks for `nvim`, `node`, `git`, `ctags` and `ripgrep`. It installs no plugin
@@ -90,7 +93,7 @@ Leader is <kbd>Space</kbd>.
 | `K` | hover docs |
 | `[g` `]g` | previous / next diagnostic |
 | `<leader>rn` | rename symbol |
-| `<leader>f` | format selection |
+| `<leader>fm` | format selection |
 | `<leader>ac` / `<leader>qf` | code action on buffer / quickfix current line |
 | `if` `af` `ic` `ac` | function / class text objects |
 | `<leader>a` | code action on motion or selection (e.g. `<leader>aap`) |
@@ -178,9 +181,14 @@ work, a final step runs `ci-assert.vim` against a deliberately broken config
 
 `scripts/check-keymaps.py` and `./setup.sh --check` are both worth running
 locally; neither needs anything installed. The keymap checker reads
-`lua/init.lua` as well as `.vimrc`, which matters — `<leader>f` (coc
-format-selected) is a prefix of telescope's `<leader>ff` and `<leader>fg`, and
-no single file contains both sides of that.
+`lua/init.lua` as well as `.vimrc` — the one ambiguity it found across that
+boundary (`<leader>f` vs telescope's `<leader>ff`) is fixed, and the one it
+still reports (`<leader>a` vs `<leader>ac`) is coc's own design: `<leader>a`
+takes a motion, so it has to be a complete mapping.
+
+`shellcheck` is worth having too — it's what the lint job runs on `setup.sh`,
+and it is the only check here you can't reproduce with what the config already
+needs.
 
 ### WSL clipboard
 
@@ -268,7 +276,18 @@ it failing:
   green. The sync no longer swallows failures, and there are now assertions
   for things only the plugins themselves provide.
 - **The keymap checker couldn't see `lua/init.lua`.** It found the
-  `<leader>f` / `<leader>ff` ambiguity immediately once it could.
+  `<leader>f` / `<leader>ff` ambiguity immediately once it could. Coc's
+  format-selected moved to **`<leader>fm`** as a result, so nothing maps
+  `<leader>f` on its own and telescope's prefix is instant again.
+- **`setup.sh` honoured `XDG_CONFIG_HOME` and the config didn't.** Setting it
+  installed the config to one place and left nvim looking in another, with
+  `./setup.sh --check` reporting success the whole time. Both sides go through
+  the same resolution now, and CI installs a second copy under a non-default
+  `XDG_CONFIG_HOME` to prove it.
+- **Every PR branch ran CI twice**, from `push` and `pull_request` both. Only
+  `push` remains — it already covers every branch in this repo, and
+  `pull_request` earns its keep only for fork PRs, which don't happen here.
+  A `concurrency` group now cancels superseded runs too.
 - **It also missed mappings defined inside an `:autocmd`.** The regex anchored
   on the first word of the line, read `au`, and moved on — so the markdown
   `<Tab>` and `<S-Tab>` mappings were invisible.

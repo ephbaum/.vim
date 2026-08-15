@@ -34,8 +34,10 @@ bad()  { printf '  \033[31mFAIL\033[0m  %s\n' "$*"; problems=$((problems + 1)); 
 head_() { printf '\n\033[1m%s\033[0m\n' "$*"; }
 
 # --- where does this repo live -------------------------------------------
-# .vimrc and init.lua reference $HOME/.config/nvim/gitnvim by absolute path,
-# so a clone anywhere else will half-work in confusing ways.
+# .vimrc and init.lua locate themselves via stdpath('config'), which resolves
+# to exactly the NVIM_CONFIG below -- XDG_CONFIG_HOME included. The directory
+# name is still fixed at gitnvim, so a clone under any other name will
+# half-work in confusing ways.
 head_ "Location"
 EXPECTED="$NVIM_CONFIG/gitnvim"
 if [ "$REPO" = "$EXPECTED" ]; then

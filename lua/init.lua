@@ -1,4 +1,6 @@
--- Entry point. Symlinked to ~/.config/nvim/init.lua.
+-- Entry point. Symlinked to <nvim config dir>/init.lua -- that is
+-- $XDG_CONFIG_HOME/nvim, or ~/.config/nvim when the variable is unset. Paths
+-- below go through stdpath('config') so they follow it either way.
 --
 -- Order matters here and has bitten before:
 --   1. bootstrap lazy.nvim
@@ -132,7 +134,7 @@ require("lazy").setup({
 
 -- The old .vimrc. Everything above is available to it; nothing below runs if
 -- it throws.
-vim.cmd('source ~/.config/nvim/legacy.vim')
+vim.cmd('source ' .. vim.fn.stdpath('config') .. '/legacy.vim')
 
 vim.keymap.set({ 'n', 'v' }, '<leader>]', ':Gen<CR>')
 vim.keymap.set('v', '<leader><leader>ss', ':Gen Enhance_Grammar_Spelling<CR>')

@@ -50,7 +50,12 @@ set guifont=Fira\ Code\ Pro:h13
 " coc section below, so vim never writes a backup to begin with. One used to
 " be configured here anyway, along with a backupfiles/ directory that setup.sh
 " created and .gitignore guarded, for a path nothing ever wrote to.
-set directory=$HOME/.config/nvim/gitnvim/swapfiles//
+" stdpath('config') rather than a literal ~/.config/nvim: setup.sh has always
+" honoured XDG_CONFIG_HOME while this line did not, so setting that variable
+" made the script install to one place and the config look in another -- while
+" reporting all checks passed. `let &directory` rather than `set directory=`
+" because the assignment form needs no escaping if the path contains spaces.
+let &directory = stdpath('config') . '/gitnvim/swapfiles//'
 
 " Sets <Leader> to space bar, who needs it anyway?
 " No-op in practice: lua/init.lua sets this before lazy.setup() so plugin
@@ -225,8 +230,15 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+"
+" <leader>fm, not the <leader>f from coc's example config. Leader-f is
+" telescope's prefix here (<leader>ff, <leader>fg in lua/init.lua), so a
+" complete mapping on <leader>f alone made both of those wait out 'timeoutlen'
+" on every press. No file contained both sides of that, which is why
+" check-keymaps.py could not see it until it learned to read the lua half.
+" Now nothing maps <leader>f by itself and the whole group is instant.
+xmap <leader>fm  <Plug>(coc-format-selected)
+nmap <leader>fm  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
