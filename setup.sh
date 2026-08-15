@@ -50,7 +50,10 @@ fi
 # backupfiles/ was created here too until 2026-08, for a backupdir that
 # nobackup/nowritebackup meant vim never wrote to.
 head_ "State directories"
-for d in swapfiles; do
+# A function rather than a loop: swapfiles/ is the only one left, and SC2043
+# rightly objects to iterating over a single constant.
+state_dir() {
+  local d="$1"
   if [ -d "$REPO/$d" ]; then
     ok "$d/"
   elif [ "$MODE" = check ]; then
@@ -61,7 +64,8 @@ for d in swapfiles; do
   if [ -d "$REPO/$d" ] && ! git -C "$REPO" check-ignore -q "$d/probe" 2>/dev/null; then
     bad "$d/ is NOT gitignored -- editor state could be committed"
   fi
-done
+}
+state_dir swapfiles
 
 # --- symlinks -------------------------------------------------------------
 # init.lua is the entry point; legacy.vim is the old .vimrc, sourced from it.
