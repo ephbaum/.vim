@@ -51,3 +51,41 @@ jobs:
             echo "absolute home paths found:"; echo "$bad"; exit 1
           fi
           echo "clean"
+
+  # The point of this repo is that it comes with me -- macOS, bare Linux, a VM,
+  # WSL2. Whether setup.sh works on a platform I am not currently sitting at is
+  # the one thing I cannot check for myself, so it is the one thing worth a
+  # runner. macOS especially: stock bash there is 3.2, sed is BSD, and ctags is
+  # a different program.
+  setup:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+
+      - name: setup.sh installs, then agrees it installed
+        # No plugins are installed and nvim is never started -- that is not
+        # what this is testing. It asks whether the script runs to completion
+        # on this platform and then verifies its own work.
+        run: |
+          mkdir -p ~/.config/nvim
+          cp -r "$GITHUB_WORKSPACE" ~/.config/nvim/gitnvim
+          cd ~/.config/nvim/gitnvim
+          ./setup.sh
+          ./setup.sh --check
+
+      - name: --help renders (BSD sed vs GNU sed)
+        run: |
+          cd ~/.config/nvim/gitnvim
+          ./setup.sh --help | tee help.txt
+          if grep -q '^#' help.txt; then
+            echo "comment markers survived -- the sed in --help is not portable"; exit 1
+          fi

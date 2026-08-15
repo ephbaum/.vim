@@ -95,7 +95,11 @@ nnoremap <silent> <Leader>nsp :set nospell<CR>
 
 " Maps plugin functionality to use Leader
 " <Leader>ff, <Leader>fg, <Leader>rr are set in lua/init.lua (telescope.nvim)
-nnoremap <silent><Leader>uu :GundoToggle<CR>
+" <Leader>uu was :GundoToggle. gundo.vim requires Python 2.4+ and is a mirror
+" of an abandoned bitbucket project; neovim removed the py2 provider, so the
+" mapping had been dead for some time without ever saying so. Dropped in
+" 2026-08 rather than swapped -- neovim has persistent undo and :undolist.
+" simnalamburt/vim-mundo is the maintained py3 fork if the tree is missed.
 nnoremap <silent><Leader>tt :TagbarOpenAutoClose<CR>
 nnoremap <silent><Leader>sc :Vscratch<CR>
 nnoremap <silent><Leader>nt :NvimTreeToggle<CR>
@@ -131,10 +135,13 @@ autocmd BufNewFile,BufRead *.styl set filetype=sass
 " Because nvim needs special
 set mouse=a
 
-" Here's Python. g:python_host_prog (python2) was set here until 2026-08 --
-" neovim removed the py2 provider entirely, so it did nothing but give
-" :checkhealth something to complain about.
-let g:python3_host_prog = '/usr/bin/python3'
+" No python_host_prog or python3_host_prog. Both were set here until 2026-08:
+" the py2 one for a provider neovim removed outright, and the py3 one pinned
+" to a literal /usr/bin/python3 -- which is the Xcode CLT stub on macOS and
+" the wrong interpreter on any pyenv or asdf setup. Neovim finds python3 on
+" PATH by itself, and pinning it to one without pynvim is worse than leaving
+" it alone. This config gets carried between machines; it should not name
+" their filesystems.
 
 " ---------------------------------------------------------------------------
 " coc.nvim

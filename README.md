@@ -4,17 +4,28 @@ My neovim configuration. The repo is named `.vim` for historical reasons — it
 used to *be* `~/.vim`. It now lives at `~/.config/nvim/gitnvim` and is wired
 into neovim by two symlinks.
 
-I got tired of relearning how to set this up every time I moved machines, so
-the setup steps and the reasoning behind the current layout are written down
-here rather than rediscovered.
+The point of it is that it comes with me: whatever machine I land on and want
+to vim around properly, this is the config I pull down. macOS, bare Linux, a
+Linux VM, WSL2. None of that was designed — it accreted across a decade of
+moving between machines, from vim to neovim and through several plugin
+managers — but portability is what it's *for*, so anything that only works on
+one platform is a bug here.
+
+I got tired of relearning how to set this up every time I moved, so the setup
+steps and the reasoning behind the current layout are written down rather than
+rediscovered.
 
 ## Setup
 
 ```bash
-mkdir -p $HOME/.config/nvim && cd $HOME/.config/nvim
-git clone git@github.com:ephbaum/.vim.git gitnvim
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+cd "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+git clone https://github.com/ephbaum/.vim.git gitnvim   # or git@github.com:… if keys are set up
 cd gitnvim && ./setup.sh
 ```
+
+HTTPS first on purpose — on a machine you just got to, SSH keys are often the
+thing you haven't done yet.
 
 Then launch `nvim` and wait. lazy.nvim bootstraps itself and installs
 everything on first start, and coc installs its extensions from
@@ -28,24 +39,45 @@ it. The directory *name* is still fixed, and `setup.sh` refuses to run from
 anywhere else rather than half-working.
 
 `setup.sh` creates `swapfiles/`, symlinks `init.lua` and `legacy.vim`, and
-checks for `nvim`, `node`, `git`, `ctags` and `ripgrep`. It installs no plugin
-manager — lazy.nvim bootstraps itself. It's idempotent — anything it would
-overwrite is moved aside with a timestamp instead.
+checks for `nvim`, `node`, `git`, `ctags`, `ripgrep` and a working clipboard
+provider. It installs no plugin manager — lazy.nvim bootstraps itself. It's
+idempotent — anything it would overwrite is moved aside with a timestamp
+instead.
+
+It detects the platform first and adapts: install hints come out as `brew` on
+macOS and `apt` elsewhere, and the clipboard check looks for the right tool
+rather than assuming one. The script itself sticks to bash 3.2 and POSIX-ish
+flags, because stock macOS still ships bash 3.2 and BSD `sed` is not GNU
+`sed`.
 
 ```bash
 ./setup.sh --check   # verify an existing install, change nothing
 ./setup.sh --force   # replace files that would otherwise block the install
 ```
 
-### Also worth knowing
+### Per-platform
 
-- **ctags** must be
-  [Universal Ctags](https://github.com/universal-ctags/ctags)
-  (`sudo apt install universal-ctags`), not Exuberant Ctags, which this README
-  recommended for years despite it being unmaintained since 2009.
-- **[FiraCode](https://github.com/tonsky/FiraCode)** is the font this is tuned
-  for. Under WSL, install it on the Windows side and pick it in Windows
-  Terminal.
+`./setup.sh --check` tells you which of these you're missing on the machine
+you're on; this is what it's checking against.
+
+| | clipboard | ctags |
+|---|---|---|
+| **macOS** | `pbcopy` — built in | `brew install universal-ctags` (`/usr/bin/ctags` is BSD ctags, a different program) |
+| **Linux / X11** | `xclip` or `xsel` | `sudo apt install universal-ctags` |
+| **Linux / Wayland** | `wl-clipboard` | as above |
+| **WSL2** | `clip.exe` + `powershell.exe`, on PATH only while Windows interop is on | as above |
+
+Without a clipboard provider, `clipboard+=unnamedplus` silently does nothing
+and yanks never leave the editor — `:checkhealth provider` says what neovim
+settled on.
+
+**ctags** must be [Universal Ctags](https://github.com/universal-ctags/ctags),
+not Exuberant Ctags, which this README recommended for years despite it being
+unmaintained since 2009.
+
+**[FiraCode](https://github.com/tonsky/FiraCode)** is the font this is tuned
+for. Under WSL, install it on the Windows side and pick it in Windows
+Terminal.
 
 ![Screenshot of Windows Terminal running NVIM with FiraCode, gruvbox, transparency and scanlines](images/nvim_fira_code_windows_terminal_gruvbox.png)
 
@@ -74,7 +106,6 @@ Leader is <kbd>Space</kbd>.
 | `<leader>+` / `<leader>_` | taller / shorter by a third |
 | `<leader>nt` | toggle nvim-tree |
 | `<leader>tt` | Tagbar |
-| `<leader>uu` | Gundo undo tree |
 | `<leader>sc` | scratch buffer |
 
 ### Find (telescope)
@@ -148,9 +179,12 @@ sourced *after* `lazy.setup()`, because its coc mappings reference
 
 ### Checks
 
-`.github/workflows/ci.yml` runs one job, and every check in it is a regression
-test for something that actually went wrong here. That is the bar for adding
-another.
+`.github/workflows/ci.yml` runs two jobs. Everything in them is either a
+regression test for something that actually went wrong here, or a check on the
+one property this repo exists for — that it works on a machine I'm not
+currently sitting at. That's the bar for adding a third.
+
+**lint**, on Linux:
 
 | Check | Guards against |
 |---|---|
@@ -158,6 +192,14 @@ another.
 | `scripts/check-keymaps.py` | `<space>a` silently shadowing `<leader>a`, which it did for years |
 | no editor state tracked | the swap files and `.vimtags` that got scrubbed from history |
 | no absolute `/home/…` paths | those swap files leaked `/Users/<name>/…` |
+
+**setup**, on `ubuntu-latest` *and* `macos-latest`: runs `./setup.sh`, then
+`./setup.sh --check` to make it verify its own work, then checks that
+`--help` renders. It installs no plugins and never starts nvim — that isn't
+what it's for. It's there because macOS is where portability breaks: stock
+bash is 3.2, `sed` is BSD, and `ctags` is a different program. Whether the
+script survives that is the one thing I can't check from whichever machine
+I happen to be on.
 
 Because `mapleader` is <kbd>Space</kbd>, every `<space>x` mapping is a
 `<leader>x` mapping in disguise, and vim reports nothing when a later mapping
@@ -303,12 +345,36 @@ telescope's prefix, so a complete mapping on `<leader>f` alone made
 place and left nvim looking in another — with `--check` reporting success
 throughout. Both go through `stdpath('config')` now.
 
-**CI right-sized.** It briefly grew a smoke job that installed neovim, node,
-ctags and every plugin, on both stable and nightly, plus a step that tested
-the test harness — roughly more CI than there is config. Cut back to one lint
-job where every check is a regression test for something that actually broke
-here. `ci-assert.vim` became `scripts/check-load-order.vim` and is run by hand
-now; it's still the thing to reach for when nvim starts but feels wrong.
+**CI right-sized, then re-aimed.** It briefly grew a smoke job that installed
+neovim, node, ctags and every plugin, on both stable and nightly, plus a step
+that tested the test harness — roughly more CI than there is config. Cut back
+to lint, then given one job that earns its place: `setup.sh` on macOS as well
+as Linux. Testing that nvim boots on Ubuntu was never the question; whether
+this installs on a machine I'm not sitting at is. `ci-assert.vim` became
+`scripts/check-load-order.vim` and is run by hand now — still the thing to
+reach for when nvim starts but feels wrong.
+
+**Portability fixes**, once the actual goal got stated out loud:
+
+- `g:python3_host_prog` pointed at a literal `/usr/bin/python3` — the Xcode CLT
+  stub on macOS, the wrong interpreter under pyenv or asdf. Gone; neovim finds
+  python on PATH by itself.
+- `gundo.vim` (`<leader>uu`) requires Python 2.4+ and mirrors an abandoned
+  bitbucket project. Neovim removed the py2 provider, so the mapping had been
+  dead without ever saying so. Dropped — `:undolist` and persistent undo cover
+  most of it, and `simnalamburt/vim-mundo` is the py3 fork if the tree is
+  missed.
+- `setup.sh --help` used `sed 's/^# \?//'`, and `\?` in a BRE is a GNU
+  extension — BSD sed on macOS reads it as a literal `?` and leaves the
+  comment markers in. Now `sed -E`.
+- `setup.sh` detects the platform and checks for the right **clipboard**
+  provider, which nothing did before. A yank that silently fails to leave the
+  editor is the most "this is broken" thing on a new machine, and
+  `clipboard+=unnamedplus` does exactly that with no provider installed.
+- Install hints are now `brew` on macOS and `apt` elsewhere, and the ctags
+  check says why `/usr/bin/ctags` on a Mac isn't the one you want.
+- The README's clone line leads with HTTPS, since SSH keys are usually the
+  thing you haven't set up yet on a machine you just got to.
 
 ### 2026-08-15 — history scrub
 

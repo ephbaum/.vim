@@ -80,7 +80,6 @@ require("lazy").setup({
   'morhetz/gruvbox',
   'pangloss/vim-javascript',
   'sheerun/vim-polyglot',
-  'sjl/gundo.vim',
   'tpope/vim-sensible',
   'tpope/vim-surround',
   'tribela/vim-transparent',
