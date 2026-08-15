@@ -236,6 +236,20 @@ superseded by coc), the unused colorschemes (`badwolf`, `molokai`,
 keymaps bind to the wrong key with no error. `.vimrc` still sets it too, which
 is now a harmless no-op.
 
+### 2026-08-15 — pruning inert config
+
+Same spirit as the netrw removal: things that were still being loaded, or
+still being maintained in `.gitignore` and `setup.sh`, without doing anything.
+
+| Gone | Why |
+|---|---|
+| `terryma/vim-multiple-cursors` | deprecated by its own author, who points at `mg979/vim-visual-multi`. Nothing replaced it, so `<C-n>` / `<C-p>` are free. |
+| `kien/rainbow_parentheses.vim` | unmaintained for about a decade, and it ran four autocmds on every startup. |
+| `g:python_host_prog` | pointed at python2. Neovim removed that provider entirely — it existed to give `:checkhealth` something to complain about. |
+| `set cmdheight=2` | coc needed the extra row once. It doesn't now, and the row is better spent on the buffer. |
+| the commented-out cursorline block | colors picked for molokai, disabled for years. |
+| `backupdir` + `backupfiles/` | `.vimrc` sets `nobackup` and `nowritebackup`, so nothing was ever written there — but `setup.sh` created the directory, `.gitignore` guarded it, and CI checked it wasn't tracked. |
+
 ### 2026-08-15 — netrw removed
 
 `netrw-tree.vim` configured netrw as a file-tree sidebar on `<leader>lex`. It

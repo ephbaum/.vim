@@ -39,29 +39,16 @@ colorscheme gruvbox " molokai
 set background=dark
 set guifont=Fira\ Code\ Pro:h13
 
-" Swap and backup go inside the repo clone, and the trailing // makes vim
-" encode the full path into the filename. Both directories are gitignored by
-" name -- if either path moves, .gitignore has to move with it. It didn't,
-" once, and swap files sat in this repo for seven years.
+" Swap files go inside the repo clone, and the trailing // makes vim encode
+" the full path into the filename. The directory is gitignored by name -- if
+" this path moves, .gitignore has to move with it. It didn't, once, and swap
+" files sat in this repo for seven years.
+"
+" There is no backupdir counterpart: nobackup and nowritebackup are set in the
+" coc section below, so vim never writes a backup to begin with. One used to
+" be configured here anyway, along with a backupfiles/ directory that setup.sh
+" created and .gitignore guarded, for a path nothing ever wrote to.
 set directory=$HOME/.config/nvim/gitnvim/swapfiles//
-set backupdir=$HOME/.config/nvim/gitnvim/backupfiles//
-
-" Cursor row/column crosshair. Off -- it was noisy and the colors below were
-" picked for molokai; CursorColumn in particular reads badly against gruvbox.
-"au WinLeave * set nocursorline nocursorcolumn
-"au InsertEnter * set nocursorline nocursorcolumn
-"au WinEnter * set cursorline cursorcolumn
-"au InsertLeave * set cursorline cursorcolumn
-"set cursorline cursorcolumn
-" hi CursorLine ctermbg=053 guibg=#5f005f " Good for Molokai
-" hi CursorColumn ctermbg=053 guibg=#5f005f " Bad for Gruvbox
-" hi CursorLineNr ctermbg=053 ctermfg=219 guibg=#5f005f guibg=#ffafff
-
-" Load RainbowParentheses automagically
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
 " Sets <Leader> to space bar, who needs it anyway?
 " No-op in practice: lua/init.lua sets this before lazy.setup() so plugin
@@ -109,12 +96,10 @@ nnoremap <silent><Leader>nt :NvimTreeToggle<CR>
 " Show trailing whitepace and spaces before a tab:
 autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/ containedin=ALL
 
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_key='<F12>'
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
+" terryma/vim-multiple-cursors was configured here on <F12>/<C-n>/<C-p>/<C-x>.
+" Removed in 2026-08 along with the plugin -- it was deprecated by its own
+" author, who points at mg979/vim-visual-multi instead. Nothing replaced it
+" yet, so <C-n> and <C-p> are free again.
 
 " xolox/vim-session. Autoload/autosave off -- :SaveSession and :OpenSession
 " still work by hand. session_directory is left unset, so sessions land in
@@ -143,10 +128,9 @@ autocmd BufNewFile,BufRead *.styl set filetype=sass
 " Because nvim needs special
 set mouse=a
 
-" Here's Python. python_host_prog points at python2, which no current distro
-" ships -- neovim dropped the py2 provider anyway, so it's inert. Harmless
-" until `:checkhealth` complains at you about it.
-let g:python_host_prog = '/usr/bin/python2'
+" Here's Python. g:python_host_prog (python2) was set here until 2026-08 --
+" neovim removed the py2 provider entirely, so it did nothing but give
+" :checkhealth something to complain about.
 let g:python3_host_prog = '/usr/bin/python3'
 
 " ---------------------------------------------------------------------------
@@ -163,8 +147,9 @@ set hidden
 set nobackup
 set nowritebackup
 
-" Give more space for displaying messages.
-set cmdheight=2
+" `set cmdheight=2` lived here, from the era when coc needed the extra row to
+" print messages without triggering a hit-enter prompt. It doesn't any more,
+" and the row is better spent on the buffer.
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.

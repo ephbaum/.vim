@@ -14,11 +14,12 @@
 [._]s[a-w][a-z]
 
 # --- backup files ------------------------------------------------------
-# .vimrc sets `backupdir=$HOME/.config/nvim/gitnvim/backupfiles//` and the
-# README's setup step tells you to mkdir it. This entry read /backfiles
-# until 2026 -- a typo that never matched the real directory. *~ happened
-# to cover it because vim's default backupext is ~, but that is luck, not
-# design. Currently moot anyway: nobackup/nowritebackup are set below.
+# .vimrc sets nobackup/nowritebackup, so vim writes no backups at all. It
+# also used to set a backupdir pointing at backupfiles/ in here, which this
+# entry read as /backfiles until 2026 -- a typo that never matched. *~
+# happened to cover it because vim's default backupext is ~, but that was
+# luck, not design. Both the setting and the directory are gone now; these
+# two stay as insurance against turning 'backup' back on.
 /backupfiles
 *~
 

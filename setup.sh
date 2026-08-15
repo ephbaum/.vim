@@ -50,8 +50,10 @@ fi
 
 # --- state directories ----------------------------------------------------
 # Named to match .gitignore. If these move, .gitignore has to move with them.
+# backupfiles/ was created here too until 2026-08, for a backupdir that
+# nobackup/nowritebackup meant vim never wrote to.
 head_ "State directories"
-for d in swapfiles backupfiles; do
+for d in swapfiles; do
   if [ -d "$REPO/$d" ]; then
     ok "$d/"
   elif [ "$MODE" = check ]; then
