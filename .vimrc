@@ -11,8 +11,10 @@
 " vim-plug's three holdouts: vim-misc, vim-session, coc.nvim
 source ~/.config/nvim/gitnvim/bundles.vim
 
-" netrw configured as a file-tree sidebar, predates nvim-tree
-source ~/.config/nvim/gitnvim/netrw-tree.vim
+" netrw-tree.vim used to be sourced here -- netrw dressed up as a file-tree
+" sidebar on <Leader>lex, from before nvim-tree. Removed in 2026-08: nvim-tree
+" does the job on <Leader>nt, and netrw itself is now disabled outright in
+" lua/init.lua. See README for what that costs.
 
 syntax on
 

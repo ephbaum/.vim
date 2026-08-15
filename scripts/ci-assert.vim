@@ -81,6 +81,12 @@ call s:Assert('<CR> maps to coc#pum#confirm', maparg('<CR>', 'i') =~# 'coc#pum#c
 " into whatever directory you happened to open.
 call s:Assert('swapfiles/ writable', filewritable(expand(&directory[:-3])) == 2)
 
+" netrw is disabled in favour of nvim-tree, and must be set before netrw's
+" plugin file loads. Asserted because this config's most reliable behaviour is
+" reintroducing something that was already removed once.
+call s:Assert('netrw disabled', get(g:, 'loaded_netrw', 0) == 1)
+call s:Assert('netrw has no :Lexplore', !exists(':Lexplore'))
+
 if s:failed > 0
   echohl ErrorMsg | echomsg s:failed . ' assertion(s) failed' | echohl None
   cquit 1

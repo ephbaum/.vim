@@ -46,6 +46,10 @@ Session.vim
 # Bookmarks and history, written side by side. .netrwhist was ignored in
 # 2020; .netrwbook was not, and rode along until 2026 carrying a stale
 # bookmark to a decade-old work checkout.
+#
+# netrw is disabled outright now (g:loaded_netrw in lua/init.lua), so nothing
+# writes these. Kept anyway -- they cost nothing, and re-enabling netrw
+# should not quietly re-arm the exact leak that got scrubbed from history.
 .netrwhist
 .netrwbook
 

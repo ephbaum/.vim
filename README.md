@@ -70,7 +70,6 @@ Leader is <kbd>Space</kbd>.
 | `<leader>=` / `<leader>-` | widen / narrow window by a third |
 | `<leader>+` / `<leader>_` | taller / shorter by a third |
 | `<leader>nt` | toggle nvim-tree |
-| `<leader>lex` | toggle netrw sidebar (`netrw-tree.vim`) |
 | `<leader>tt` | Tagbar |
 | `<leader>uu` | Gundo undo tree |
 | `<leader>sc` | scratch buffer |
@@ -128,7 +127,6 @@ memory notices:
 | `lua/init.lua` | entry point — lazy.nvim, plugin list, coc extensions, then sources the other two |
 | `.vimrc` | the original vimscript config, symlinked as `legacy.vim`. Options, keymaps, and all the coc boilerplate |
 | `bundles.vim` | the three plugins still on vim-plug |
-| `netrw-tree.vim` | netrw as a file-tree sidebar, from before nvim-tree |
 | `setup.sh` | install or verify this config on a machine |
 | `scripts/` | the CI checks, all runnable by hand |
 
@@ -189,7 +187,7 @@ commit messages, so the dates carry most of the story.
 | **2021–2022** | Manjaro → Ubuntu, another machine migration, several rounds of path fixing (*"Maybe this is the right path forever"*). |
 | **2023** | Everything relocates into `$HOME/.config/nvim`. coc.nvim arrives, transparency, astro. |
 | **2024** | Lua config: `init.lua` becomes the entry point, `.vimrc` demoted to `legacy.vim`, lazy.nvim and gen.nvim added. Migration deliberately partial. |
-| **2026** | Statusline crash fixed, coc actually armed, plugin set modernized. Swap files and a ctags index scrubbed from history. A win32yank clipboard provider added and removed again. |
+| **2026** | Statusline crash fixed, coc actually armed, plugin set modernized. Swap files and a ctags index scrubbed from history. A win32yank clipboard provider added and removed again. netrw retired in favour of nvim-tree. |
 
 ### 2026-07-04 — the modernization pass
 
@@ -237,6 +235,26 @@ superseded by coc), the unused colorschemes (`badwolf`, `molokai`,
 `mapleader` isn't set by then, `<leader>` silently falls back to `\` and the
 keymaps bind to the wrong key with no error. `.vimrc` still sets it too, which
 is now a harmless no-op.
+
+### 2026-08-15 — netrw removed
+
+`netrw-tree.vim` configured netrw as a file-tree sidebar on `<leader>lex`. It
+predated nvim-tree and had been redundant since nvim-tree arrived in 2024;
+two file trees on two keys is one file tree and a distraction. Gone, and netrw
+itself is now disabled in `lua/init.lua` (`g:loaded_netrw`,
+`g:loaded_netrwPlugin`) — which is what nvim-tree's own docs ask for, since
+with both live the winner of a directory-open race is whichever hooked
+`BufEnter` first.
+
+Two side effects worth knowing:
+
+- `<leader>l` (delete to start of line, then join down) is **faster now**. It
+  was a prefix of `<leader>lex`, so every press sat out `timeoutlen` first.
+- `:Explore` and netrw's remote-file editing (`nvim scp://host/path`) are gone
+  with it. `gx` is fine — neovim stopped routing that through netrw in 0.10.
+
+The file also carried a vendored copy of an old `netrw#Lexplore()` that
+nothing had called in years. It went with it.
 
 ### 2026-08-15 — history scrub
 

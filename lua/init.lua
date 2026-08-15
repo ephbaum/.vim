@@ -32,6 +32,17 @@ vim.opt.rtp:prepend(lazypath)
 -- is now a harmless no-op.
 vim.g.mapleader = ' '
 
+-- Disable netrw. nvim-tree owns the file sidebar (<leader>nt) and its docs ask
+-- for this explicitly -- with both live, whichever hooks BufEnter first wins
+-- when you open a directory. Must be set before lazy.setup(), because netrw's
+-- plugin file loads during startup and only checks these at that point.
+--
+-- What this gives up: :Explore/:Lexplore, and netrw's remote-file handling
+-- (`nvim scp://host/path`). `gx` is unaffected -- neovim has had its own since
+-- 0.10 and no longer routes it through netrw.
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 require("lazy").setup({
   "folke/which-key.nvim",
   { "folke/neoconf.nvim", cmd = "Neoconf" },
