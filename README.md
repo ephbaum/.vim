@@ -1,115 +1,227 @@
- # .vim (`.vimrc` in `$HOME/.config/nvim/`)
+# .vim
 
-I'm tired of constantly having to remember how to set up and configure vim.
+My neovim configuration. The repo is named `.vim` for historical reasons — it
+used to *be* `~/.vim`. It now lives at `~/.config/nvim/gitnvim` and is wired
+into neovim by two symlinks.
 
- Updated: 2023-01-01 - I have made some adjustments to try switching to a Lua config. I'm taking small steps and instead of using my `.vimrc` as `init.vim`, I'm linking to `legacy.vim` for the time being, with the plan of gradually bringing the configuration over. I have also added lazy.nvim and gen.nvim.
+I got tired of relearning how to set this up every time I moved machines, so
+the setup steps and the reasoning behind the current layout are written down
+here rather than rediscovered.
 
-## 2026-07-04 Modernization
+## Setup
 
-Picked this config back up on a new machine and it was silently broken: `nvim` started, but a big chunk of keybindings just didn't exist. Worth documenting both the bug and the cleanup that followed, since some of it is a real behavior change.
+```bash
+# 1. config dir
+mkdir -p $HOME/.config/nvim && cd $HOME/.config/nvim
 
-### The startup bug
+# 2. clone as "gitnvim"
+git clone git@github.com:ephbaum/.vim.git gitnvim
 
-`legacy.vim` had `set statusline^=%{coc#status()}...` — prepending onto the statusline. vim-airline sets `&statusline` starting with `%!airline#statusline(1)...`, and `%!` is only legal as the very first two characters of the option. Prepending in front of it produced `E539: Illegal character <!>`, which is a hard error, not a warning. Because `legacy.vim` is sourced from `init.lua` via `vim.cmd('source ...')`, that error aborted execution right there — meaning everything after that line in `legacy.vim` (all the coc keymaps: `gd`, `gr`, `K`, rename, format, code actions, `CocList` mappings...) and everything after it in `init.lua` (sourcing coc.vim's own plugin file, the gen.nvim keymaps) silently never ran. `^=` → `+=` fixed it, but it prompted a closer look at the rest of the config.
+# 3. state directories — .vimrc points directory= and backupdir= here,
+#    and .gitignore expects these exact names
+mkdir -p gitnvim/swapfiles gitnvim/backupfiles
 
-### coc.nvim had zero extensions installed
+# 4. neovim entry point -> lua config
+ln -s ~/.config/nvim/gitnvim/lua/init.lua ~/.config/nvim/init.lua
 
-Turned out `coc.nvim` was just wiring up the completion UI with no language server or linter behind it at all — `:CocList extensions` was empty. Added a declarative extension list in `lua/init.lua`:
-
-```lua
-vim.g.coc_global_extensions = {
-  'coc-json', 'coc-tsserver', 'coc-eslint',
-  'coc-html', 'coc-css', 'coc-phpls',
-}
+# 5. the old vimscript config, sourced by init.lua
+ln -s ~/.config/nvim/gitnvim/.vimrc ~/.config/nvim/legacy.vim
 ```
 
-coc auto-installs anything missing from this list on startup — no manual `:CocInstall` needed, and adding a language later is a one-line change. (Note: the PHP extension's npm package is `coc-phpls`, not `coc-intelephense` — it wraps intelephense internally but that's not the package name.)
-
-With coc actually doing diagnostics now, `syntastic` (deprecated by its own author years ago) was redundant and could fight with coc over the statusline/loclist. Removed it, along with `vim-phpcs` (a syntastic-only PHP style integration) and its `g:syntastic_*` settings.
-
-### Plugin swaps (old vimscript → modern Lua)
-
-| Was | Now | Why it's a behavior change |
-|---|---|---|
-| `bling/vim-airline` | `lualine.nvim` | Statusline only — no keybinding change. Gruvbox-themed, coc status embedded as a component. |
-| `scrooloose/nerdtree` | `nvim-tree.lua` | `<leader>nt` still toggles it, just via `:NvimTreeToggle`. |
-| `scrooloose/nerdcommenter` | `Comment.nvim` | **Comment toggle is now `gcc` (line) / `gc` (motion or visual selection)** — Comment.nvim's defaults, not nerdcommenter's. No custom nerdcommenter binding existed before, so this is the one to relearn. |
-| `ctrlpvim/ctrlp.vim` | `telescope.nvim` | `<leader>ff` = find files, `<leader>fg` = live grep (ripgrep-backed, replaces the ripgrep `:Rg` quickfix command from the ag.vim → ripgrep swap earlier this session), `<leader>rr` = current-buffer tags (uses `ctags`, same as Tagbar). |
-
-Also pruned as dead weight (unreachable from any keymap or the active `gruvbox` colorscheme):
-- `marijnh/tern_for_vim`, `walm/jshint.vim` — pre-LSP JS tooling, fully superseded by `coc-tsserver`/`coc-eslint`.
-- `sjl/badwolf`, `tomasr/molokai`, `tpope/vim-vividchalk`, `jonathanfilip/vim-lucius` — unused colorschemes.
-- `johngrib/vim-game-snake` — a novelty plugin, not doing anything.
-- Two orphaned `g:easytags_*` settings in `.vimrc` — `xolox/vim-easytags` isn't in the plugin list at all anymore (an even older, already-completed migration).
-
-### A leader-timing gotcha worth knowing
-
-`mapleader` is now set (`vim.g.mapleader = ' '`) at the *top* of `lua/init.lua`, before `lazy.setup()` runs, not later in `legacy.vim` like before. Plugin `config` functions (telescope's keymaps, for instance) run during `lazy.setup()` — if `mapleader` isn't set yet at that point, `<leader>` silently falls back to the default `\`, and the keymap ends up bound to the wrong key with no error. `legacy.vim` still sets `mapleader` too; that's now a harmless no-op kept for anyone still reading it top-to-bottom.
-
-### Left alone, on purpose
-
-`vim-misc`, `vim-session`, and `coc.nvim` itself are still installed via vim-plug (see `bundles.vim`), not lazy.nvim — that's why `:checkhealth`'s lazy.nvim section flags "paths on the rtp from another plugin manager." Not a bug, just two plugin managers coexisting mid-migration. Folding that trio into lazy.nvim too would be a reasonable future cleanup, but wasn't done in this pass.
-
-This document will just assuming I'm rolling forward forever, check the git history for older configurations. Good luck.
-
-This installation is taking place on Ubuntu 20.04 WSL. I wish it was possible to use Arch under Windows instead :fingers-crossed:
-
-For this iteration, I plan to relocate everything to live within the `$HOME/.config/nvim` folder as it's been long enough that I've put off dealing with this. (I anticipate a file path update will be necessary along with an update to the `README.md`.)
-
-Next, I may attempt to automate this process. :rolling-eyes:
-
-## Initial Commands
-
-1. Create a new config directory and navigate into it:
-   ```bash
-   mkdir -p $HOME/.config/nvim && cd $HOME/.config/nvim
-   ```
-2. Clone the repository:
-   ```bash
-   git clone git@github.com:ephbaum/.vim.git gitnvim
-   ```
-3. Create necessary directories (`.vimrc` points `directory`/`backupdir` here):
-   ```bash
-   mkdir -p gitnvim/swapfiles gitnvim/backupfiles
-   ```
-4. Symlink your `.vimrc` file:
-   ```bash
-   ln -s ~/.config/nvim/gitnvim/.vimrc ~/.config/nvim/legacy.vim
-   ```
-5. Symlink your `init.lua` file:
-    ```bash
-    ln -s ~/.config/nvim/gitnvim/lua/init.lua ~/.config/nvim/init.lua
-    ```
-
-## Plugins
-
-Then, follow the Neovim instructions to use [Vim Plug](https://github.com/junegunn/vim-plug):
+Then install vim-plug, which still manages three plugins (see
+[Two plugin managers](#two-plugin-managers)):
 
 ```bash
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 ```
 
-After launching `nvim`:
+Launch `nvim` and run `:PlugInstall`. lazy.nvim bootstraps itself on first
+start, and coc installs its extensions automatically from
+`vim.g.coc_global_extensions`.
 
-```vim
-:PlugInstall
-```
+### Also worth installing
 
-## After Care
+- **ctags** — Tagbar (`<leader>tt`) and telescope's buffer-tags picker
+  (`<leader>rr`) both shell out to it. Use
+  [Universal Ctags](https://github.com/universal-ctags/ctags)
+  (`sudo apt install universal-ctags`), not Exuberant Ctags, which this README
+  recommended for years despite it being unmaintained since 2009.
+- **Node.js** — required by coc.nvim.
+- **win32yank** — WSL clipboard bridge, see below.
+- **[FiraCode](https://github.com/tonsky/FiraCode)** — the font this is tuned
+  for. Under WSL, install it on the Windows side and select it in Windows
+  Terminal.
 
-You will want to install [Exuberant CTags](http://ctags.sourceforge.net/) for improved tagging functionality. Under Ubuntu, that's straightforward:
+![Screenshot of Windows Terminal running NVIM with FiraCode, gruvbox, transparency and scanlines](images/nvim_fira_code_windows_terminal_gruvbox.png)
 
-```bash
-sudo apt install exuberant-ctags
-```
+## Keybindings
 
-Additionally, consider installing Node.js if needed. Other platforms may vary.
+Leader is <kbd>Space</kbd>.
 
-## Powerline Font
+### Editing
 
-Currently, I prefer [FiraCode](https://github.com/tonsky/FiraCode). However, that preference might change later.
+| Key | Does |
+|---|---|
+| `<leader>wr` | toggle wrap |
+| `<leader>rtw` | strip trailing whitespace in buffer |
+| `<leader>l` | delete to start of line, then join down |
+| `<leader>dt` | insert current date/time |
+| `<leader>sp` / `<leader>nsp` | spellcheck on / off |
+| `<S-CR>` | enter insert mode (normal) / leave it (everywhere else) |
+| `gcc` / `gc` | toggle comment — line / motion or visual (Comment.nvim) |
+| `<Tab>` / `<S-Tab>` | indent / outdent list item (markdown only) |
 
-Under WSL2, adding this font is now simple using the Microsoft Terminal. It looks particularly impressive with transparency and scanlines enabled:
+### Windows and navigation
 
-![Screenshot of Microsoft Terminal window displaying NVIM running with FiraCode and Scanlines](images/nvim_fira_code_windows_terminal_gruvbox.png)
+| Key | Does |
+|---|---|
+| `<leader>=` / `<leader>-` | widen / narrow window by a third |
+| `<leader>+` / `<leader>_` | taller / shorter by a third |
+| `<leader>nt` | toggle nvim-tree |
+| `<leader>lex` | toggle netrw sidebar (`netrw-tree.vim`) |
+| `<leader>tt` | Tagbar |
+| `<leader>uu` | Gundo undo tree |
+| `<leader>sc` | scratch buffer |
+
+### Find (telescope)
+
+| Key | Does |
+|---|---|
+| `<leader>ff` | find files |
+| `<leader>fg` | live grep (ripgrep) |
+| `<leader>rr` | tags in current buffer |
+
+### LSP / coc
+
+| Key | Does |
+|---|---|
+| `gd` `gy` `gi` `gr` | definition / type / implementation / references |
+| `K` | hover docs |
+| `[g` `]g` | previous / next diagnostic |
+| `<leader>rn` | rename symbol |
+| `<leader>f` | format selection |
+| `<leader>ac` / `<leader>qf` | code action on buffer / quickfix current line |
+| `if` `af` `ic` `ac` | function / class text objects |
+| `<C-s>` | expand selection range |
+| `<Tab>` / `<S-Tab>` | next / previous completion item |
+| `<space>` + `a e c o s j k p` | CocList: diagnostics, extensions, commands, outline, symbols, next, prev, resume |
+
+### AI (gen.nvim → local ollama)
+
+| Key | Does |
+|---|---|
+| `<leader>]` | prompt Gen |
+| `<leader><leader>ss` | fix grammar/spelling in selection |
+
+### Known keymap collisions
+
+Leader *is* `<space>`, so the `<space>x` CocList mappings share a namespace
+with the `<leader>x` ones. Two actual conflicts:
+
+- **`<leader>a` is dead in normal mode.** `.vimrc` binds it to
+  `<Plug>(coc-codeaction-selected)`, then later binds `<space>a` to
+  `:CocList diagnostics`. Same keys — the later one wins. Visual-mode
+  `<leader>a` still does the code action.
+- **`<CR>` is mapped twice.** The modern `coc#pum#confirm()` mapping is
+  overridden further down by an older `complete_info()` fallback copied from
+  a previous version of coc's README, so `coc#on_enter()` never fires.
+
+Both are stale copy-paste from coc's docs rather than deliberate choices.
+Left as-is for now; fixing either is a real behavior change.
+
+## Layout
+
+| File | What it is |
+|---|---|
+| `lua/init.lua` | entry point — lazy.nvim, plugin list, coc extensions, then sources the other two |
+| `.vimrc` | the original vimscript config, symlinked as `legacy.vim`. Options, keymaps, and all the coc boilerplate |
+| `bundles.vim` | the three plugins still on vim-plug |
+| `netrw-tree.vim` | netrw as a file-tree sidebar, from before nvim-tree |
+
+### Two plugin managers
+
+lazy.nvim manages everything except `vim-misc`, `vim-session`, and `coc.nvim`,
+which are still on vim-plug in `bundles.vim`. This is why `:checkhealth` warns
+about "paths on the rtp from another plugin manager" — that's expected, not
+broken. Folding the last three into lazy.nvim is the obvious next cleanup.
+
+### WSL clipboard
+
+`clipboard+=unnamedplus` alone doesn't reach the Windows clipboard, so
+`g:clipboard` is pointed at `win32yank.exe` with `--crlf` on copy and `--lf`
+on paste to keep line endings from drifting across the boundary.
+
+## History
+
+Eleven years of moving between machines and rewriting this thing. Sparse
+commit messages, so the dates carry most of the story.
+
+| | |
+|---|---|
+| **2015** | Started on macOS with Vundle. tern, YouCompleteMe, jshint — the pre-LSP JavaScript stack. |
+| **2016** | Polyglot arrives and starts absorbing the individual syntax plugins. |
+| **2018** | First README. `.vimtags` noticed to be per-machine and, in theory, stopped being tracked. |
+| **2020** | Vundle → vim-plug. `.gitignore` gets serious. Ubuntu 20.04 under WSL. |
+| **2021–2022** | Manjaro → Ubuntu, another machine migration, several rounds of path fixing (*"Maybe this is the right path forever"*). |
+| **2023** | Everything relocates into `$HOME/.config/nvim`. coc.nvim arrives, transparency, astro. |
+| **2024** | Lua config: `init.lua` becomes the entry point, `.vimrc` demoted to `legacy.vim`, lazy.nvim and gen.nvim added. Migration deliberately partial. |
+| **2026** | Statusline crash fixed, coc actually armed, plugin set modernized. WSL clipboard fixed. |
+
+### 2026-07-04 — the modernization pass
+
+Picked this config up on a new machine and it was silently broken: `nvim`
+started, but a big chunk of keybindings just didn't exist.
+
+**The startup bug.** `legacy.vim` had `set statusline^=%{coc#status()}...` —
+prepending onto the statusline. vim-airline sets `&statusline` starting with
+`%!airline#statusline(1)...`, and `%!` is only legal as the very first two
+characters of the option. Prepending in front of it produced `E539: Illegal
+character <!>`, a hard error rather than a warning. Because `legacy.vim` is
+sourced from `init.lua` via `vim.cmd('source ...')`, that error aborted
+execution on the spot — so everything after it in `legacy.vim` (all the coc
+keymaps: `gd`, `gr`, `K`, rename, format, code actions, `CocList`) and
+everything after it in `init.lua` (coc's own plugin file, the gen.nvim
+keymaps) silently never ran. `^=` → `+=` fixed it, and prompted the rest of
+this pass.
+
+**coc.nvim had zero extensions.** It was wiring up the completion UI with no
+language server behind it — `:CocList extensions` was empty. Now declared in
+`lua/init.lua` via `vim.g.coc_global_extensions`, which coc auto-installs from
+on startup. (The PHP one is `coc-phpls`, not `coc-intelephense` — it wraps
+intelephense but that isn't the package name.)
+
+With coc actually doing diagnostics, `syntastic` (deprecated by its own author
+years ago) became redundant and could fight it over the statusline and
+loclist. Removed, along with `vim-phpcs` and the `g:syntastic_*` settings.
+
+**Plugin swaps.**
+
+| Was | Now | Behavior change |
+|---|---|---|
+| `bling/vim-airline` | `lualine.nvim` | statusline only, no keybinding change. Gruvbox theme, coc status as a component. |
+| `scrooloose/nerdtree` | `nvim-tree.lua` | `<leader>nt` still toggles, now via `:NvimTreeToggle`. |
+| `scrooloose/nerdcommenter` | `Comment.nvim` | **comment toggle is now `gcc` / `gc`.** No custom nerdcommenter binding existed, so this is the one to relearn. |
+| `ctrlpvim/ctrlp.vim` | `telescope.nvim` | `<leader>ff`, `<leader>fg`, `<leader>rr`. |
+
+Also pruned as unreachable: `tern_for_vim` and `jshint.vim` (pre-LSP JS,
+superseded by coc), the unused colorschemes (`badwolf`, `molokai`,
+`vim-vividchalk`, `vim-lucius`), `vim-game-snake`, and two orphaned
+`g:easytags_*` settings left over from an even older migration.
+
+**Leader timing.** `mapleader` is now set at the top of `lua/init.lua`, before
+`lazy.setup()`. Plugin `config` functions run *during* `lazy.setup()` — if
+`mapleader` isn't set by then, `<leader>` silently falls back to `\` and the
+keymaps bind to the wrong key with no error. `.vimrc` still sets it too, which
+is now a harmless no-op.
+
+### 2026-08-15 — history scrub
+
+Swap files, a ctags index, and netrw bookmarks had been committed years
+earlier and carried forward ever since. All removed from history with
+`git-filter-repo`; commit SHAs from 2015 onward changed as a result. If you
+have an old clone, `git fetch && git reset --hard origin/main` — a `git pull`
+would merge the removed files back in.
+
+`.gitignore` was rebuilt in the same pass to actually match where this config
+writes, with each entry annotated with the setting that produces it.

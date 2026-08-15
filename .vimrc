@@ -1,9 +1,17 @@
-" @SEE https://github.com/junegunn/vim-plug "
+" legacy.vim -- the original vimscript config, kept whole.
+"
+" Not loaded by neovim directly. lua/init.lua is the entry point and sources
+" this file near the end, after lazy.setup() has run. Two consequences worth
+" remembering: anything here runs *after* the lua plugin specs, and an error
+" raised here aborts the rest of init.lua too (see the 2026 statusline bug in
+" the README).
+"
+" See README.md for keybindings and the plugin-manager split.
 
-" [Vim-Plug Bundles] "
+" vim-plug's three holdouts: vim-misc, vim-session, coc.nvim
 source ~/.config/nvim/gitnvim/bundles.vim
 
-" [netrw-tree] "
+" netrw configured as a file-tree sidebar, predates nvim-tree
 source ~/.config/nvim/gitnvim/netrw-tree.vim
 
 syntax on
@@ -13,6 +21,10 @@ set ruler number wrap
 set ignorecase
 set selection=inclusive
 set encoding=utf-8
+
+" WSL clipboard. unnamedplus alone doesn't cross into Windows, so hand vim
+" win32yank instead: --crlf on the way in, --lf on the way out, otherwise
+" line endings drift every round trip.
 set clipboard+=unnamedplus
 let g:clipboard = {
           \   'name': 'win32yank-wsl',
@@ -31,17 +43,20 @@ colorscheme gruvbox " molokai
 set background=dark
 set guifont=Fira\ Code\ Pro:h13
 
+" Swap and backup go inside the repo clone, and the trailing // makes vim
+" encode the full path into the filename. Both directories are gitignored by
+" name -- if either path moves, .gitignore has to move with it. It didn't,
+" once, and swap files sat in this repo for seven years.
 set directory=$HOME/.config/nvim/gitnvim/swapfiles//
 set backupdir=$HOME/.config/nvim/gitnvim/backupfiles//
 
-" Automatically show row and column higlighting
+" Cursor row/column crosshair. Off -- it was noisy and the colors below were
+" picked for molokai; CursorColumn in particular reads badly against gruvbox.
 "au WinLeave * set nocursorline nocursorcolumn
 "au InsertEnter * set nocursorline nocursorcolumn
 "au WinEnter * set cursorline cursorcolumn
 "au InsertLeave * set cursorline cursorcolumn
 "set cursorline cursorcolumn
-
-" Sets color for row / column highlighting
 " hi CursorLine ctermbg=053 guibg=#5f005f " Good for Molokai
 " hi CursorColumn ctermbg=053 guibg=#5f005f " Bad for Gruvbox
 " hi CursorLineNr ctermbg=053 ctermfg=219 guibg=#5f005f guibg=#ffafff
@@ -53,6 +68,8 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 " Sets <Leader> to space bar, who needs it anyway?
+" No-op in practice: lua/init.lua sets this before lazy.setup() so plugin
+" keymaps bind correctly. Kept so this file still makes sense read alone.
 let mapleader=" "
 
 " Shift + Enter enters Insert Mode
@@ -103,6 +120,9 @@ let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 
+" xolox/vim-session. Autoload/autosave off -- :SaveSession and :OpenSession
+" still work by hand. session_directory is left unset, so sessions land in
+" the plugin default rather than that ancient Windows _vimfiles path.
 "let g:session_directory = $VIM.'\_vimfiles\sessions'
 let g:session_autoload = 'no'
 let g:session_autosave = 'no'
@@ -113,44 +133,11 @@ let g:session_autosave = 'no'
 " Parse *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-" Markdown Tab and Shift-Tab for lists
+" Markdown Tab and Shift-Tab for lists.
+" Replaced a pair of hand-rolled ListIndentForward/Backward functions that
+" did the same thing with more regex; see git history if they're ever wanted.
 au FileType markdown nnoremap <Tab> >>_
 au FileType markdown nnoremap <S-Tab> <<_
-
-" Enable filetype detection
-" filetype plugin indent on
-
-" Define mappings for adjusting list indentation
-" autocmd FileType markdown nnoremap <Tab> :call ListIndentForward()<CR>
-" autocmd FileType markdown nnoremap <S-Tab> :call ListIndentBackward()<CR>
-
-" Function to increase list indentation
-" function! ListIndentForward()
-"    let line = getline('.')
-"    if line =~ '^\s*[-*+]'
-"        let indent = indent('.')
-"        let new_indent = indent + &shiftwidth
-"        let line = substitute(line, '^\s*[-*+]', repeat(' ', new_indent) . '&', '')
-"        call setline('.', line)
-"    else
-"        normal! >>
-"    endif
-"endfunction
-
-" Function to decrease list indentation
-"function! ListIndentBackward()
-"    let line = getline('.')
-"    if line =~ '^\s*[-*+]'
-"        let indent = indent('.')
-"        let new_indent = indent - &shiftwidth
-"        if new_indent >= 0
-"            let line = substitute(line, '^\s*[-*+]', repeat(' ', new_indent) . '&', '')
-"            call setline('.', line)
-"        endif
-"    else
-"        normal! <<
-"    endif
-"endfunction
 
 " Parse *.ejs as html, it's just easier
 autocmd BufNewFile,BufRead *.ejs set filetype=html
@@ -160,9 +147,18 @@ autocmd BufNewFile,BufRead *.styl set filetype=sass
 " Because nvim needs special
 set mouse=a
 
-" Here's Python
+" Here's Python. python_host_prog points at python2, which no current distro
+" ships -- neovim dropped the py2 provider anyway, so it's inert. Harmless
+" until `:checkhealth` complains at you about it.
 let g:python_host_prog = '/usr/bin/python2'
 let g:python3_host_prog = '/usr/bin/python3'
+
+" ---------------------------------------------------------------------------
+" coc.nvim
+"
+" Mostly verbatim from coc's own example config, accumulated across several
+" versions of it. Two known snags are flagged inline below.
+" ---------------------------------------------------------------------------
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -215,9 +211,12 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+" SNAG: this re-maps <cr>, overriding the coc#pum#confirm() mapping above --
+" same key, later definition wins, so coc#on_enter() never fires. It's the
+" older complete_info() recipe from a previous version of coc's README that
+" was never removed when the newer one was pasted in. Deleting this block is
+" probably correct but it is a real behavior change, so it stands for now.
+" `:verbose imap <CR>` will confirm which mapping is live.
 if exists('*complete_info')
   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
@@ -265,6 +264,9 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
+" SNAG: leader IS <space>, so the normal-mode binding here collides with
+" `<space>a` (CocList diagnostics) further down, which is defined later and
+" therefore wins. Visual-mode <leader>a still works.
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
@@ -301,7 +303,9 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " coc status is surfaced via lualine (see lua/init.lua) instead of a manual
 " statusline string; lualine owns &statusline/&laststatus now.
 
-" Mappings using CoCList:
+" Mappings using CoCList.
+" These are all <space>-prefixed, which is the same thing as <leader>-prefixed
+" here. Anything below shadows an identical <leader> mapping defined earlier.
 " Show all diagnostics.
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.

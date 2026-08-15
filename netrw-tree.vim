@@ -1,3 +1,11 @@
+" netrw as a file-tree sidebar, from before nvim-tree. Both are installed and
+" bound to different keys: <leader>lex here, <leader>nt for nvim-tree.
+"
+" NOTE: the :Lexplore command below calls netrw's own autoloaded
+" netrw#Lexplore(), so the g:Lexplore() function defined underneath it is
+" never reached -- it's a vendored copy of that function from an older netrw
+" that nothing calls. Left in place rather than deleted, but don't edit it
+" expecting the sidebar to change.
 com!  -nargs=* -bar -bang -complete=dir  Lexplore  call netrw#Lexplore(<q-args>, <bang>0)
 
 fun! Lexplore(dir, right)

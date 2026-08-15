@@ -1,4 +1,18 @@
+-- Entry point. Symlinked to ~/.config/nvim/init.lua.
+--
+-- Order matters here and has bitten before:
+--   1. bootstrap lazy.nvim
+--   2. set mapleader          -- before any plugin config() runs
+--   3. lazy.setup()           -- plugin config() functions execute here
+--   4. source legacy.vim      -- the old .vimrc, options and coc keymaps
+--   5. source coc's plugin file, then the gen.nvim keymaps
+--
+-- Steps 4 and 5 are last because legacy.vim is the larger, older half of the
+-- config. An error raised in it aborts everything after it in this file too.
+--
+-- See README.md for keybindings.
 
+-- lazy.nvim bootstraps itself on first launch; nothing to install by hand.
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -80,6 +94,9 @@ require("lazy").setup({
   }
 })
 
+-- coc installs anything missing from this list on startup, so adding a
+-- language is a one-line change and never a manual :CocInstall.
+-- PHP is 'coc-phpls' -- it wraps intelephense, but that isn't the package name.
 vim.g.coc_global_extensions = {
   'coc-json',
   'coc-tsserver',
@@ -89,7 +106,11 @@ vim.g.coc_global_extensions = {
   'coc-phpls',
 }
 
+-- The old .vimrc. Everything above is available to it; nothing below runs if
+-- it throws.
 vim.cmd('source ~/.config/nvim/legacy.vim')
+-- coc is a vim-plug plugin, so its plugin file isn't on lazy's runtimepath
+-- and has to be sourced explicitly.
 vim.cmd('source ~/.local/share/nvim/plugged/coc.nvim/plugin/coc.vim')
 
 vim.keymap.set({ 'n', 'v' }, '<leader>]', ':Gen<CR>')
