@@ -16,18 +16,18 @@ git clone git@github.com:ephbaum/.vim.git gitnvim
 cd gitnvim && ./setup.sh
 ```
 
-Then launch `nvim` and run `:PlugInstall`. lazy.nvim bootstraps itself on
-first start, and coc installs its extensions from
+Then launch `nvim` and wait. lazy.nvim bootstraps itself and installs
+everything on first start, and coc installs its extensions from
 `vim.g.coc_global_extensions`.
 
 The clone has to be named `gitnvim` and live at `~/.config/nvim` — `.vimrc`
 and `lua/init.lua` reference that path absolutely. `setup.sh` refuses to run
 from anywhere else rather than half-working.
 
-`setup.sh` creates `swapfiles/` and `backupfiles/`, symlinks `init.lua` and
-`legacy.vim`, fetches vim-plug, and checks for `nvim`, `node`, `git`, `curl`,
-`ctags` and `ripgrep`. It's idempotent — anything it would overwrite is moved
-aside with a timestamp instead.
+`setup.sh` creates `swapfiles/`, symlinks `init.lua` and `legacy.vim`, and
+checks for `nvim`, `node`, `git`, `ctags` and `ripgrep`. It installs no plugin
+manager — lazy.nvim bootstraps itself. It's idempotent — anything it would
+overwrite is moved aside with a timestamp instead.
 
 ```bash
 ./setup.sh --check   # verify an existing install, change nothing
@@ -124,18 +124,22 @@ memory notices:
 
 | File | What it is |
 |---|---|
-| `lua/init.lua` | entry point — lazy.nvim, plugin list, coc extensions, then sources the other two |
+| `lua/init.lua` | entry point — lazy.nvim, plugin list, coc extensions, then sources `.vimrc` |
 | `.vimrc` | the original vimscript config, symlinked as `legacy.vim`. Options, keymaps, and all the coc boilerplate |
-| `bundles.vim` | the three plugins still on vim-plug |
 | `setup.sh` | install or verify this config on a machine |
 | `scripts/` | the CI checks, all runnable by hand |
 
-### Two plugin managers
+### One plugin manager
 
-lazy.nvim manages everything except `vim-misc`, `vim-session`, and `coc.nvim`,
-which are still on vim-plug in `bundles.vim`. This is why `:checkhealth` warns
-about "paths on the rtp from another plugin manager" — that's expected, not
-broken. Folding the last three into lazy.nvim is the obvious next cleanup.
+lazy.nvim manages everything, coc.nvim included. Two files load, in this
+order: `lua/init.lua`, which sources `.vimrc` (as `legacy.vim`) near its end.
+
+The order is load-bearing in two places. `mapleader` and
+`coc_global_extensions` are both set *before* `lazy.setup()` — the first so
+plugin `config()` functions bind to <kbd>Space</kbd> and not `\`, the second
+because that's when coc's plugin file loads and reads it. And `.vimrc` is
+sourced *after* `lazy.setup()`, because its coc mappings reference
+`<Plug>(coc-*)`, which doesn't exist until coc has loaded.
 
 ### CI
 
@@ -235,6 +239,28 @@ superseded by coc), the unused colorschemes (`badwolf`, `molokai`,
 `mapleader` isn't set by then, `<leader>` silently falls back to `\` and the
 keymaps bind to the wrong key with no error. `.vimrc` still sets it too, which
 is now a harmless no-op.
+
+### 2026-08-15 — vim-plug retired
+
+The 2024 lua migration was deliberately partial: `vim-misc`, `vim-session` and
+`coc.nvim` stayed on vim-plug in `bundles.vim` and never followed. That cost a
+second plugin manager, the `:checkhealth` warning about "paths on the rtp from
+another plugin manager", and a hand-written
+`source ~/.local/share/nvim/plugged/coc.nvim/plugin/coc.vim` at the end of
+`init.lua` — because coc's plugin file wasn't on lazy's runtimepath.
+
+- **coc.nvim** moved to lazy.nvim as `{ 'neoclide/coc.nvim', branch = 'release' }`.
+  Its `release` branch ships built JS, so there's nothing to compile, and it
+  carries no lazy-loading handler on purpose — it must load during
+  `lazy.setup()` so `<Plug>(coc-*)` exists by the time `legacy.vim` maps to it.
+  `vim.g.coc_global_extensions` moved *above* `lazy.setup()` for the same
+  reason.
+- **vim-session and vim-misc** dropped. Autoload and autosave were both `'no'`,
+  so it was two plugins providing a manual `:SaveSession`. `:mksession` and
+  `nvim -S Session.vim` cover it; `Session.vim` stays gitignored.
+
+`bundles.vim` is gone, `setup.sh` no longer downloads anything (so `curl` is
+off the dependency list), and the CI smoke job dropped its `+PlugInstall` step.
 
 ### 2026-08-15 — pruning inert config
 

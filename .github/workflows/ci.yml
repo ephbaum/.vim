@@ -78,11 +78,10 @@ jobs:
           ./setup.sh --check
 
       - name: install plugins
-        # Both managers. coc pulls its extensions from
+        # One manager now. coc pulls its extensions from
         # vim.g.coc_global_extensions on first start, which needs node.
         run: |
           nvim --headless "+Lazy! sync" +qa || true
-          nvim --headless +PlugInstall +qa || true
           nvim --headless "+CocInstall -sync coc-json coc-tsserver" +qa || true
 
       - name: startup produces no errors

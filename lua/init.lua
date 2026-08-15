@@ -2,13 +2,16 @@
 --
 -- Order matters here and has bitten before:
 --   1. bootstrap lazy.nvim
---   2. set mapleader          -- before any plugin config() runs
---   3. lazy.setup()           -- plugin config() functions execute here
---   4. source legacy.vim      -- the old .vimrc, options and coc keymaps
---   5. source coc's plugin file, then the gen.nvim keymaps
+--   2. set mapleader              -- before any plugin config() runs
+--   3. set coc_global_extensions  -- before coc's plugin file loads
+--   4. lazy.setup()               -- plugin config() functions execute here
+--   5. source legacy.vim          -- the old .vimrc, options and coc keymaps
+--   6. the gen.nvim keymaps
 --
--- Steps 4 and 5 are last because legacy.vim is the larger, older half of the
--- config. An error raised in it aborts everything after it in this file too.
+-- Step 5 is late because legacy.vim is the larger, older half of the config.
+-- An error raised in it aborts everything after it in this file too. It also
+-- has to come after lazy.setup(), because its coc mappings reference
+-- <Plug>(coc-*), which only exists once coc's plugin file has run.
 --
 -- See README.md for keybindings.
 
@@ -42,6 +45,22 @@ vim.g.mapleader = ' '
 -- 0.10 and no longer routes it through netrw.
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- coc installs anything missing from this list on startup, so adding a
+-- language is a one-line change and never a manual :CocInstall.
+-- PHP is 'coc-phpls' -- it wraps intelephense, but that isn't the package name.
+--
+-- Must be set before lazy.setup(), because that is where coc's plugin file now
+-- loads. It sat after lazy.setup() while coc was on vim-plug and sourced by
+-- hand at the end of this file.
+vim.g.coc_global_extensions = {
+  'coc-json',
+  'coc-tsserver',
+  'coc-eslint',
+  'coc-html',
+  'coc-css',
+  'coc-phpls',
+}
 
 require("lazy").setup({
   "folke/which-key.nvim",
@@ -91,6 +110,10 @@ require("lazy").setup({
       vim.keymap.set('n', '<leader>rr', builtin.current_buffer_tags, {})
     end,
   },
+  -- coc.nvim ships built JS on its 'release' branch; there is nothing to
+  -- compile. No lazy-loading handler on purpose -- it has to load during
+  -- lazy.setup() so <Plug>(coc-*) exists by the time legacy.vim maps to it.
+  { 'neoclide/coc.nvim', branch = 'release' },
   { 'David-Kunz/gen.nvim',
     opts = {
         -- model = "codellama:13b",
@@ -103,24 +126,9 @@ require("lazy").setup({
   }
 })
 
--- coc installs anything missing from this list on startup, so adding a
--- language is a one-line change and never a manual :CocInstall.
--- PHP is 'coc-phpls' -- it wraps intelephense, but that isn't the package name.
-vim.g.coc_global_extensions = {
-  'coc-json',
-  'coc-tsserver',
-  'coc-eslint',
-  'coc-html',
-  'coc-css',
-  'coc-phpls',
-}
-
 -- The old .vimrc. Everything above is available to it; nothing below runs if
 -- it throws.
 vim.cmd('source ~/.config/nvim/legacy.vim')
--- coc is a vim-plug plugin, so its plugin file isn't on lazy's runtimepath
--- and has to be sourced explicitly.
-vim.cmd('source ~/.local/share/nvim/plugged/coc.nvim/plugin/coc.vim')
 
 vim.keymap.set({ 'n', 'v' }, '<leader>]', ':Gen<CR>')
 vim.keymap.set('v', '<leader><leader>ss', ':Gen Enhance_Grammar_Spelling<CR>')

@@ -43,7 +43,7 @@ MODES = {
 MAP_ARGS = r"(?:<(?:silent|expr|buffer|unique|nowait|script)>\s*)*"
 MAPPING = re.compile(r"(\w+)\s+" + MAP_ARGS + r"(\S+)")
 
-FILES = [".vimrc", "bundles.vim"]
+FILES = [".vimrc"]
 
 
 def normalise(lhs: str) -> str:

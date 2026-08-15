@@ -8,8 +8,10 @@
 "
 " See README.md for keybindings and the plugin-manager split.
 
-" vim-plug's three holdouts: vim-misc, vim-session, coc.nvim
-source ~/.config/nvim/gitnvim/bundles.vim
+" bundles.vim used to be sourced here -- a vim-plug block holding the three
+" plugins the 2024 lua migration left behind. coc.nvim moved to lazy.nvim in
+" 2026-08 and the other two were dropped, so vim-plug is gone entirely and
+" lazy.nvim in lua/init.lua manages everything.
 
 " netrw-tree.vim used to be sourced here -- netrw dressed up as a file-tree
 " sidebar on <Leader>lex, from before nvim-tree. Removed in 2026-08: nvim-tree
@@ -101,15 +103,11 @@ autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/ containedin=ALL
 " author, who points at mg979/vim-visual-multi instead. Nothing replaced it
 " yet, so <C-n> and <C-p> are free again.
 
-" xolox/vim-session. Autoload/autosave off -- :SaveSession and :OpenSession
-" still work by hand. session_directory is left unset, so sessions land in
-" the plugin default rather than that ancient Windows _vimfiles path.
-"let g:session_directory = $VIM.'\_vimfiles\sessions'
-let g:session_autoload = 'no'
-let g:session_autosave = 'no'
-"let g:session_persist_colors = 0
-"let g:session_command_aliases = 1
-"let g:session_autosave_periodic = 1
+" xolox/vim-session was configured here, with autoload and autosave both off
+" -- so it was two vim-plug plugins (it needs vim-misc) providing a manual
+" :SaveSession. Dropped in 2026-08 with vim-plug itself. Vim's own :mksession
+" and `nvim -S Session.vim` cover the same ground; Session.vim stays
+" gitignored.
 
 " Parse *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown

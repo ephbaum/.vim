@@ -2,7 +2,7 @@
 #
 # Set this config up on a new machine, or repair it on an existing one.
 #
-#   ./setup.sh          install: make state dirs, symlink, fetch vim-plug
+#   ./setup.sh          install: make state dirs, symlink, check dependencies
 #   ./setup.sh --check  verify only, change nothing, non-zero on problems
 #   ./setup.sh --force  replace existing files where install would refuse
 #
@@ -14,9 +14,6 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NVIM_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
-NVIM_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
-PLUG_PATH="$NVIM_DATA/site/autoload/plug.vim"
-PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 STAMP="$(date +%Y%m%d%H%M%S)"
 
 MODE=install
@@ -98,22 +95,9 @@ link() {
 link "$REPO/lua/init.lua" "$NVIM_CONFIG/init.lua"
 link "$REPO/.vimrc"       "$NVIM_CONFIG/legacy.vim"
 
-# --- vim-plug -------------------------------------------------------------
-# Still manages vim-misc, vim-session and coc.nvim; see bundles.vim.
-# lazy.nvim bootstraps itself from init.lua and needs nothing here.
-head_ "vim-plug"
-if [ -s "$PLUG_PATH" ]; then
-  ok "installed at $PLUG_PATH"
-elif [ "$MODE" = check ]; then
-  bad "not installed -- :PlugInstall will fail, and coc.nvim will not load"
-else
-  mkdir -p "$(dirname "$PLUG_PATH")"
-  if curl -fsSLo "$PLUG_PATH" --create-dirs "$PLUG_URL"; then
-    ok "downloaded"
-  else
-    bad "download failed from $PLUG_URL"
-  fi
-fi
+# There is no plugin-manager step. vim-plug was fetched here until 2026-08,
+# when its last three plugins were dropped or moved; lazy.nvim bootstraps
+# itself from init.lua on first launch and needs nothing from this script.
 
 # --- dependencies ---------------------------------------------------------
 head_ "Dependencies"
@@ -127,8 +111,7 @@ want() {
 }
 
 need nvim "the editor"
-need git  "lazy.nvim and vim-plug both clone over git"
-need curl "fetches vim-plug"
+need git  "lazy.nvim clones plugins over git"
 need node "coc.nvim runs on it"
 want rg   "telescope live_grep (<leader>fg)"
 
@@ -156,7 +139,7 @@ if [ "$problems" -eq 0 ]; then
   if [ "$MODE" = check ]; then
     echo "  all checks passed"
   else
-    echo "  done -- start nvim, then run :PlugInstall"
+    echo "  done -- start nvim; lazy.nvim installs everything on first launch"
   fi
   exit 0
 fi
