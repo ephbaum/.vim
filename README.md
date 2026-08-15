@@ -26,8 +26,8 @@ from anywhere else rather than half-working.
 
 `setup.sh` creates `swapfiles/` and `backupfiles/`, symlinks `init.lua` and
 `legacy.vim`, fetches vim-plug, and checks for `nvim`, `node`, `git`, `curl`,
-`ctags`, `ripgrep` and (on WSL) `win32yank`. It's idempotent — anything it
-would overwrite is moved aside with a timestamp instead.
+`ctags` and `ripgrep`. It's idempotent — anything it would overwrite is moved
+aside with a timestamp instead.
 
 ```bash
 ./setup.sh --check   # verify an existing install, change nothing
@@ -166,9 +166,14 @@ locally; neither needs anything installed.
 
 ### WSL clipboard
 
-`clipboard+=unnamedplus` alone doesn't reach the Windows clipboard, so
-`g:clipboard` is pointed at `win32yank.exe` with `--crlf` on copy and `--lf`
-on paste to keep line endings from drifting across the boundary.
+`.vimrc` sets `clipboard+=unnamedplus` and deliberately declares **no**
+`g:clipboard` provider. Neovim picks one itself; under WSL it falls back to
+`clip.exe` and powershell. `:checkhealth provider` reports what it chose.
+
+A `win32yank.exe` provider was configured here briefly in 2026 and removed.
+It didn't reliably work, and it put a third-party binary in the path of
+everything copied out of the editor. If the clipboard isn't crossing into
+Windows, fix it on the Windows or WSL side rather than reinstating a helper.
 
 ## History
 
@@ -184,7 +189,7 @@ commit messages, so the dates carry most of the story.
 | **2021–2022** | Manjaro → Ubuntu, another machine migration, several rounds of path fixing (*"Maybe this is the right path forever"*). |
 | **2023** | Everything relocates into `$HOME/.config/nvim`. coc.nvim arrives, transparency, astro. |
 | **2024** | Lua config: `init.lua` becomes the entry point, `.vimrc` demoted to `legacy.vim`, lazy.nvim and gen.nvim added. Migration deliberately partial. |
-| **2026** | Statusline crash fixed, coc actually armed, plugin set modernized. WSL clipboard fixed. |
+| **2026** | Statusline crash fixed, coc actually armed, plugin set modernized. Swap files and a ctags index scrubbed from history. A win32yank clipboard provider added and removed again. |
 
 ### 2026-07-04 — the modernization pass
 

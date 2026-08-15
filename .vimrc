@@ -22,22 +22,16 @@ set ignorecase
 set selection=inclusive
 set encoding=utf-8
 
-" WSL clipboard. unnamedplus alone doesn't cross into Windows, so hand vim
-" win32yank instead: --crlf on the way in, --lf on the way out, otherwise
-" line endings drift every round trip.
+" No explicit g:clipboard here on purpose. A win32yank.exe provider lived at
+" this spot briefly in 2026 and is not coming back -- it didn't reliably work
+" and it's a third-party binary sitting in the path of everything you copy,
+" which is more trust than a clipboard bridge has earned.
+"
+" Without a g:clipboard block neovim picks a provider itself; under WSL it
+" will use clip.exe and powershell if it finds nothing better. `:checkhealth
+" provider` shows what it settled on. If the clipboard isn't crossing into
+" Windows, fix it there rather than reinstating a helper binary.
 set clipboard+=unnamedplus
-let g:clipboard = {
-          \   'name': 'win32yank-wsl',
-          \   'copy': {
-          \      '+': 'win32yank.exe -i --crlf',
-          \      '*': 'win32yank.exe -i --crlf',
-          \    },
-          \   'paste': {
-          \      '+': 'win32yank.exe -o --lf',
-          \      '*': 'win32yank.exe -o --lf',
-          \   },
-          \   'cache_enabled': 0,
-          \ }
 
 colorscheme gruvbox " molokai
 set background=dark

@@ -142,10 +142,10 @@ else
   warn "ctags missing -- <leader>tt and <leader>rr will not work"
 fi
 
-# WSL only: unnamedplus alone does not reach the Windows clipboard.
+# WSL: no clipboard helper to check for. The config sets no g:clipboard, so
+# neovim picks a provider on its own -- :checkhealth provider will say which.
 if grep -qi microsoft /proc/version 2>/dev/null; then
-  info "WSL detected"
-  want win32yank.exe "clipboard bridge, see g:clipboard in .vimrc"
+  info "WSL detected -- run :checkhealth provider if the clipboard misbehaves"
 fi
 
 # --- result ---------------------------------------------------------------
