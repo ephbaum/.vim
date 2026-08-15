@@ -11,46 +11,37 @@ here rather than rediscovered.
 ## Setup
 
 ```bash
-# 1. config dir
 mkdir -p $HOME/.config/nvim && cd $HOME/.config/nvim
-
-# 2. clone as "gitnvim"
 git clone git@github.com:ephbaum/.vim.git gitnvim
-
-# 3. state directories — .vimrc points directory= and backupdir= here,
-#    and .gitignore expects these exact names
-mkdir -p gitnvim/swapfiles gitnvim/backupfiles
-
-# 4. neovim entry point -> lua config
-ln -s ~/.config/nvim/gitnvim/lua/init.lua ~/.config/nvim/init.lua
-
-# 5. the old vimscript config, sourced by init.lua
-ln -s ~/.config/nvim/gitnvim/.vimrc ~/.config/nvim/legacy.vim
+cd gitnvim && ./setup.sh
 ```
 
-Then install vim-plug, which still manages three plugins (see
-[Two plugin managers](#two-plugin-managers)):
-
-```bash
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-```
-
-Launch `nvim` and run `:PlugInstall`. lazy.nvim bootstraps itself on first
-start, and coc installs its extensions automatically from
+Then launch `nvim` and run `:PlugInstall`. lazy.nvim bootstraps itself on
+first start, and coc installs its extensions from
 `vim.g.coc_global_extensions`.
 
-### Also worth installing
+The clone has to be named `gitnvim` and live at `~/.config/nvim` — `.vimrc`
+and `lua/init.lua` reference that path absolutely. `setup.sh` refuses to run
+from anywhere else rather than half-working.
 
-- **ctags** — Tagbar (`<leader>tt`) and telescope's buffer-tags picker
-  (`<leader>rr`) both shell out to it. Use
+`setup.sh` creates `swapfiles/` and `backupfiles/`, symlinks `init.lua` and
+`legacy.vim`, fetches vim-plug, and checks for `nvim`, `node`, `git`, `curl`,
+`ctags`, `ripgrep` and (on WSL) `win32yank`. It's idempotent — anything it
+would overwrite is moved aside with a timestamp instead.
+
+```bash
+./setup.sh --check   # verify an existing install, change nothing
+./setup.sh --force   # replace files that would otherwise block the install
+```
+
+### Also worth knowing
+
+- **ctags** must be
   [Universal Ctags](https://github.com/universal-ctags/ctags)
   (`sudo apt install universal-ctags`), not Exuberant Ctags, which this README
   recommended for years despite it being unmaintained since 2009.
-- **Node.js** — required by coc.nvim.
-- **win32yank** — WSL clipboard bridge, see below.
-- **[FiraCode](https://github.com/tonsky/FiraCode)** — the font this is tuned
-  for. Under WSL, install it on the Windows side and select it in Windows
+- **[FiraCode](https://github.com/tonsky/FiraCode)** is the font this is tuned
+  for. Under WSL, install it on the Windows side and pick it in Windows
   Terminal.
 
 ![Screenshot of Windows Terminal running NVIM with FiraCode, gruvbox, transparency and scanlines](images/nvim_fira_code_windows_terminal_gruvbox.png)
@@ -138,6 +129,8 @@ memory notices:
 | `.vimrc` | the original vimscript config, symlinked as `legacy.vim`. Options, keymaps, and all the coc boilerplate |
 | `bundles.vim` | the three plugins still on vim-plug |
 | `netrw-tree.vim` | netrw as a file-tree sidebar, from before nvim-tree |
+| `setup.sh` | install or verify this config on a machine |
+| `scripts/` | the CI checks, all runnable by hand |
 
 ### Two plugin managers
 
@@ -145,6 +138,31 @@ lazy.nvim manages everything except `vim-misc`, `vim-session`, and `coc.nvim`,
 which are still on vim-plug in `bundles.vim`. This is why `:checkhealth` warns
 about "paths on the rtp from another plugin manager" — that's expected, not
 broken. Folding the last three into lazy.nvim is the obvious next cleanup.
+
+### CI
+
+`.github/workflows/ci.yml` runs two jobs.
+
+**lint** — no editor needed. `shellcheck` on `setup.sh`,
+`scripts/check-keymaps.py` for mappings that override each other, and two
+guards that exist because of things this repo actually did: nothing matching
+editor state (swap files, tags indexes, netrw bookmarks) may be tracked, and
+no tracked file may contain an absolute `/home/…` or `/Users/…` path.
+
+**smoke** — installs neovim, node, ctags and ripgrep, runs `setup.sh` from
+the path the config expects, installs both plugin managers' plugins, then
+asserts that startup writes nothing to stderr and runs
+`scripts/ci-assert.vim`.
+
+That last one is the point of the whole thing. The 2026 statusline bug made
+nvim exit 0 while half the config silently never ran, so exit codes prove
+nothing here. `ci-assert.vim` places tripwires at increasing depths of the
+load order — lazy's plugin configs, early `legacy.vim`, past the statusline
+region, the last lines of `legacy.vim`, then back in `init.lua` after the
+`source`. When one fails, the last one that passed is where loading gave up.
+
+`scripts/check-keymaps.py` and `./setup.sh --check` are both worth running
+locally; neither needs anything installed.
 
 ### WSL clipboard
 

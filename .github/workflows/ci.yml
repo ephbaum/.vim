@@ -1,0 +1,101 @@
+name: ci
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # Fast, no editor required. Catches the two classes of mistake this repo has
+  # actually made: mappings that silently override each other, and editor
+  # state getting committed.
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck setup.sh
+        run: shellcheck setup.sh
+
+      - name: keymap collisions
+        run: ./scripts/check-keymaps.py
+
+      - name: no editor state is tracked
+        # Regression test for the 2026-08 history scrub. Swap files, a ctags
+        # index and netrw bookmarks were all committed at some point and
+        # carried for years. .gitignore covers them now; this fails the build
+        # if one is ever force-added past it.
+        run: |
+          bad=$(git ls-files | grep -E \
+            '(^|/)(swapfiles|backupfiles|session)/|\.(swp|swo|un~)$|(^|/)\.vimtags$|(^|/)\.netrw(hist|book)$|(^|/)tags$|:Zone\.Identifier$|\.DS_Store$' \
+            || true)
+          if [ -n "$bad" ]; then
+            echo "editor state is tracked in git:"; echo "$bad"; exit 1
+          fi
+          echo "clean"
+
+      - name: no absolute home paths in tracked files
+        # The swap files leaked /Users/<name>/... paths. Nothing tracked here
+        # should carry one; $HOME belongs in the config instead.
+        run: |
+          bad=$(git grep -InE '/(Users|home)/[A-Za-z0-9._-]+/' -- . ':!README.md' || true)
+          if [ -n "$bad" ]; then
+            echo "absolute home paths found:"; echo "$bad"; exit 1
+          fi
+          echo "clean"
+
+  # The one that matters. Installs everything and boots nvim for real.
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: install ctags and ripgrep
+        run: sudo apt-get update && sudo apt-get install -y universal-ctags ripgrep
+
+      - name: run setup.sh from the path the config expects
+        # .vimrc and init.lua reference ~/.config/nvim/gitnvim absolutely, so
+        # the checkout has to be moved there before any of this means anything.
+        run: |
+          mkdir -p ~/.config/nvim
+          cp -r "$GITHUB_WORKSPACE" ~/.config/nvim/gitnvim
+          cd ~/.config/nvim/gitnvim
+          ./setup.sh
+
+      - name: verify setup.sh is idempotent
+        run: |
+          cd ~/.config/nvim/gitnvim
+          ./setup.sh --check
+
+      - name: install plugins
+        # Both managers. coc pulls its extensions from
+        # vim.g.coc_global_extensions on first start, which needs node.
+        run: |
+          nvim --headless "+Lazy! sync" +qa || true
+          nvim --headless +PlugInstall +qa || true
+          nvim --headless "+CocInstall -sync coc-json coc-tsserver" +qa || true
+
+      - name: startup produces no errors
+        # An error during startup is the failure mode this repo has hit: nvim
+        # still exits 0, so the exit code proves nothing. Check stderr.
+        run: |
+          nvim --headless +qa 2>startup.err
+          if [ -s startup.err ]; then
+            echo "nvim wrote to stderr during startup:"; cat startup.err; exit 1
+          fi
+          echo "clean startup"
+
+      - name: load-order assertions
+        run: |
+          cd ~/.config/nvim/gitnvim
+          nvim --headless -S scripts/ci-assert.vim +qa

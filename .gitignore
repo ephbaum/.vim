@@ -73,3 +73,7 @@ spell/*.add.spl
 # hand, since ignoring a tracked file does nothing.
 .DS_Store
 *:Zone.Identifier
+
+# --- repo tooling ------------------------------------------------------
+__pycache__/
+*.pyc
