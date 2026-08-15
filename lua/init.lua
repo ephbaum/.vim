@@ -70,7 +70,8 @@ require("lazy").setup({
   },
   { 'David-Kunz/gen.nvim',
     opts = {
-        model = "codellama:13b",
+        -- model = "codellama:13b",
+        model = "phi3:medium",
         display_mode = "split",
         no_auto_close = true,
         show_prompt = true,
