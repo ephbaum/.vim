@@ -100,9 +100,19 @@ call s:Assert('mapleader is space', get(g:, 'mapleader', '') ==# ' ')
 " <CR> in insert mode should be nothing at all. Two coc mappings fought over
 " this slot for years, the older silently overriding the newer; with coc gone
 " the correct state is unmapped, and anything here means something re-claimed
-" it. Same for <Tab>.
+" it.
 call s:Assert('<CR> unmapped in insert', empty(maparg('<CR>', 'i')))
-call s:Assert('<Tab> unmapped in insert', empty(maparg('<Tab>', 'i')))
+
+" <Tab> asks the same question with one exception. Neovim maps <Tab> in insert
+" itself now, to jump an active snippet, falling through to a literal <Tab>
+" when there is no snippet -- so the slot is spoken for out of the box and a
+" bare emptiness check fails on a correct config. Written before that default
+" existed, this asserted empty() and started failing on 0.11+ for no reason.
+" What it is actually looking for is a *completion plugin* taking the key over,
+" so neovim's own mapping is allowed through by its description.
+let s:tab = maparg('<Tab>', 'i', 0, 1)
+call s:Assert('<Tab> not claimed in insert',
+      \ empty(s:tab) || get(s:tab, 'desc', '') =~? 'snippet')
 
 " State directories exist and are writable, or vim silently drops swap files
 " into whatever directory you happened to open.

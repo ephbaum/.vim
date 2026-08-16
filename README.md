@@ -76,6 +76,17 @@ settled on.
 not Exuberant Ctags, which this README recommended for years despite it being
 unmaintained since 2009.
 
+Installing it is not always enough. On Debian/Ubuntu `/usr/bin/ctags` is an
+`update-alternatives` symlink, and if `exuberant-ctags` is already installed it
+keeps the link — so `apt install universal-ctags` succeeds, `ctags-universal`
+appears next to it, and `ctags` still runs the 2009 one. Nothing errors; you
+just keep the old binary. `./setup.sh --check` reports the flavour rather than
+mere presence, which is the point. To switch:
+
+```bash
+sudo update-alternatives --set ctags /usr/bin/ctags-universal
+```
+
 **[FiraCode](https://github.com/tonsky/FiraCode)** is the font this is tuned
 for. Under WSL, install it on the Windows side and pick it in Windows
 Terminal.
@@ -218,6 +229,15 @@ neither file showing both sides. It reports prefix ambiguities without
 failing. It reports none at the moment — the last one belonged to coc, and
 went with it.
 
+It reads the files rather than asking a running vim, which keeps it cheap but
+leaves one blind spot worth knowing: **it cannot see mappings owned by
+plugins.** In 2026-08 `<leader><leader>ss` (gen.nvim) sat directly on top of
+easymotion's `<leader><leader>` prefix, and the checker called it clean —
+easymotion's half of the collision lives in the plugin, not in either file it
+reads. `:checkhealth which-key` does see it, because it asks the running
+editor. The two are complementary: the checker catches what CI can catch
+without installing anything, which is why it's the one in CI.
+
 Two more checks run **by hand**, not in CI:
 
 ```bash
@@ -263,7 +283,7 @@ commit messages, so the dates carry most of the story.
 | **2021–2022** | Manjaro → Ubuntu, another machine migration, several rounds of path fixing (*"Maybe this is the right path forever"*). |
 | **2023** | Everything relocates into `$HOME/.config/nvim`. coc.nvim arrives, transparency, astro. |
 | **2024** | Lua config: `init.lua` becomes the entry point, `.vimrc` demoted to `legacy.vim`, lazy.nvim and gen.nvim added. Migration deliberately partial. |
-| **2026** | Statusline crash fixed, plugin set modernized, swap files and a ctags index scrubbed from history. Then a long cleanup: netrw, vim-plug, gundo and finally coc.nvim all retired, and the config made to actually work on macOS as well as Linux. |
+| **2026** | Statusline crash fixed, plugin set modernized, swap files and a ctags index scrubbed from history. Then a long cleanup: netrw, vim-plug, gundo and finally coc.nvim all retired, and the config made to actually work on macOS as well as Linux. Finished by getting `:checkhealth` down to a clean report, so the next real problem has somewhere to show up. |
 
 ### 2026-07-04 — the modernization pass
 
@@ -407,6 +427,73 @@ reach for when nvim starts but feels wrong.
   check says why `/usr/bin/ctags` on a Mac isn't the one you want.
 - The README's clone line leads with HTTPS, since SSH keys are usually the
   thing you haven't set up yet on a machine you just got to.
+
+### 2026-08-16 — the checkhealth pass
+
+Pulled the cleanup pass down onto the WSL machine and the config felt broken.
+It wasn't — `nvim` started clean and exited 0 — but `:checkhealth` reported one
+error and eight warnings, and the one thing actually missing was buried in
+them. Most of this pass is deleting noise so the real signal is visible.
+
+**The one that mattered: `ts_ls` was dying silently.** Native LSP needs server
+binaries and this machine had none of the seven, which the config handles by
+design — absent server, quiet editor. Installing them per the note in
+`init.lua` still left TypeScript dead, because `npm i -g typescript` now
+resolves to **7.x, the native port**, which ships a `tsc` binary and no
+`lib/tsserver.js`. `typescript-language-server` drives the 5.x javascript
+tsserver, so it started, failed `initialize`, and exited. The *server* dies
+rather than the editor, so there is no error to see — it reads as the LSP
+config doing nothing at all. Install hint is pinned to `typescript@5` now, in
+both `init.lua` and the LSP section above. Drop the pin once ts_ls speaks to
+tsgo.
+
+Worth stating because it generalises: `:checkhealth vim.lsp` reported ✅
+throughout. It lists *enabled configurations*, not clients that survived
+startup. The only reliable check is opening a real file and asking whether a
+client attached and returned a diagnostic.
+
+**Noise removed.**
+
+- **lazy `rocks` disabled.** lazy builds a private lua5.1 + luarocks the first
+  time a plugin wants a rock; no plugin here does, so it never builds and the
+  missing interpreter is a permanent ERROR. `hererocks = false` is *not* the
+  fix — lazy then hunts for a system luarocks and warns three times instead.
+  `rocks = { enabled = false }` retires the whole section.
+- **node, perl and ruby providers disabled.** Every plugin here is lua or
+  vimscript, so these were three warnings for tooling nothing calls. python3
+  stays enabled — pynvim is installed and working. Note this is the node
+  *provider*, unrelated to needing node for npm-installed servers.
+- `mini.icons` is left warning on purpose. `nvim-web-devicons` is installed and
+  which-key's own health text says not to report it.
+
+**`<leader><leader>ss` → `<leader>gs`**, and `'v'` → `'x'`. Easymotion owns
+`<leader><leader>` and maps `<leader><leader>s`, so the old key made
+visual-mode easymotion-s wait out `timeoutlen` on every press, and a fast
+typist got Gen instead — the same class of bug as `<leader>f` in July, and the
+second time a prefix collision has been found by reading a health report rather
+than by noticing the lag. `'v'` also meant select mode, where a printable-key
+mapping is dead weight. The keymap checker did not catch this one; see
+**Checks** above for why.
+
+**ctags, again.** `universal-ctags` was installed but `/usr/bin/ctags` still
+ran Exuberant 5.9 — `update-alternatives` keeps the incumbent. Documented under
+Per-platform. `setup.sh --check` already reported the flavour correctly, which
+is how it surfaced.
+
+**A stale assertion.** `check-load-order.vim` asserted `<Tab>` was *unmapped*
+in insert — correct when it was written against coc, wrong since neovim 0.11
+started mapping `<Tab>` itself to jump an active snippet (it falls through to a
+literal `<Tab>` otherwise). So the one check meant to be run on a new machine
+greeted you with a failure that wasn't one, which is the fastest way to teach
+yourself to ignore it. Now it allows neovim's own default through and still
+fails when a completion plugin claims the key — verified both ways rather than
+just the passing one.
+
+**coc leftovers.** `~/.config/coc` survived the migration at 254 MB of
+extension `node_modules`. Nothing reads it. Removed. There was no
+`coc-settings.json` anywhere on the system, so nothing hand-tuned was lost when
+coc went — the `vim.lsp.enable()` gating in `init.lua` is the entire
+configuration surface now.
 
 ### 2026-08-15 — history scrub
 
