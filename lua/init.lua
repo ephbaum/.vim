@@ -49,6 +49,19 @@ vim.g.mapleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Remote-plugin providers, all optional and none of them used here: every
+-- plugin in the list below is lua or vimscript. Left enabled they cost a
+-- $PATH probe at startup and three WARNINGs in :checkhealth for tooling this
+-- config never calls. The python3 provider is deliberately *not* disabled --
+-- pynvim is installed and healthy, so it stays available.
+--
+-- Note this is the node *provider* (the `neovim` npm package), which is a
+-- different thing from needing node at all -- most language servers still
+-- install over npm. See the LSP block below.
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 require("lazy").setup({
   "folke/which-key.nvim",
   { "folke/neoconf.nvim", cmd = "Neoconf" },
@@ -114,9 +127,17 @@ require("lazy").setup({
       --
       -- Values are the executable to look for -- also the thing to install if
       -- you want that language working on this machine. The npm ones are
-      -- `npm i -g typescript-language-server typescript`,
+      -- `npm i -g typescript-language-server typescript@5`,
       -- `npm i -g vscode-langservers-extracted` (eslint/json/html/css) and
       -- `npm i -g intelephense`; lua-language-server comes from brew or apt.
+      --
+      -- The `@5` is load-bearing as of 2026: `typescript` latest is now the 7.x
+      -- native port, which ships a `tsc` binary and no `lib/tsserver.js`.
+      -- typescript-language-server still drives the 5.x javascript tsserver, so
+      -- a bare `npm i -g typescript` leaves ts_ls exiting at startup with
+      -- "Could not find a valid TypeScript installation" -- and because that
+      -- kills the server rather than the editor, it looks like the LSP config
+      -- silently doing nothing. Drop the pin once ts_ls speaks to tsgo.
       local servers = {
         ts_ls        = 'typescript-language-server',
         eslint       = 'vscode-eslint-language-server',
@@ -143,12 +164,35 @@ require("lazy").setup({
         show_model = true,
     }
   }
+}, {
+  -- lazy.nvim builds a private lua 5.1 + luarocks under stdpath('data') the
+  -- first time it wants a rock, and reports the missing interpreter as an
+  -- ERROR in :checkhealth until it does. No plugin above needs a rock --
+  -- checkhealth says so itself -- so the build never gets triggered and the
+  -- error is permanent.
+  --
+  -- Disabling the feature outright rather than just `hererocks = false`:
+  -- the latter only declines to build the private copy, so lazy then hunts
+  -- for a *system* luarocks and warns three times when that is missing too.
+  -- Set this back to true if a plugin that actually wants a rock is added.
+  rocks = { enabled = false },
 })
 
 -- The old .vimrc. Everything above is available to it; nothing below runs if
 -- it throws.
 vim.cmd('source ' .. vim.fn.stdpath('config') .. '/legacy.vim')
 
-vim.keymap.set({ 'n', 'v' }, '<leader>]', ':Gen<CR>')
-vim.keymap.set('v', '<leader><leader>ss', ':Gen Enhance_Grammar_Spelling<CR>')
+-- gen.nvim. Note 'x' and not 'v': 'v' is visual *plus select*, and a select-mode
+-- binding is not wanted here -- printable keys there replace the selection, so
+-- the mapping is dead weight at best. This is also why :checkhealth used to
+-- report these overlaps twice, once for `x` and once for `s`.
+--
+-- The grammar fix lived on <leader><leader>ss until 2026-08. That sat on top of
+-- easymotion, which owns <leader><leader> as its prefix and maps
+-- <leader><leader>s to easymotion-s -- so every visual-mode easymotion-s had to
+-- wait out 'timeoutlen' (1s) while vim checked for a second `s`, and a fast
+-- typist got Gen instead. <leader>g is unmapped, so the whole <leader>g space is
+-- free for gen.nvim.
+vim.keymap.set({ 'n', 'x' }, '<leader>]', ':Gen<CR>')
+vim.keymap.set('x', '<leader>gs', ':Gen Enhance_Grammar_Spelling<CR>')
 

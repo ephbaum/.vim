@@ -140,12 +140,19 @@ gets a quiet editor rather than an error on every buffer — and `./setup.sh
 auto-installed six of them over npm on first launch but made `node` mandatory
 everywhere.
 
+Install commands are in the LSP block of `lua/init.lua`, next to the server
+list. One trap is worth repeating here: install TypeScript as
+`typescript@5`, not `typescript`. Since 7.x that package is the native port,
+which ships no `lib/tsserver.js`, and `typescript-language-server` still drives
+the 5.x one — with the unpinned version it starts, fails to initialise and
+exits, which reads as the LSP config doing nothing at all.
+
 ### AI (gen.nvim → local ollama)
 
 | Key | Does |
 |---|---|
 | `<leader>]` | prompt Gen |
-| `<leader><leader>ss` | fix grammar/spelling in selection |
+| `<leader>gs` | fix grammar/spelling in selection |
 
 ### What muscle memory will miss
 
