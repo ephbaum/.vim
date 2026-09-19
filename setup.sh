@@ -198,6 +198,37 @@ done
 if [ -n "$have" ]; then ok "present:$have"; fi
 if [ -n "$miss" ]; then info "absent (optional):$miss"; fi
 
+# --- local AI -------------------------------------------------------------
+# Optional, like the language servers: without ollama, gen.nvim and minuet
+# fail per request and the editor is otherwise fine. Model names mirror the
+# defaults in lua/init.lua, including their env-var overrides.
+head_ "Local AI (ollama)"
+if command -v ollama >/dev/null 2>&1; then
+  host="${NVIM_AI_HOST:-localhost}:${NVIM_AI_PORT:-11434}"
+  # Probing the endpoint rather than comparing versions: minuet's ghost text
+  # needs /v1/completions, which ollama 0.1.x answers with 404. Any other
+  # status (400 for the empty body) means the route exists.
+  code=$(curl -s -m 3 -o /dev/null -w '%{http_code}' -X POST "http://$host/v1/completions" -d '{}' || true)
+  code=${code:-000}  # curl itself missing
+  case "$code" in
+    404) warn "ollama at $host has no /v1/completions -- too old for ghost text; upgrade: curl -fsSL https://ollama.com/install.sh | sh" ;;
+    000) warn "ollama installed but not answering on $host -- start it with: ollama serve" ;;
+    *)   ok "ollama at $host serves /v1/completions -- ghost text" ;;
+  esac
+  if [ "$code" != 000 ]; then
+    models=$(ollama list 2>/dev/null || true)
+    for m in "${NVIM_AI_FIM_MODEL:-qwen2.5-coder:1.5b}" "${NVIM_AI_EDIT_MODEL:-qwen2.5-coder:7b}"; do
+      if grep -q "^${m}[[:space:]]" <<<"$models"; then
+        ok "model $m"
+      else
+        warn "model $m not pulled -- ollama pull $m"
+      fi
+    done
+  fi
+else
+  info "ollama absent (optional) -- <leader>] / <leader>g* and ghost text need it: https://ollama.com/download"
+fi
+
 # --- clipboard ------------------------------------------------------------
 # .vimrc sets clipboard+=unnamedplus and deliberately declares no g:clipboard,
 # so neovim picks a provider itself -- and silently does nothing if it finds

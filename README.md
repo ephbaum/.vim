@@ -158,12 +158,43 @@ which ships no `lib/tsserver.js`, and `typescript-language-server` still drives
 the 5.x one — with the unpinned version it starts, fails to initialise and
 exits, which reads as the LSP config doing nothing at all.
 
-### AI (gen.nvim → local ollama)
+### AI (local ollama)
+
+Two plugins, one ollama. **minuet-ai** draws ghost-text suggestions while you
+type in insert mode; **gen.nvim** rewrites a selection when you ask it to.
+Nothing leaves the machine.
+
+```sh
+curl -fsSL https://ollama.com/install.sh | sh   # ghost text needs a 2024-H2+ ollama
+ollama pull qwen2.5-coder:1.5b                  # ghost text: small, fast on CPU
+ollama pull qwen2.5-coder:7b                    # gen.nvim edits
+./setup.sh --check                              # probes both
+```
+
+Models and host are overridable per machine with `NVIM_AI_FIM_MODEL`,
+`NVIM_AI_EDIT_MODEL`, `NVIM_AI_HOST` and `NVIM_AI_PORT`. With a GPU, the 7b
+model is worth using for ghost text too.
+
+Insert mode, while a suggestion is showing:
 
 | Key | Does |
 |---|---|
-| `<leader>]` | prompt Gen |
+| `<A-l>` | accept the whole suggestion |
+| `<A-j>` | accept one line of it |
+| `<A-z>` | accept N lines (prompts) |
+| `<A-n>` / `<A-p>` | next / previous suggestion — or ask for one if none is showing |
+| `<A-e>` | dismiss |
+
+Everywhere else:
+
+| Key | Does |
+|---|---|
+| `<leader>ga` | ghost text on/off |
+| `<leader>]` | prompt Gen (pick any prompt) |
 | `<leader>gs` | fix grammar/spelling in selection |
+| `<leader>gw` | better wording for selection |
+| `<leader>gc` | change selected code — asks what to change |
+| `<leader>gr` | review selected code (doesn't replace) |
 
 ### What muscle memory will miss
 

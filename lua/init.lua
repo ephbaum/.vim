@@ -7,7 +7,7 @@
 --   2. set mapleader     -- before any plugin config() runs
 --   3. lazy.setup()      -- plugin config() functions execute here
 --   4. source legacy.vim -- the old .vimrc: options and the remaining keymaps
---   5. the gen.nvim keymaps
+--   5. the gen.nvim and minuet keymaps
 --
 -- Step 4 is late because legacy.vim is the older half of the config, and an
 -- error raised in it aborts everything after it in this file too.
@@ -62,6 +62,23 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
+-- Local AI, all of it through one ollama. Two models because the two jobs pull
+-- in opposite directions: ghost text fires on every pause in insert mode, so
+-- it wants the smallest model that still completes sensibly; the gen.nvim
+-- edits run only when asked, so they can afford something bigger. Both are
+-- qwen2.5-coder because ollama ships its fill-in-the-middle template, which
+-- is what ghost text needs -- the model sees the code after the cursor too.
+--
+-- Env vars rather than edits here, because the right size depends on the
+-- machine: no GPU reaches WSL on the box this was written on, so 1.5b is
+-- sized for CPU. With a real GPU, NVIM_AI_FIM_MODEL=qwen2.5-coder:7b.
+local ai = {
+  host       = vim.env.NVIM_AI_HOST or 'localhost',
+  port       = vim.env.NVIM_AI_PORT or '11434',
+  fim_model  = vim.env.NVIM_AI_FIM_MODEL or 'qwen2.5-coder:1.5b',
+  edit_model = vim.env.NVIM_AI_EDIT_MODEL or 'qwen2.5-coder:7b',
+}
+
 require("lazy").setup({
   "folke/which-key.nvim",
   { "folke/neoconf.nvim", cmd = "Neoconf" },
@@ -90,6 +107,13 @@ require("lazy").setup({
           -- in after coc was removed would have thrown E117 on every redraw,
           -- which is how the 2026 statusline bug started the first time.
           lualine_c = { 'filename', 'diagnostics' },
+          -- Spinner while a ghost-text request is in flight. On CPU a request
+          -- can take a second or two, and without this there is no telling
+          -- "still thinking" apart from "nothing to suggest".
+          lualine_x = {
+            { require('minuet.lualine'), display_on_idle = false },
+            'encoding', 'fileformat', 'filetype',
+          },
         },
       })
     end,
@@ -154,10 +178,60 @@ require("lazy").setup({
       end
     end,
   },
+  -- Ghost text: a suggestion drawn after the cursor while typing in insert
+  -- mode, accepted or ignored like any other virtual text. Talks to ollama's
+  -- OpenAI-style /v1/completions endpoint, which older ollama builds lack --
+  -- 0.1.x answers 404 there, and minuet reports that as a failed request, not
+  -- a missing feature. `./setup.sh --check` probes for it.
+  --
+  -- Alt keys because insert mode has nothing free that's easier to reach:
+  -- <Tab> belongs to the markdown list mappings in legacy.vim. Not minuet's
+  -- default <A-[> for prev, though: a terminal sends Alt-[ as ESC [, which is
+  -- also how every arrow and function key starts, so it arrives ambiguous.
+  {
+    'milanglacier/minuet-ai.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('minuet').setup({
+        provider = 'openai_fim_compatible',
+        n_completions = 1,
+        -- Characters of context around the cursor. Small because prompt
+        -- processing dominates latency on CPU; raise it on a GPU.
+        context_window = 1024,
+        request_timeout = 5,
+        virtualtext = {
+          auto_trigger_ft = { '*' },
+          auto_trigger_ignore_ft = { 'TelescopePrompt', 'NvimTree', 'lazy', 'help' },
+          keymap = {
+            accept         = '<A-l>', -- the whole suggestion
+            accept_line    = '<A-j>', -- one line of it
+            accept_n_lines = '<A-z>', -- prompts for a count
+            prev           = '<A-p>', -- also requests one when none is showing
+            next           = '<A-n>',
+            dismiss        = '<A-e>',
+          },
+        },
+        provider_options = {
+          openai_fim_compatible = {
+            -- Name of an env var holding the key. Ollama wants none, but
+            -- minuet refuses to send without one, and TERM is always set.
+            api_key = 'TERM',
+            name = 'Ollama',
+            end_point = 'http://' .. ai.host .. ':' .. ai.port .. '/v1/completions',
+            model = ai.fim_model,
+            optional = { max_tokens = 64, top_p = 0.9 },
+          },
+        },
+      })
+    end,
+  },
+  -- Edits on demand: select, pick a prompt, get the rewrite back in place.
+  -- phi3:medium sat here until 2026-09 without ever having been pulled.
   { 'David-Kunz/gen.nvim',
     opts = {
-        -- model = "codellama:13b",
-        model = "phi3:medium",
+        model = ai.edit_model,
+        host = ai.host,
+        port = ai.port,
         display_mode = "split",
         no_auto_close = true,
         show_prompt = true,
@@ -193,6 +267,17 @@ vim.cmd('source ' .. vim.fn.stdpath('config') .. '/legacy.vim')
 -- wait out 'timeoutlen' (1s) while vim checked for a second `s`, and a fast
 -- typist got Gen instead. <leader>g is unmapped, so the whole <leader>g space is
 -- free for gen.nvim.
+--
+-- All but <leader>] act on a visual selection and replace it. gen shows the
+-- output in a split first; `u` undoes a rewrite you don't want.
 vim.keymap.set({ 'n', 'x' }, '<leader>]', ':Gen<CR>')
 vim.keymap.set('x', '<leader>gs', ':Gen Enhance_Grammar_Spelling<CR>')
+vim.keymap.set('x', '<leader>gw', ':Gen Enhance_Wording<CR>')
+vim.keymap.set('x', '<leader>gc', ':Gen Change_Code<CR>') -- asks what to change
+vim.keymap.set('x', '<leader>gr', ':Gen Review_Code<CR>') -- read-only, no replace
+
+-- Ghost text on and off. Worth having because on CPU the constant requests
+-- are felt, and some files (long prose, anything sensitive) are better
+-- without.
+vim.keymap.set('n', '<leader>ga', ':Minuet virtualtext toggle<CR>')
 
