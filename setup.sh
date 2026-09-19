@@ -199,34 +199,48 @@ if [ -n "$have" ]; then ok "present:$have"; fi
 if [ -n "$miss" ]; then info "absent (optional):$miss"; fi
 
 # --- local AI -------------------------------------------------------------
-# Optional, like the language servers: without ollama, gen.nvim and minuet
-# fail per request and the editor is otherwise fine. Model names mirror the
-# defaults in lua/init.lua, including their env-var overrides.
-head_ "Local AI (ollama)"
-if command -v ollama >/dev/null 2>&1; then
-  host="${NVIM_AI_HOST:-localhost}:${NVIM_AI_PORT:-11434}"
-  # Probing the endpoint rather than comparing versions: minuet's ghost text
-  # needs /v1/completions, which ollama 0.1.x answers with 404. Any other
-  # status (400 for the empty body) means the route exists.
-  code=$(curl -s -m 3 -o /dev/null -w '%{http_code}' -X POST "http://$host/v1/completions" -d '{}' || true)
-  code=${code:-000}  # curl itself missing
-  case "$code" in
-    404) warn "ollama at $host has no /v1/completions -- too old for ghost text; upgrade: curl -fsSL https://ollama.com/install.sh | sh" ;;
-    000) warn "ollama installed but not answering on $host -- start it with: ollama serve" ;;
-    *)   ok "ollama at $host serves /v1/completions -- ghost text" ;;
-  esac
-  if [ "$code" != 000 ]; then
-    models=$(ollama list 2>/dev/null || true)
-    for m in "${NVIM_AI_FIM_MODEL:-qwen2.5-coder:1.5b}" "${NVIM_AI_EDIT_MODEL:-qwen2.5-coder:7b}"; do
-      if grep -q "^${m}[[:space:]]" <<<"$models"; then
-        ok "model $m"
-      else
-        warn "model $m not pulled -- ollama pull $m"
-      fi
-    done
+# Optional, like the language servers. lua/init.lua uses whichever backend
+# answers at startup -- ollama, then LM Studio -- and with neither leaves the
+# AI plugins unloaded and their keymaps unset. This reports which it will
+# find. Ports and models mirror init.lua's defaults, env overrides included.
+#
+# Everything goes over HTTP rather than the `ollama` CLI: under WSL the server
+# may well be the Windows install, whose binary is not on this PATH.
+head_ "Local AI"
+ai_host="${NVIM_AI_HOST:-localhost}"
+ollama="http://$ai_host:${NVIM_AI_OLLAMA_PORT:-11434}"
+lmstudio="http://$ai_host:${NVIM_AI_LMSTUDIO_PORT:-1234}"
+if [ "${NVIM_AI_BACKEND:-}" = none ]; then
+  info "off -- NVIM_AI_BACKEND=none"
+elif ! command -v curl >/dev/null 2>&1; then
+  warn "curl missing -- the AI plugins talk over it, so they stay off; $(pkg_hint curl)"
+elif tags=$(curl -sf -m 2 "$ollama/api/tags"); then
+  ok "ollama at $ollama -- will be used"
+  # Probing the route rather than comparing versions: minuet's ghost text
+  # needs /v1/completions, which ollama 0.1.x lacks. Both old and new answer
+  # this empty request with a 404, so the status says nothing -- the body
+  # does. Old: the router's plain "404 page not found". New: a JSON "model ''
+  # not found", because the route exists and the body named no model.
+  probe=$(curl -s -m 3 -X POST "$ollama/v1/completions" -d '{}' || true)
+  if grep -q 'page not found' <<<"$probe"; then
+    warn "no /v1/completions -- ollama too old for ghost text; upgrade: curl -fsSL https://ollama.com/install.sh | sh"
+  else
+    ok "/v1/completions -- ghost text"
   fi
+  for m in "${NVIM_AI_FIM_MODEL:-qwen2.5-coder:1.5b}" "${NVIM_AI_EDIT_MODEL:-qwen2.5-coder:7b}"; do
+    if grep -qF "\"name\":\"$m\"" <<<"$tags"; then
+      ok "model $m"
+    else
+      warn "model $m not pulled -- ollama pull $m"
+    fi
+  done
+elif curl -sf -m 2 "$lmstudio/v1/models" >/dev/null; then
+  ok "LM Studio at $lmstudio -- will be used, with ${NVIM_AI_LMSTUDIO_MODEL:-the first non-embedding model it lists}"
 else
-  info "ollama absent (optional) -- <leader>] / <leader>g* and ghost text need it: https://ollama.com/download"
+  info "no ollama at $ollama or LM Studio at $lmstudio -- AI keymaps stay off"
+  if command -v ollama >/dev/null 2>&1; then
+    info "ollama is installed but not running -- ollama serve"
+  fi
 fi
 
 # --- clipboard ------------------------------------------------------------

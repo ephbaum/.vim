@@ -40,8 +40,8 @@ anywhere else rather than half-working.
 
 `setup.sh` creates `swapfiles/`, symlinks `init.lua` and `legacy.vim`, and
 checks for `nvim` and `git`, then reports on the optional pieces — `node`,
-`ctags`, `ripgrep`, a working clipboard provider, and which language servers
-are on this machine. It installs no plugin manager — lazy.nvim bootstraps itself. It's
+`ctags`, `ripgrep`, a working clipboard provider, which language servers
+are on this machine, and which local AI backend nvim will find. It installs no plugin manager — lazy.nvim bootstraps itself. It's
 idempotent — anything it would overwrite is moved aside with a timestamp
 instead.
 
@@ -158,22 +158,39 @@ which ships no `lib/tsserver.js`, and `typescript-language-server` still drives
 the 5.x one — with the unpinned version it starts, fails to initialise and
 exits, which reads as the LSP config doing nothing at all.
 
-### AI (local ollama)
+### AI (local: ollama, else LM Studio)
 
-Two plugins, one ollama. **minuet-ai** draws ghost-text suggestions while you
-type in insert mode; **gen.nvim** rewrites a selection when you ask it to.
-Nothing leaves the machine.
+Two plugins. **minuet-ai** draws ghost-text suggestions while you type in
+insert mode; **gen.nvim** rewrites a selection when you ask it to. Nothing
+leaves the machine.
+
+At startup the config looks for a running backend: **ollama** on :11434 first,
+then **LM Studio** on :1234. With neither, both plugins stay unloaded and none
+of the keys below exist. `:AIBackend` says which one was picked. Detection
+runs once, so restart nvim after starting a server.
 
 ```sh
+# ollama (preferred -- true fill-in-the-middle, two model sizes)
 curl -fsSL https://ollama.com/install.sh | sh   # ghost text needs a 2024-H2+ ollama
 ollama pull qwen2.5-coder:1.5b                  # ghost text: small, fast on CPU
 ollama pull qwen2.5-coder:7b                    # gen.nvim edits
-./setup.sh --check                              # probes both
+./setup.sh --check                              # reports what nvim will find
 ```
 
-Models and host are overridable per machine with `NVIM_AI_FIM_MODEL`,
-`NVIM_AI_EDIT_MODEL`, `NVIM_AI_HOST` and `NVIM_AI_PORT`. With a GPU, the 7b
-model is worth using for ghost text too.
+LM Studio needs its local server started (Developer tab, or `lms server
+start`) with an instruct model loaded. Both plugins use that one model: the
+first non-embedding model it lists, or `NVIM_AI_LMSTUDIO_MODEL`. Ghost text
+there goes through chat rather than fill-in-the-middle, so it's slower and a
+bit less precise.
+
+| Env var | Default | |
+|---|---|---|
+| `NVIM_AI_BACKEND` | detect | `ollama` / `lmstudio` to skip detection, `none` to turn AI off |
+| `NVIM_AI_HOST` | `localhost` | both backends |
+| `NVIM_AI_OLLAMA_PORT` / `NVIM_AI_LMSTUDIO_PORT` | `11434` / `1234` | |
+| `NVIM_AI_FIM_MODEL` | `qwen2.5-coder:1.5b` | ollama, ghost text. With a GPU, try the 7b |
+| `NVIM_AI_EDIT_MODEL` | `qwen2.5-coder:7b` | ollama, gen.nvim |
+| `NVIM_AI_LMSTUDIO_MODEL` | first listed | LM Studio, both |
 
 Insert mode, while a suggestion is showing:
 
