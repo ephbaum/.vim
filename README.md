@@ -94,8 +94,17 @@ sudo update-alternatives --set ctags /usr/bin/ctags-universal
 ```
 
 **[FiraCode](https://github.com/tonsky/FiraCode)** is the font this is tuned
-for. Under WSL, install it on the Windows side and pick it in Windows
-Terminal.
+for — but the plain build is not enough any more. nvim-tree draws file icons
+through nvim-web-devicons, and those live in the Nerd Font private use area:
+U+E620 for lua, U+F00BA for a README, and so on. Plain FiraCode has none of
+them, so the tree renders boxes or blanks.
+
+Install **[FiraCode Nerd Font](https://github.com/ryanoasis/nerd-fonts)** and
+point the terminal at the **Mono** variant — `FiraCode Nerd Font Mono`. The
+non-Mono build gives the icons a wider advance, which a cell-based terminal
+renders across two columns while nvim has budgeted one, so the tree drifts out
+of alignment the deeper it nests. Under WSL the font is installed on the
+Windows side and picked in Windows Terminal, same as for a native session.
 
 ![Screenshot of Windows Terminal running NVIM with FiraCode, gruvbox, transparency and scanlines](images/nvim_fira_code_windows_terminal_gruvbox.png)
 
@@ -143,6 +152,43 @@ it), and `mini.icons` (which-key says not to report that one). `winget install
 BurntSushi.ripgrep.MSVC` and `winget install UniversalCtags.Ctags` are the two
 worth doing — without them `<leader>fg` and `<leader>tt`/`<leader>rr` are dead
 keys.
+
+#### The font is per-profile, which is the trap
+
+Windows Terminal resolves the font per *profile*, and a profile's own
+`font.face` beats the one in `profiles.defaults`. The profiles Windows ships
+with — Windows PowerShell, Command Prompt — come with `"face": "Cascadia
+Code"` already written in, so setting a Nerd Font in `defaults` changes nothing
+for them and the file-tree icons stay broken. The fix is to delete the
+`font` block from those profiles rather than add one to `defaults`:
+
+```jsonc
+// %LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
+"profiles": {
+    "defaults": { "font": { "face": "FiraCode Nerd Font Mono" } },
+    "list": [
+        { "name": "Windows PowerShell", /* no "font" here -- inherit it */ }
+    ]
+}
+```
+
+This is easy to miss coming from WSL, because the WSL profile is a separate
+entry with its own font and its own history of having been set up correctly
+years earlier. Nothing about the config differs between the two; only the
+terminal profile does.
+
+Colours are worth a look at the same time. `:echo &termguicolors` should print
+`1` — gruvbox has a 24-bit palette and a 256-colour fallback, and the fallback
+is what you get if neovim's truecolor detection does not fire. Windows Terminal
+does support truecolor, so if that prints `0`, add this to the config rather
+than forcing the option on unconditionally — this repo also gets opened over
+ssh on dumb terminals:
+
+```vim
+if has('termguicolors') && ($COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit')
+  set termguicolors
+endif
+```
 
 ## Keybindings
 
