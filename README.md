@@ -2,14 +2,15 @@
 
 My neovim configuration. The repo is named `.vim` for historical reasons — it
 used to *be* `~/.vim`. It now lives at `~/.config/nvim/gitnvim` and is wired
-into neovim by two symlinks.
+into neovim by two symlinks. (On Windows, `%LOCALAPPDATA%\nvim\gitnvim` and two
+stub files instead — see [Windows](#windows).)
 
 The point of it is that it comes with me: whatever machine I land on and want
 to vim around properly, this is the config I pull down. macOS, bare Linux, a
-Linux VM, WSL2. None of that was designed — it accreted across a decade of
-moving between machines, from vim to neovim and through several plugin
-managers — but portability is what it's *for*, so anything that only works on
-one platform is a bug here.
+Linux VM, WSL2, native Windows. None of that was designed — it accreted across
+a decade of moving between machines, from vim to neovim and through several
+plugin managers — but portability is what it's *for*, so anything that only
+works on one platform is a bug here.
 
 I got tired of relearning how to set this up every time I moved, so the setup
 steps and the reasoning behind the current layout are written down rather than
@@ -33,12 +34,13 @@ optional and installed per machine, if at all.
 
 The clone has to be named `gitnvim` and sit inside your neovim config
 directory — `$XDG_CONFIG_HOME/nvim`, or `~/.config/nvim` if that variable is
-unset. `.vimrc` and `lua/init.lua` locate themselves with `stdpath('config')`,
-which is the same thing `setup.sh` computes, so the two agree wherever you put
-it. The directory *name* is still fixed, and `setup.sh` refuses to run from
-anywhere else rather than half-working.
+unset (`%LOCALAPPDATA%\nvim` on Windows). `.vimrc` and `lua/init.lua` locate
+themselves with `stdpath('config')`, which is the same thing `setup.sh`
+computes, so the two agree wherever you put it. The directory *name* is still
+fixed, and `setup.sh` refuses to run from anywhere else rather than
+half-working.
 
-`setup.sh` creates `swapfiles/`, symlinks `init.lua` and `legacy.vim`, and
+`setup.sh` creates `swapfiles/`, wires up `init.lua` and `legacy.vim`, and
 checks for `nvim` and `git`, then reports on the optional pieces — `node`,
 `ctags`, `ripgrep`, a working clipboard provider, and which language servers
 are on this machine. It installs no plugin manager — lazy.nvim bootstraps itself. It's
@@ -46,10 +48,11 @@ idempotent — anything it would overwrite is moved aside with a timestamp
 instead.
 
 It detects the platform first and adapts: install hints come out as `brew` on
-macOS and `apt` elsewhere, and the clipboard check looks for the right tool
-rather than assuming one. The script itself sticks to bash 3.2 and POSIX-ish
-flags, because stock macOS still ships bash 3.2 and BSD `sed` is not GNU
-`sed`.
+macOS, `winget` on Windows and `apt` elsewhere; the clipboard check looks for
+the right tool rather than assuming one; and the config directory it computes
+follows the platform rather than assuming `~/.config`. The script itself sticks
+to bash 3.2 and POSIX-ish flags, because stock macOS still ships bash 3.2 and
+BSD `sed` is not GNU `sed`.
 
 ```bash
 ./setup.sh --check   # verify an existing install, change nothing
@@ -67,10 +70,13 @@ you're on; this is what it's checking against.
 | **Linux / X11** | `xclip` or `xsel` | `sudo apt install universal-ctags` |
 | **Linux / Wayland** | `wl-clipboard` | as above |
 | **WSL2** | `clip.exe` + `powershell.exe`, on PATH only while Windows interop is on | as above |
+| **Windows** | `win32yank.exe` — ships inside neovim's own Windows build, nothing to install | `winget install UniversalCtags.Ctags` |
 
 Without a clipboard provider, `clipboard+=unnamedplus` silently does nothing
 and yanks never leave the editor — `:checkhealth provider` says what neovim
-settled on.
+settled on. Native Windows is the one platform here where it needs nothing:
+neovim bundles `win32yank.exe` next to `nvim.exe` and finds it itself, which is
+also why `.vimrc` declaring no `g:clipboard` is the right call there as well.
 
 **ctags** must be [Universal Ctags](https://github.com/universal-ctags/ctags),
 not Exuberant Ctags, which this README recommended for years despite it being
@@ -92,6 +98,51 @@ for. Under WSL, install it on the Windows side and pick it in Windows
 Terminal.
 
 ![Screenshot of Windows Terminal running NVIM with FiraCode, gruvbox, transparency and scanlines](images/nvim_fira_code_windows_terminal_gruvbox.png)
+
+### Windows
+
+Native Windows, meaning an `nvim.exe` from `winget install Neovim.Neovim`, not
+WSL — WSL is a Linux box and the Linux instructions apply there unchanged. Run
+`setup.sh` from Git Bash; it is the only shell here that can.
+
+```bash
+mkdir -p "$(cygpath -u "$LOCALAPPDATA")/nvim"
+cd "$(cygpath -u "$LOCALAPPDATA")/nvim"
+git clone https://github.com/ephbaum/.vim.git gitnvim
+cd gitnvim && ./setup.sh
+```
+
+Two things differ from every other platform, and both are handled by the
+script rather than by you:
+
+**The config directory is `%LOCALAPPDATA%\nvim`**, not `~/.config/nvim`. A
+native `nvim.exe` still honours `XDG_CONFIG_HOME` if you set it, but that is
+the default it falls back to. `setup.sh` computes the same path neovim does, so
+`--check` agrees with the editor instead of insisting a correctly placed clone
+is in the wrong place.
+
+**`init.lua` and `legacy.vim` go in as two-line stubs that source this repo,
+not as symlinks.** Windows symlinks need elevation or Developer Mode, and `ln
+-s` under Git Bash silently makes a *copy* when it can't link — which is worse
+than failing, because the copy keeps working while quietly going stale on the
+next `git pull`, so editing the repo appears to change nothing. The stubs
+resolve through `stdpath('config')` exactly as the repo's own files do, so no
+drive letter or user name is baked in. They say what they are in their first
+line. If you do turn on Developer Mode, replacing them with real symlinks works
+and `--check` accepts either.
+
+Everything else ports as-is. Clipboard needs nothing (above), swap files land
+in `swapfiles/` with the full path encoded as usual, and the whole plugin list
+installs on first launch — all of it is lua or vimscript, so nothing needs a
+compiler, and the disabled node/perl/ruby providers mean none of them go
+looking for an interpreter that isn't there.
+
+What's missing on Windows is only what's optional everywhere: `fd` (a telescope
+nicety this config never asks for), the python3 provider (no plugin here uses
+it), and `mini.icons` (which-key says not to report that one). `winget install
+BurntSushi.ripgrep.MSVC` and `winget install UniversalCtags.Ctags` are the two
+worth doing — without them `<leader>fg` and `<leader>tt`/`<leader>rr` are dead
+keys.
 
 ## Keybindings
 
