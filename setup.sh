@@ -2,19 +2,20 @@
 #
 # Set this config up on a new machine, or repair it on an existing one.
 #
-#   ./setup.sh          install: make state dirs, symlink, check dependencies
+#   ./setup.sh          install: make state dirs, wire up, check dependencies
 #   ./setup.sh --check  verify only, change nothing, non-zero on problems
 #   ./setup.sh --force  replace existing files where install would refuse
 #
 # Idempotent: running it twice is a no-op. Anything it would overwrite gets
-# moved aside with a timestamp rather than deleted, unless it is already the
-# correct symlink.
+# moved aside with a timestamp rather than deleted, unless it already wires
+# this repo into neovim.
 
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-NVIM_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
 STAMP="$(date +%Y%m%d%H%M%S)"
+# NVIM_CONFIG is computed just after the platform block below, not here: the
+# default config directory differs on Windows, so it has to know the platform.
 
 MODE=install
 for arg in "$@"; do
@@ -48,6 +49,11 @@ case "$OS" in
     else                                                    PLATFORM=linux
     fi
     ;;
+  # Git Bash and MSYS2 say MINGW64_NT-10.0-26300, Cygwin says CYGWIN_NT-...
+  # All of them drive a *native* nvim.exe, which differs from every case above
+  # in two ways that matter here: where it keeps its config, and not having
+  # symlinks available without elevation.
+  MINGW*|MSYS*|CYGWIN*) PLATFORM=windows ;;
   *) PLATFORM=unknown ;;
 esac
 
@@ -55,6 +61,19 @@ esac
 pkg_hint() {
   case "$PLATFORM" in
     macos) echo "brew install $1" ;;
+    windows)
+      # winget ids resemble neither the binary nor the brew/apt package name,
+      # so hand back the real id -- "winget install ripgrep" resolves to
+      # nothing, which is a worse hint than none.
+      case "$1" in
+        neovim)          echo "winget install Neovim.Neovim" ;;
+        git)             echo "winget install Git.Git" ;;
+        ripgrep)         echo "winget install BurntSushi.ripgrep.MSVC" ;;
+        node)            echo "winget install OpenJS.NodeJS" ;;
+        universal-ctags) echo "winget install UniversalCtags.Ctags" ;;
+        *)               echo "winget install $1" ;;
+      esac
+      ;;
     unknown) echo "install $1" ;;
     *) echo "sudo apt install $1 (or your distro's equivalent)" ;;
   esac
@@ -62,6 +81,27 @@ pkg_hint() {
 
 head_ "Platform"
 info "$PLATFORM ($OS)"
+
+# Where neovim keeps its config. XDG_CONFIG_HOME wins everywhere -- neovim
+# honours it on all platforms -- but the *fallback* is not $HOME/.config on
+# Windows: a native nvim.exe uses %LOCALAPPDATA%\nvim. Assuming the unix
+# default made this script insist the repo was in the wrong place while it sat
+# in exactly the right one, and then link into a directory nvim never reads.
+#
+# cygpath turns the Windows value into the /c/... form the comparisons below
+# use; it ships with Git Bash, MSYS2 and Cygwin alike, and is absent (and
+# unnecessary) everywhere else.
+win_path() {
+  if command -v cygpath >/dev/null 2>&1; then cygpath -u "$1"; else echo "$1"; fi
+}
+if [ -n "${XDG_CONFIG_HOME:-}" ]; then
+  CONFIG_HOME="$(win_path "$XDG_CONFIG_HOME")"
+elif [ "$PLATFORM" = windows ]; then
+  CONFIG_HOME="$(win_path "${LOCALAPPDATA:-$HOME/AppData/Local}")"
+else
+  CONFIG_HOME="$HOME/.config"
+fi
+NVIM_CONFIG="$CONFIG_HOME/nvim"
 
 # --- where does this repo live -------------------------------------------
 # .vimrc and init.lua locate themselves via stdpath('config'), which resolves
@@ -100,34 +140,81 @@ state_dir() {
 }
 state_dir swapfiles
 
-# --- symlinks -------------------------------------------------------------
+# --- wiring ---------------------------------------------------------------
 # init.lua is the entry point; legacy.vim is the old .vimrc, sourced from it.
-head_ "Symlinks"
-link() {
+# Both go in as symlinks, so editing the repo edits the live config.
+#
+# Except on Windows, where symlinks are not really available: `ln -s` under
+# Git Bash and MSYS2 silently *copies* unless MSYS=winsymlinks:nativestrict is
+# set, and a real NTFS symlink needs elevation or Developer Mode even then. So
+# the symlink path there leaves copies that go quietly stale the next time this
+# repo is pulled -- the failure mode being edits to the repo that change
+# nothing -- and a --check that reports a broken link forever, because
+# `readlink` on a copy returns nothing. A two-line stub that sources the repo
+# file needs no privileges, cannot drift, and says what it is in its first line.
+head_ "Wiring"
+
+# What each file gets on Windows. Both resolve through stdpath('config'), the
+# same way the repo's own files locate themselves, so no drive letter or user
+# name is baked in and XDG_CONFIG_HOME keeps working.
+stub_text() {
+  case "$1" in
+    init.lua)
+      echo "-- Stub written by setup.sh: Windows has no symlinks without elevation."
+      echo "dofile(vim.fn.stdpath('config') .. '/gitnvim/lua/init.lua')"
+      ;;
+    legacy.vim)
+      echo '" Stub written by setup.sh: Windows has no symlinks without elevation.'
+      echo "execute 'source' fnameescape(stdpath('config') . '/gitnvim/.vimrc')"
+      ;;
+  esac
+}
+
+# Is $dst already wired to this repo? A symlink pointing at $src, or -- on
+# Windows -- a stub that names the repo directory.
+wired() {
   local src="$1" dst="$2"
-  if [ -L "$dst" ] && [ "$(readlink "$dst")" = "$src" ]; then
-    ok "$(basename "$dst") -> $src"
+  if [ "$PLATFORM" = windows ]; then
+    [ -f "$dst" ] && grep -q 'gitnvim' "$dst" 2>/dev/null
+  else
+    [ -L "$dst" ] && [ "$(readlink "$dst")" = "$src" ]
+  fi
+}
+
+link() {
+  local src="$1" dst="$2" name
+  name="$(basename "$dst")"
+  if wired "$src" "$dst"; then
+    if [ "$PLATFORM" = windows ]; then
+      ok "$name sources the repo"
+    else
+      ok "$name -> $src"
+    fi
     return
   fi
   if [ "$MODE" = check ]; then
     if [ -e "$dst" ] || [ -L "$dst" ]; then
-      bad "$(basename "$dst") exists but does not point at $src"
+      bad "$name exists but is not wired to this repo"
     else
-      bad "$(basename "$dst") missing"
+      bad "$name missing"
     fi
     return
   fi
   if [ -e "$dst" ] || [ -L "$dst" ]; then
     if [ "$MODE" = force ]; then
       mv "$dst" "$dst.bak.$STAMP"
-      info "moved existing $(basename "$dst") to $(basename "$dst").bak.$STAMP"
+      info "moved existing $name to $name.bak.$STAMP"
     else
-      bad "$(basename "$dst") exists and is not the expected symlink; re-run with --force"
+      bad "$name exists and is not the expected wiring; re-run with --force"
       return
     fi
   fi
   mkdir -p "$(dirname "$dst")"
-  ln -s "$src" "$dst" && ok "$(basename "$dst") -> $src"
+  if [ "$PLATFORM" = windows ]; then
+    stub_text "$name" > "$dst" && ok "$name sources the repo (stub -- Windows has no symlinks)"
+  else
+    ln -s "$src" "$dst" && ok "$name -> $src"
+  fi
 }
 link "$REPO/lua/init.lua" "$NVIM_CONFIG/init.lua"
 link "$REPO/.vimrc"       "$NVIM_CONFIG/legacy.vim"
@@ -212,6 +299,19 @@ case "$PLATFORM" in
       ok "pbcopy -- built into macOS"
     else
       warn "no pbcopy, which is surprising on macOS -- :checkhealth provider"
+    fi
+    ;;
+  windows)
+    # Neovim's own Windows builds ship win32yank.exe next to nvim.exe and pick
+    # it up themselves, so this is normally already working -- the one platform
+    # here where the clipboard needs nothing installed. Looked for next to the
+    # nvim binary as well as on PATH, because that is where it actually lives.
+    nvim_bin="$(command -v nvim || true)"
+    if command -v win32yank.exe >/dev/null 2>&1 \
+       || { [ -n "$nvim_bin" ] && [ -x "$(dirname "$nvim_bin")/win32yank.exe" ]; }; then
+      ok "win32yank -- bundled with neovim's Windows build"
+    else
+      warn "no win32yank found -- :checkhealth provider says what neovim picked"
     fi
     ;;
   wsl)

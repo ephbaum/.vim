@@ -39,7 +39,18 @@ set clipboard+=unnamedplus
 
 colorscheme gruvbox " molokai
 set background=dark
-set guifont=Fira\ Code\ Pro:h13
+
+" GUI clients only -- neovide, nvim-qt. A terminal nvim takes its font from the
+" terminal, so this line has never had anything to do with how the config looks
+" in Windows Terminal, iTerm2 or a tty; that is set on the profile there.
+"
+" Named "Fira Code Pro" until 2026-10, which is not a font that exists under
+" any of the Fira packagings -- so every GUI client silently fell back to its
+" own default and the setting did nothing at all for years. The Nerd Font build
+" is named here for the same reason the terminal profile wants one: nvim-tree's
+" devicons live in the Nerd Font private use area, and the Mono variant keeps
+" them one cell wide.
+set guifont=FiraCode\ Nerd\ Font\ Mono:h13
 
 " Swap files go inside the repo clone, and the trailing // makes vim encode
 " the full path into the filename. The directory is gitignored by name -- if

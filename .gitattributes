@@ -1,0 +1,16 @@
+# Git for Windows installs with core.autocrlf=true, so a clone made on Windows
+# gets a CRLF working tree. setup.sh still runs under Git Bash that way, but
+# the same files reached from WSL -- which this config is explicitly carried
+# into -- hit `/usr/bin/env bash\r`: "bad interpreter, no such file or
+# directory". shellcheck fails the whole file on SC1017 for the same reason.
+#
+# Pinning to LF costs nothing on Windows: neovim reads LF files happily, and
+# Git Bash is the only shell here that runs setup.sh.
+*.sh    text eol=lf
+*.vim   text eol=lf
+*.lua   text eol=lf
+*.py    text eol=lf
+.vimrc  text eol=lf
+
+# Screenshots in images/ -- never touch these.
+*.png   binary
